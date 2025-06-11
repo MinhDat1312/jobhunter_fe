@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { callRegister } from '../../config/api';
 import styles from '../../styles/auth.module.scss';
-import type { IUser } from '../../types/backend';
 const { Option } = Select;
 
 const RegisterPage = () => {
@@ -15,21 +14,23 @@ const RegisterPage = () => {
         setTypeRegister(value);
     };
 
-    const onFinish = async (values: IUser) => {
-        // const { name, email, password, age, gender, address } = values;
-        // setIsSubmit(true);
-        // const res = await callRegister(name, email, password as string, +age, gender, address);
-        // setIsSubmit(false);
-        // if (res?.data?.id) {
-        //     message.success('Đăng ký tài khoản thành công!');
-        //     navigate('/login');
-        // } else {
-        //     notification.error({
-        //         message: 'Có lỗi xảy ra',
-        //         description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
-        //         duration: 5,
-        //     });
-        // }
+    const onFinish = async (values: any) => {
+        console.log(values);
+
+        const { fullName, username, password, dob, gender, address, contact, type } = values;
+        setIsSubmit(true);
+        const res = await callRegister(fullName, contact, address, password as string, username, type, dob, gender);
+        setIsSubmit(false);
+        if (res?.data?.userId) {
+            message.success('Đăng ký tài khoản thành công!');
+            navigate('/login');
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
+                duration: 5,
+            });
+        }
     };
 
     return (
@@ -47,7 +48,7 @@ const RegisterPage = () => {
                                     <Form.Item
                                         labelCol={{ span: 24 }}
                                         label="Họ tên"
-                                        name="name"
+                                        name="fullName"
                                         rules={[{ required: true, message: 'Họ tên không được để trống!' }]}
                                     >
                                         <Input />

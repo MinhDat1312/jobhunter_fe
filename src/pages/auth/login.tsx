@@ -17,30 +17,30 @@ const LoginPage = () => {
     const callback = params?.get('callback');
 
     useEffect(() => {
-        //đã login => redirect to '/'
         if (isAuthenticated) {
-            // navigate('/');
-            window.location.href = '/';
+            navigate('/');
+            // window.location.href = '/';
         }
     }, []);
 
     const onFinish = async (values: any) => {
-        // const { email, password } = values;
-        // setIsSubmit(true);
-        // const res = await callLogin(email, password);
-        // setIsSubmit(false);
-        // if (res?.data) {
-        //     localStorage.setItem('access_token', res.data.access_token);
-        //     dispatch(setUserLoginInfo(res.data.user));
-        //     message.success('Đăng nhập tài khoản thành công!');
-        //     window.location.href = callback ? callback : '/';
-        // } else {
-        //     notification.error({
-        //         message: 'Có lỗi xảy ra',
-        //         description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
-        //         duration: 5,
-        //     });
-        // }
+        const { email, password } = values;
+        setIsSubmit(true);
+        const res = await callLogin(email, password);
+        setIsSubmit(false);
+        if (res?.data) {
+            localStorage.setItem('access_token', res.data.access_token);
+            message.success('Đăng nhập tài khoản thành công!');
+            dispatch(setUserLoginInfo(res.data.user));
+            navigate(`${callback ? callback : '/'}`);
+            // window.location.href = callback ? callback : '/';
+        } else {
+            notification.error({
+                message: 'Có lỗi xảy ra',
+                description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
+                duration: 5,
+            });
+        }
     };
 
     return (

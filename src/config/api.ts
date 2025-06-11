@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import type {
     Address,
     Contact,
@@ -20,31 +21,34 @@ import axios from './axios-customize';
 Module Auth
 ***/
 export const callRegister = (
-    name: string,
-    email: string,
-    password: string,
-    age: number,
-    gender: string,
+    fullName: string,
+    contact: Contact,
     address: Address,
+    password: string,
+    username: string,
     type: string,
+    dob?: Date,
+    gender?: string,
 ) => {
     if (type === 'recruiter') {
         return axios.post<IBackendRes<IRecruiter>>('/api/v1/auth/register/recruiter', {
-            name,
-            email,
-            password,
-            age,
-            gender,
+            fullName,
+            contact,
             address,
+            password,
+            username,
+            type,
         });
     } else if (type === 'applicant') {
         return axios.post<IBackendRes<IRecruiter>>('/api/v1/auth/register/applicant', {
-            name,
-            email,
-            password,
-            age,
-            gender,
+            fullName,
+            contact,
             address,
+            password,
+            username,
+            type,
+            dob: dob ? dayjs(dob).format('YYYY-MM-DD') : undefined,
+            gender,
         });
     }
 };

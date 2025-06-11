@@ -20,7 +20,7 @@ export interface IAccount {
     user: {
         userId: string;
         email: string;
-        name: string;
+        fullName: string;
         role: {
             roleId: string;
             name: string;
