@@ -1,25 +1,32 @@
-import { Button } from 'antd';
-import { useState } from 'react';
-import ModalRecruiter from './components/admin/recruiter/modal.recruiter';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import RegisterPage from './pages/auth/register';
+import LayoutApp from './components/share/layout.app';
+import LayoutClient from './components/client/layout.client';
+import NotFound from './components/share/not.found';
+import LoginPage from './pages/auth/login';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: (
+            <LayoutApp>
+                <LayoutClient />
+            </LayoutApp>
+        ),
+        errorElement: <NotFound></NotFound>,
+    },
+    {
+        path: '/login',
+        element: <LoginPage />,
+    },
+    {
+        path: '/register',
+        element: <RegisterPage />,
+    },
+]);
 
 function App() {
-    const [openModal, setOpenModal] = useState(false);
-
-    return (
-        <div style={{ padding: 24 }}>
-            <Button type="primary" onClick={() => setOpenModal(true)}>
-                Mở Modal Recruiter
-            </Button>
-
-            <ModalRecruiter
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                dataInit={null}
-                setDataInit={() => {}}
-                reloadTable={() => {}}
-            />
-        </div>
-    );
+    return <RouterProvider router={router} />;
 }
 
 export default App;
