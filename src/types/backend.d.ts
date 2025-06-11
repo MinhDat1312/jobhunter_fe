@@ -1,6 +1,4 @@
 export interface IBackendRes<T> {
-    fileName: string;
-    access_token: any;
     error?: string | string[];
     message: string;
     statusCode: number | string;
@@ -44,8 +42,8 @@ export interface IUser {
     fullName: string;
     address?: Address;
     contact: Contact;
-    age: number;
-    gender: string;
+    dob?: Date;
+    gender?: string;
     password: string;
     username: string;
 

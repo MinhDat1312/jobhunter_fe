@@ -54,7 +54,7 @@ export const accountSlide = createSlice({
         setUserLoginInfo: (state, action) => {
             state.isAuthenticated = true;
             state.isLoading = false;
-            state.user.userId = action?.payload?.id;
+            state.user.userId = action?.payload?.userId;
             state.user.email = action.payload.email;
             state.user.fullName = action.payload.name;
             state.user.role = action?.payload?.role;
@@ -95,7 +95,7 @@ export const accountSlide = createSlice({
             if (action.payload) {
                 state.isAuthenticated = true;
                 state.isLoading = false;
-                state.user.userId = action?.payload?.user?.id;
+                state.user.userId = action?.payload?.user?.userId;
                 state.user.email = action.payload.user?.email;
                 state.user.fullName = action.payload.user?.name;
                 state.user.role = action?.payload?.user?.role;
