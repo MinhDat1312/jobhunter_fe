@@ -97,7 +97,7 @@ export const accountSlide = createSlice({
                 state.isLoading = false;
                 state.user.userId = action?.payload?.user?.userId;
                 state.user.email = action.payload.user?.email;
-                state.user.fullName = action.payload.user?.name;
+                state.user.fullName = action.payload.user?.fullName;
                 state.user.role = action?.payload?.user?.role;
 
                 if (!action?.payload?.user?.role) state.user.role = {};

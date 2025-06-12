@@ -4,6 +4,10 @@ import LayoutApp from './components/share/layout.app';
 import LayoutClient from './components/client/layout.client';
 import NotFound from './components/share/not.found';
 import LoginPage from './pages/auth/login';
+import { useEffect } from 'react';
+import { useAppDispatch } from './redux/hook';
+import { fetchAccount } from './redux/slice/accountSlice';
+import HomePage from './pages/home/home';
 
 const router = createBrowserRouter([
     {
@@ -14,6 +18,7 @@ const router = createBrowserRouter([
             </LayoutApp>
         ),
         errorElement: <NotFound></NotFound>,
+        children: [{ index: true, element: <HomePage /> }],
     },
     {
         path: '/login',
@@ -26,6 +31,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (window.location.pathname === '/login' || window.location.pathname === '/register') return;
+        dispatch(fetchAccount());
+    }, []);
+
     return <RouterProvider router={router} />;
 }
 

@@ -1,4 +1,7 @@
 export interface IBackendRes<T> {
+    user: any;
+    meta: any;
+    result: IApplication[];
     error?: string | string[];
     message: string;
     statusCode: number | string;
@@ -111,6 +114,8 @@ export interface IJob {
 }
 
 export interface IApplication {
+    name: string;
+    skillId: string;
     applicationId?: string;
     email: string;
     resumeUrl: string;
