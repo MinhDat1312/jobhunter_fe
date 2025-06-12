@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { IApplication } from '../../../types/backend';
-import { callFetchApplicationByApplicant } from '../../../config/api';
+import type { IApplication } from '../../../../types/backend';
+import { callFetchApplicationByApplicant } from '../../../../config/api';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { Table } from 'antd';

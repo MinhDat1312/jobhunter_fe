@@ -1,8 +1,8 @@
 import { Modal, Tabs } from 'antd';
 import type { TabsProps } from 'antd/lib';
 import { isMobile } from 'react-device-detect';
-import ApplicantApplication from '../tab/applicant.application';
-import JobByEmail from '../tab/job.email';
+import ApplicantApplication from './tab/applicant.application';
+import JobByEmail from './tab/job.email';
 
 interface IProps {
     open: boolean;
