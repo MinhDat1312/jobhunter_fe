@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { useAppDispatch } from './redux/hook';
 import { fetchAccount } from './redux/slice/accountSlice';
 import HomePage from './pages/home/home';
+import ClientJobPage from './pages/job/job';
+import ClientJobDetailPage from './pages/job/detail';
 
 const router = createBrowserRouter([
     {
@@ -18,7 +20,17 @@ const router = createBrowserRouter([
             </LayoutApp>
         ),
         errorElement: <NotFound></NotFound>,
-        children: [{ index: true, element: <HomePage /> }],
+        children: [
+            { index: true, element: <HomePage /> },
+            {
+                path: 'job',
+                element: <ClientJobPage />,
+            },
+            {
+                path: 'job/:id',
+                element: <ClientJobDetailPage />,
+            },
+        ],
     },
     {
         path: '/login',
