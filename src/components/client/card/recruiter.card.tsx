@@ -77,7 +77,6 @@ const RecruiterCard = (props: IProps) => {
                         </Col>
 
                         {displayRecruiter?.map((item) => {
-                            console.log(item);
                             return (
                                 <Col span={24} md={6} key={item.userId}>
                                     <Card

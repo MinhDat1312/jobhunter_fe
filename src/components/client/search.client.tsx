@@ -4,12 +4,13 @@ import { Button, Col, Form, notification, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { callFetchAllSkill } from '../../config/api';
 import { LOCATION_LIST } from '../../config/utils';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const SearchClient = () => {
     const navigate = useNavigate();
-    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
+    const queryLocation = searchParams.get('location');
+    const querySkills = searchParams.get('skills');
 
     const optionsLocations = LOCATION_LIST;
     const [form] = Form.useForm();
@@ -22,17 +23,13 @@ const SearchClient = () => {
     >([]);
 
     useEffect(() => {
-        if (location.search) {
-            const queryLocation = searchParams.get('location');
-            const querySkills = searchParams.get('skills');
-            if (queryLocation) {
-                form.setFieldValue('location', queryLocation.split(','));
-            }
-            if (querySkills) {
-                form.setFieldValue('skills', querySkills.split(','));
-            }
+        if (queryLocation) {
+            form.setFieldValue('location', queryLocation.split(','));
         }
-    }, [location.search]);
+        if (querySkills) {
+            form.setFieldValue('skills', querySkills.split(','));
+        }
+    }, [queryLocation, querySkills]);
 
     useEffect(() => {
         const fetchSkill = async () => {
@@ -88,7 +85,7 @@ const SearchClient = () => {
                 <Col span={24}>
                     <h2>Việc Làm Cho Vất Vả "Chất"</h2>
                 </Col>
-                <Col span={24} md={16}>
+                <Col span={24} md={13}>
                     <ProForm.Item name="skills">
                         <Select
                             mode="multiple"
@@ -100,12 +97,14 @@ const SearchClient = () => {
                                     <MonitorOutlined /> Tìm theo kỹ năng...
                                 </>
                             }
+                            maxTagCount={7}
+                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length} kỹ năng`}
                             optionLabelProp="label"
                             options={optionsSkills}
                         />
                     </ProForm.Item>
                 </Col>
-                <Col span={12} md={4}>
+                <Col span={12} md={7}>
                     <ProForm.Item name="location">
                         <Select
                             mode="multiple"
@@ -117,6 +116,8 @@ const SearchClient = () => {
                                     <EnvironmentOutlined /> Địa điểm...
                                 </>
                             }
+                            maxTagCount={2}
+                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length} địa điểm`}
                             optionLabelProp="label"
                             options={optionsLocations}
                         />

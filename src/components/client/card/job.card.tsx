@@ -50,7 +50,8 @@ const JobCard = (props: IProps) => {
                 let q = '';
 
                 if (queryLocation) {
-                    q = sfIn('location', queryLocation.split(',')).toString();
+                    const locationNames = queryLocation.split(',').map((item) => getLocationName(item));
+                    q = sfIn('location', locationNames).toString();
                 }
                 if (querySkills) {
                     q = queryLocation
@@ -116,7 +117,7 @@ const JobCard = (props: IProps) => {
                                                 <div className={styles['job-title']}>{item.title}</div>
                                                 <div className={styles['job-location']}>
                                                     <EnvironmentOutlined style={{ color: '#58aaab' }} />
-                                                    &nbsp;{getLocationName(item.location)}
+                                                    &nbsp;{item.location}
                                                 </div>
                                                 <div>
                                                     <ThunderboltOutlined style={{ color: 'orange' }} />
