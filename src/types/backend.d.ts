@@ -1,7 +1,4 @@
 export interface IBackendRes<T> {
-    user: any;
-    meta: any;
-    result: IApplication[];
     error?: string | string[];
     message: string;
     statusCode: number | string;
