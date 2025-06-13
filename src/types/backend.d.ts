@@ -1,4 +1,5 @@
 export interface IBackendRes<T> {
+    access_token: any;
     error?: string | string[];
     message: string;
     statusCode: number | string;

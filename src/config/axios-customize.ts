@@ -20,14 +20,17 @@ const NO_RETRY_HEADER = 'x-no-retry';
 const handleRefreshToken = async (): Promise<string | null> => {
     return await mutex.runExclusive(async () => {
         const res = await instance.get<IBackendRes<AccessTokenResponse>>('/api/v1/auth/refresh');
-        if (res && res.data) return res.data.access_token;
-        else return null;
+        if (res && res.data) {
+            return res.data.access_token;
+        } else return null;
     });
 };
 
 instance.interceptors.request.use(function (config) {
     if (typeof window !== 'undefined' && window && window.localStorage && window.localStorage.getItem('access_token')) {
-        config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('access_token');
+        if (config.url !== '/api/v1/auth/refresh') {
+            config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('access_token');
+        }
     }
     if (!config.headers.Accept && config.headers['Content-Type']) {
         config.headers.Accept = 'application/json';
