@@ -47,7 +47,7 @@ const RecruiterCard = (props: IProps) => {
         fetchRecruiter();
     }, [current, pageSize, filter, sortQuery]);
 
-    const handleViewDetailJob = (item: IRecruiter) => {
+    const handleViewDetailRecruiter = (item: IRecruiter) => {
         if (item.fullName) {
             const slug = convertSlug(item.fullName);
             navigate(`/recruiter/${slug}?id=${item.userId}`);
@@ -80,7 +80,7 @@ const RecruiterCard = (props: IProps) => {
                             return (
                                 <Col span={24} md={6} key={item.userId}>
                                     <Card
-                                        onClick={() => handleViewDetailJob(item)}
+                                        onClick={() => handleViewDetailRecruiter(item)}
                                         style={{ height: 350 }}
                                         hoverable
                                         cover={

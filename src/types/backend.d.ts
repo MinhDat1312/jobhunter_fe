@@ -178,12 +178,12 @@ export interface IRole {
 }
 
 export interface Address {
-    city?: string;
-    country?: string;
-    district?: string;
     number?: string;
     street?: string;
     ward?: string;
+    district?: string;
+    city?: string;
+    country?: string;
 }
 
 export interface Contact {

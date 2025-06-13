@@ -10,6 +10,8 @@ import { fetchAccount } from './redux/slice/accountSlice';
 import HomePage from './pages/home/home';
 import ClientJobPage from './pages/job/job';
 import ClientJobDetailPage from './pages/job/detail';
+import ClientRecruiterPage from './pages/recruiter/recruiter';
+import ClientRecruiterDetailPage from './pages/recruiter/detail';
 
 const router = createBrowserRouter([
     {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
             {
                 path: 'job/:id',
                 element: <ClientJobDetailPage />,
+            },
+            {
+                path: 'recruiter',
+                element: <ClientRecruiterPage />,
+            },
+            {
+                path: 'recruiter/:id',
+                element: <ClientRecruiterDetailPage />,
             },
         ],
     },
