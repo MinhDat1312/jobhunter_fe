@@ -1,5 +1,4 @@
 export interface IBackendRes<T> {
-    access_token: any;
     error?: string | string[];
     message: string;
     statusCode: number | string;
@@ -112,11 +111,9 @@ export interface IJob {
 }
 
 export interface IApplication {
-    name: string;
-    skillId: string;
-    applicationId?: string;
+    id?: string;
     email: string;
-    resumeUrl: string;
+    url: string;
     status: string;
 
     applicantId: string | { userId: string };

@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { callFetchJobById } from '../../config/api';
 import { DollarOutlined, EnvironmentOutlined, HistoryOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
+import ApplyModal from '../../components/client/modal/apply.modal';
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = () => {
@@ -97,7 +98,7 @@ const ClientJobDetailPage = () => {
                     )}
                 </Row>
             )}
-            {/* <ApplyModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} jobDetail={jobDetail} /> */}
+            <ApplyModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} jobDetail={jobDetail} />
         </div>
     );
 };

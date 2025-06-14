@@ -33,7 +33,6 @@ const LoginPage = () => {
             message.success('Đăng nhập tài khoản thành công!');
             dispatch(setUserLoginInfo(res.data.user));
             navigate(`${callback ? callback : '/'}`);
-            // window.location.href = callback ? callback : '/';
         } else {
             notification.error({
                 message: 'Có lỗi xảy ra',
