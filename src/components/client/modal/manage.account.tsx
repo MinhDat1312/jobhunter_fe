@@ -15,7 +15,7 @@ const ManageAccount = (props: IProps) => {
     const items: TabsProps['items'] = [
         {
             key: 'applicant-application',
-            label: `Rải CV`,
+            label: `Ứng tuyển`,
             children: <ApplicantApplication />,
         },
         {

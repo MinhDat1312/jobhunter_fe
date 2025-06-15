@@ -111,25 +111,14 @@ export interface IJob {
 }
 
 export interface IApplication {
-    id?: string;
+    applicationId?: string;
     email: string;
-    url: string;
+    resumeUrl: string;
     status: string;
 
-    applicantId: string | { userId: string };
-    recruiterId:
-        | string
-        | {
-              userId: string;
-              fullName: string;
-              logo?: string;
-          };
-    jobId:
-        | string
-        | {
-              jobId: string;
-              title: string;
-          };
+    user: string | { userId: string; fullName: string };
+    recruiterName: string;
+    job: string | { jobId: string; title: string };
     history?: {
         status: string;
         updatedAt: Date;

@@ -28,17 +28,17 @@ const ApplicantApplication = () => {
             key: 'index',
             width: 50,
             align: 'center',
-            render: (index) => {
+            render: (_text, _record, index) => {
                 return <>{index + 1}</>;
             },
         },
         {
             title: 'Nhà tuyển dụng',
-            dataIndex: ['recruiterId', 'fullName'],
+            dataIndex: 'recruiterName',
         },
         {
             title: 'Tiêu đề',
-            dataIndex: ['jobId', 'title'],
+            dataIndex: ['job', 'title'],
         },
         {
             title: 'Trạng thái',
@@ -47,12 +47,12 @@ const ApplicantApplication = () => {
         {
             title: 'Ngày nộp',
             dataIndex: 'createdAt',
-            render(record) {
+            render(_value, record, _index) {
                 return <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>;
             },
         },
         {
-            title: '',
+            title: 'Xem CV',
             dataIndex: '',
             render(record) {
                 return (
@@ -71,6 +71,7 @@ const ApplicantApplication = () => {
         <div>
             <Table<IApplication>
                 columns={columns}
+                rowKey={'applicationId'}
                 dataSource={listApplication}
                 loading={isFetching}
                 pagination={false}
