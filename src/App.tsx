@@ -13,6 +13,9 @@ import ClientJobDetailPage from './pages/job/detail';
 import ClientRecruiterPage from './pages/recruiter/recruiter';
 import ClientRecruiterDetailPage from './pages/recruiter/detail';
 import LayoutAdmin from './components/admin/layout.admin';
+import ProtectedRoute from './components/share/protected-route/protected-route';
+import DashboardPage from './pages/admin/dashboard';
+import RecruiterPage from './pages/admin/recruiter';
 
 const router = createBrowserRouter([
     {
@@ -51,6 +54,24 @@ const router = createBrowserRouter([
             </LayoutApp>
         ),
         errorElement: <NotFound />,
+        children: [
+            {
+                index: true,
+                element: (
+                    <ProtectedRoute>
+                        <DashboardPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'recruiter',
+                element: (
+                    <ProtectedRoute>
+                        <RecruiterPage />
+                    </ProtectedRoute>
+                ),
+            },
+        ],
     },
     {
         path: '/login',

@@ -8,7 +8,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
 import { callCreateRecruiter, callUpdateRecruiter, callUploadSingleFile } from '../../../config/api';
 import { v4 as uuidv4 } from 'uuid';
-import enUS from 'antd/lib/locale/en_US';
+import vi_VN from 'antd/locale/vi_VN';
 import type { Address, Contact, IRecruiter } from '../../../types/backend';
 
 interface IProps {
@@ -50,12 +50,14 @@ const ModalRecruiter = (props: IProps) => {
         if (dataInit?.userId && dataInit?.description) {
             setValue(dataInit.description);
         }
+        if (dataInit?.userId && dataInit?.logo) {
+            setDataLogo([{ name: dataInit?.logo, uid: uuidv4() }]);
+        }
     }, [dataInit]);
 
     const submitRecruiter = async (valuesForm: IRecruiterForm) => {
-        const { fullName, password, username, contact, address } = valuesForm;
-
-        console.log(valuesForm);
+        const { fullName, username, contact, address } = valuesForm;
+        let { password } = valuesForm;
 
         if (dataLogo.length === 0) {
             message.error('Vui lòng upload ảnh Logo');
@@ -63,6 +65,7 @@ const ModalRecruiter = (props: IProps) => {
         }
 
         if (dataInit?.userId) {
+            password = "0123456789"
             const res = await callUpdateRecruiter(
                 dataInit.userId,
                 fullName,
@@ -94,7 +97,7 @@ const ModalRecruiter = (props: IProps) => {
                 dataLogo[0].name,
             );
             if (res.data) {
-                message.success('Thêm mới company thành công');
+                message.success('Thêm mới nhà tuyển dụng thành công');
                 handleReset();
                 reloadTable();
             } else {
@@ -197,7 +200,7 @@ const ModalRecruiter = (props: IProps) => {
                                 handleReset();
                             },
                             afterClose: () => handleReset(),
-                            destroyOnClose: true,
+                            destroyOnHidden: true,
                             width: isMobile ? '100%' : 900,
                             footer: null,
                             keyboard: false,
@@ -238,14 +241,16 @@ const ModalRecruiter = (props: IProps) => {
                                     placeholder="Nhập tên đăng nhập"
                                 />
                             </Col>
-                            <Col span={12}>
-                                <ProFormText
-                                    label="Mật khẩu"
-                                    name="password"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống mật khẩu' }]}
-                                    placeholder="Nhập mật khẩu"
-                                />
-                            </Col>
+                            {!dataInit?.userId && (
+                                <Col span={12}>
+                                    <ProFormText
+                                        label="Mật khẩu"
+                                        name="password"
+                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống mật khẩu' }]}
+                                        placeholder="Nhập mật khẩu"
+                                    />
+                                </Col>
+                            )}
                             <Col span={12}>
                                 <ProFormText
                                     label="Email"
@@ -313,13 +318,13 @@ const ModalRecruiter = (props: IProps) => {
                                             required: true,
                                             message: 'Vui lòng không bỏ trống',
                                             validator: () => {
-                                                if (dataLogo.length > 0) return Promise.resolve();
+                                                if (dataLogo.length > 0 || dataInit?.logo) return Promise.resolve();
                                                 else return Promise.reject(false);
                                             },
                                         },
                                     ]}
                                 >
-                                    <ConfigProvider locale={enUS}>
+                                    <ConfigProvider locale={vi_VN}>
                                         <Upload
                                             name="logo"
                                             listType="picture-card"
@@ -332,7 +337,7 @@ const ModalRecruiter = (props: IProps) => {
                                             onRemove={(file) => handleRemoveFile(file)}
                                             onPreview={handlePreview}
                                             defaultFileList={
-                                                dataInit?.userId
+                                                dataInit?.userId && dataInit?.logo
                                                     ? [
                                                           {
                                                               uid: uuidv4(),
@@ -340,7 +345,7 @@ const ModalRecruiter = (props: IProps) => {
                                                               status: 'done',
                                                               url: `${
                                                                   import.meta.env.VITE_BACKEND_URL
-                                                              }/storage/recruiter/${dataInit?.logo}`,
+                                                              }/storage/recruiters/${dataInit?.logo}`,
                                                           },
                                                       ]
                                                     : []
@@ -355,7 +360,7 @@ const ModalRecruiter = (props: IProps) => {
                                 </Form.Item>
                             </Col>
                             <ProCard
-                                title="Miêu tả"
+                                title="Mô tả"
                                 headStyle={{ color: '#d81921' }}
                                 style={{ marginBottom: 20 }}
                                 headerBordered

@@ -81,10 +81,10 @@ Module Recruiter
 ***/
 export const callCreateRecruiter = (
     fullName: string,
-    contact: Contact,
-    address: Address,
     password: string,
     username: string,
+    contact: Contact,
+    address: Address,
     description?: string,
     logo?: string,
     website?: string,
@@ -98,6 +98,7 @@ export const callCreateRecruiter = (
         description,
         logo,
         website,
+        type: 'recruiter',
     });
 };
 
@@ -113,7 +114,7 @@ export const callUpdateRecruiter = (
     website?: string,
 ) => {
     return axios.put<IBackendRes<IRecruiter>>(`/api/v1/recruiters`, {
-        recruiterId,
+        userId: recruiterId,
         fullName,
         password,
         username,
@@ -122,6 +123,7 @@ export const callUpdateRecruiter = (
         description,
         logo,
         website,
+        type: 'recruiter',
     });
 };
 
@@ -165,6 +167,7 @@ export const callCreateApplicant = (
         education,
         level,
         resumeUrl,
+        type: 'applicant',
     });
 };
 
@@ -183,7 +186,7 @@ export const callUpdateApplicant = (
     resumeUrl?: string,
 ) => {
     return axios.put<IBackendRes<IApplicant>>(`/api/v1/applicants`, {
-        applicantId,
+        userId: applicantId,
         fullName,
         address,
         contact,
@@ -195,6 +198,7 @@ export const callUpdateApplicant = (
         education,
         level,
         resumeUrl,
+        type: 'applicant',
     });
 };
 
