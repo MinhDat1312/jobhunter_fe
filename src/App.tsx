@@ -12,6 +12,7 @@ import ClientJobPage from './pages/job/job';
 import ClientJobDetailPage from './pages/job/detail';
 import ClientRecruiterPage from './pages/recruiter/recruiter';
 import ClientRecruiterDetailPage from './pages/recruiter/detail';
+import LayoutAdmin from './components/admin/layout.admin';
 
 const router = createBrowserRouter([
     {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
                 <LayoutClient />
             </LayoutApp>
         ),
-        errorElement: <NotFound></NotFound>,
+        errorElement: <NotFound />,
         children: [
             { index: true, element: <HomePage /> },
             {
@@ -41,6 +42,15 @@ const router = createBrowserRouter([
                 element: <ClientRecruiterDetailPage />,
             },
         ],
+    },
+    {
+        path: '/admin',
+        element: (
+            <LayoutApp>
+                <LayoutAdmin />
+            </LayoutApp>
+        ),
+        errorElement: <NotFound />,
     },
     {
         path: '/login',
