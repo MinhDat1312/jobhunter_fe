@@ -15,7 +15,7 @@ import ClientRecruiterDetailPage from './pages/recruiter/detail';
 import LayoutAdmin from './components/admin/layout.admin';
 import ProtectedRoute from './components/share/protected-route/protected-route';
 import DashboardPage from './pages/admin/dashboard';
-import RecruiterPage from './pages/admin/recruiter';
+import UserTab from './pages/admin/user/user.tab';
 
 const router = createBrowserRouter([
     {
@@ -64,10 +64,10 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'recruiter',
+                path: 'user',
                 element: (
                     <ProtectedRoute>
-                        <RecruiterPage />
+                        <UserTab />
                     </ProtectedRoute>
                 ),
             },

@@ -87,7 +87,8 @@ export const callCreateRecruiter = (
     address: Address,
     description?: string,
     logo?: string,
-    website?: string,
+    role?: {roleId: string, name: string},
+    website?: string
 ) => {
     return axios.post<IBackendRes<IRecruiter>>('/api/v1/recruiters', {
         fullName,
@@ -97,6 +98,7 @@ export const callCreateRecruiter = (
         address,
         description,
         logo,
+        role,
         website,
         type: 'recruiter',
     });
@@ -111,7 +113,8 @@ export const callUpdateRecruiter = (
     address: Address,
     description?: string,
     logo?: string,
-    website?: string,
+    role?: {roleId: string, name: string},
+    website?: string
 ) => {
     return axios.put<IBackendRes<IRecruiter>>(`/api/v1/recruiters`, {
         userId: recruiterId,
@@ -122,6 +125,7 @@ export const callUpdateRecruiter = (
         address,
         description,
         logo,
+        role,
         website,
         type: 'recruiter',
     });

@@ -2,7 +2,6 @@ import {
     AliwangwangOutlined,
     ApiOutlined,
     AppstoreOutlined,
-    BankOutlined,
     BugOutlined,
     ExceptionOutlined,
     MenuFoldOutlined,
@@ -35,16 +34,10 @@ const LayoutAdmin = () => {
     useEffect(() => {
         const ACL_ENABLE = import.meta.env.VITE_ACL_ENABLE;
         if (permissions?.length || ACL_ENABLE === 'false') {
-            const viewRecruiter = permissions?.find(
+            const viewUser = permissions?.find(
                 (item) =>
-                    item.apiPath === ALL_PERMISSIONS.RECRUITERS.GET_PAGINATE.apiPath &&
-                    item.method === ALL_PERMISSIONS.RECRUITERS.GET_PAGINATE.method,
-            );
-
-            const viewApplicant = permissions?.find(
-                (item) =>
-                    item.apiPath === ALL_PERMISSIONS.APPLICANTS.GET_PAGINATE.apiPath &&
-                    item.method === ALL_PERMISSIONS.APPLICANTS.GET_PAGINATE.method,
+                    item.apiPath === ALL_PERMISSIONS.USERS.GET_PAGINATE.apiPath &&
+                    item.method === ALL_PERMISSIONS.USERS.GET_PAGINATE.method,
             );
 
             const viewJob = permissions?.find(
@@ -77,21 +70,11 @@ const LayoutAdmin = () => {
                     key: '/admin',
                     icon: <AppstoreOutlined />,
                 },
-                ...(viewRecruiter || ACL_ENABLE === 'false'
+                ...(viewUser || ACL_ENABLE === 'false'
                     ? [
                           {
-                              label: <Link to="/admin/recruiter">Recruiter</Link>,
-                              key: '/admin/company',
-                              icon: <BankOutlined />,
-                          },
-                      ]
-                    : []),
-
-                ...(viewApplicant || ACL_ENABLE === 'false'
-                    ? [
-                          {
-                              label: <Link to="/admin/applicant">Applicant</Link>,
-                              key: '/admin/applicant',
+                              label: <Link to="/admin/user">User</Link>,
+                              key: '/admin/user',
                               icon: <UserOutlined />,
                           },
                       ]

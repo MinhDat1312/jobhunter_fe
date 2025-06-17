@@ -1,11 +1,13 @@
 import { configureStore, type Action, type ThunkAction } from '@reduxjs/toolkit';
 import accountReducer from './slice/accountSlice';
 import recruiterReducer from './slice/recruiterSlice';
+import applicantReducer from './slice/applicantSlice';
 
 export const store = configureStore({
     reducer: {
         account: accountReducer,
         recruiter: recruiterReducer,
+        applicant: applicantReducer,
     },
 });
 

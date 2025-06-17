@@ -1,18 +1,18 @@
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import DataTable from '../../components/data.table';
-import Access from '../../components/share/access';
-import { ALL_PERMISSIONS } from '../../config/permissions';
-import type { IRecruiter } from '../../types/backend';
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import DataTable from '../../../components/data.table';
+import Access from '../../../components/share/access';
+import { ALL_PERMISSIONS } from '../../../config/permissions';
+import type { IRecruiter } from '../../../types/backend';
+import { useAppDispatch, useAppSelector } from '../../../redux/hook';
 import dayjs from 'dayjs';
 import { Button, message, notification, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRef, useState } from 'react';
-import { callDeleteRecruiter } from '../../config/api';
+import { callDeleteRecruiter } from '../../../config/api';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
-import { fetchRecruiter } from '../../redux/slice/recruiterSlice';
-import ModalRecruiter from '../../components/admin/recruiter/modal.recruiter';
+import { fetchRecruiter } from '../../../redux/slice/recruiterSlice';
+import ModalRecruiter from '../../../components/admin/recruiter/modal.recruiter';
 
 const RecruiterPage = () => {
     const dispatch = useAppDispatch();
@@ -48,7 +48,12 @@ const RecruiterPage = () => {
             search: true,
             valueType: 'text',
         },
-
+        {
+            title: 'Vai trò',
+            dataIndex: ['role', 'name'],
+            sorter: true,
+            hideInSearch: true,
+        },
         {
             title: 'Ngày tạo',
             dataIndex: 'createdAt',

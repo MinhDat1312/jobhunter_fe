@@ -1,15 +1,24 @@
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { FooterToolbar, ModalForm, ProCard, ProFormText } from '@ant-design/pro-components';
+import { FooterToolbar, ModalForm, ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { Col, ConfigProvider, Form, Modal, Row, Upload, message, notification } from 'antd';
 import '../../../styles/reset.scss';
 import { isMobile } from 'react-device-detect';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
-import { callCreateRecruiter, callUpdateRecruiter, callUploadSingleFile } from '../../../config/api';
+import {
+    callCreateRecruiter,
+    callFetchRole,
+    callFetchRoleById,
+    callUpdateRecruiter,
+    callUploadSingleFile,
+} from '../../../config/api';
 import { v4 as uuidv4 } from 'uuid';
 import vi_VN from 'antd/locale/vi_VN';
-import type { Address, Contact, IRecruiter } from '../../../types/backend';
+import type { IRecruiter } from '../../../types/backend';
+import { DebounceSelect } from '../debounce.select';
+import { sfLike } from 'spring-filter-query-builder';
+import queryString from 'query-string';
 
 interface IProps {
     openModal: boolean;
@@ -19,17 +28,15 @@ interface IProps {
     reloadTable: () => void;
 }
 
-interface IRecruiterForm {
-    fullName: string;
-    password: string;
-    username: string;
-    contact: Contact;
-    address: Address;
-}
-
 interface IRecruiterLogo {
     uid: string;
     name: string;
+}
+
+export interface IRecruiterSelect {
+    label: string;
+    value: string;
+    key?: string;
 }
 
 const ModalRecruiter = (props: IProps) => {
@@ -39,6 +46,7 @@ const ModalRecruiter = (props: IProps) => {
 
     const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
     const [dataLogo, setDataLogo] = useState<IRecruiterLogo[]>([]);
+    const [roles, setRoles] = useState<IRecruiterSelect[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
@@ -47,16 +55,28 @@ const ModalRecruiter = (props: IProps) => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        if (dataInit?.userId && dataInit?.description) {
-            setValue(dataInit.description);
-        }
-        if (dataInit?.userId && dataInit?.logo) {
-            setDataLogo([{ name: dataInit?.logo, uid: uuidv4() }]);
+        if (dataInit?.userId) {
+            if (dataInit.role) {
+                setRoles([
+                    {
+                        label: dataInit.role?.name,
+                        value: dataInit.role?.roleId,
+                        key: dataInit.role?.roleId,
+                    },
+                ]);
+            }
+            if (dataInit.description) {
+                setValue(dataInit.description);
+            }
+            if (dataInit.logo) {
+                setDataLogo([{ name: dataInit?.logo, uid: uuidv4() }]);
+            }
         }
     }, [dataInit]);
 
-    const submitRecruiter = async (valuesForm: IRecruiterForm) => {
+    const submitRecruiter = async (valuesForm: any) => {
         const { fullName, username, contact, address } = valuesForm;
+        let { role } = valuesForm;
         let { password } = valuesForm;
 
         if (dataLogo.length === 0) {
@@ -64,8 +84,15 @@ const ModalRecruiter = (props: IProps) => {
             return;
         }
 
+        if (typeof role === 'number') {
+            role = {
+                roleId: role,
+                name: '',
+            };
+        }
+
         if (dataInit?.userId) {
-            password = "0123456789"
+            password = '0123456789';
             const res = await callUpdateRecruiter(
                 dataInit.userId,
                 fullName,
@@ -75,9 +102,10 @@ const ModalRecruiter = (props: IProps) => {
                 address,
                 value,
                 dataLogo[0].name,
+                role ? role : undefined,
             );
             if (res.data) {
-                message.success('Cập nhật company thành công');
+                message.success('Cập nhật nhà tuyển dụng thành công');
                 handleReset();
                 reloadTable();
             } else {
@@ -95,6 +123,7 @@ const ModalRecruiter = (props: IProps) => {
                 address,
                 value,
                 dataLogo[0].name,
+                role ? role : undefined,
             );
             if (res.data) {
                 message.success('Thêm mới nhà tuyển dụng thành công');
@@ -113,6 +142,7 @@ const ModalRecruiter = (props: IProps) => {
         form.resetFields();
         setValue('');
         setDataInit(null);
+        setRoles([]);
 
         setAnimation('close');
         await new Promise((r) => setTimeout(r, 400));
@@ -188,6 +218,29 @@ const ModalRecruiter = (props: IProps) => {
         }
     };
 
+    async function fetchRoleList(name: string): Promise<IRecruiterSelect[]> {
+        const q: any = {
+            page: 1,
+            size: 100,
+            filter: '',
+        };
+        q.filter = `${sfLike('name', name)}`;
+        if (!q.filter) delete q.filter;
+        let temp = queryString.stringify(q);
+
+        const res = await callFetchRole(temp);
+        if (res && res.data) {
+            const list = res.data.result;
+            const temp = list.map((item) => {
+                return {
+                    label: item.name as string,
+                    value: item.roleId as string,
+                };
+            });
+            return temp;
+        } else return [];
+    }
+
     return (
         <>
             {openModal && (
@@ -235,7 +288,7 @@ const ModalRecruiter = (props: IProps) => {
                             </Col>
                             <Col span={12}>
                                 <ProFormText
-                                    label="Tên đăng nhập"
+                                    label="Tên hiển thị"
                                     name="username"
                                     rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
                                     placeholder="Nhập tên đăng nhập"
@@ -307,6 +360,21 @@ const ModalRecruiter = (props: IProps) => {
                                     name={['address', 'country']}
                                     placeholder="Nhập quốc gia"
                                 />
+                            </Col>
+                            <Col lg={6} md={6} sm={24} xs={24}>
+                                <ProForm.Item name="role" label="Vai trò">
+                                    <DebounceSelect
+                                        allowClear
+                                        showSearch
+                                        value={roles}
+                                        placeholder="Chọn vai trò"
+                                        fetchOptions={fetchRoleList}
+                                        onChange={(newValue: any) => {
+                                            setRoles(newValue as IRecruiterSelect[]);
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
+                                </ProForm.Item>
                             </Col>
                             <Col span={8}>
                                 <Form.Item
