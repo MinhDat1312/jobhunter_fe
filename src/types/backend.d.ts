@@ -40,7 +40,7 @@ export interface IGetAccount extends Omit<IAccount, 'access_token'> {}
 export interface IUser {
     userId?: string;
     fullName: string;
-    address?: Address;
+    address?: string;
     contact: Contact;
     dob?: Date;
     gender?: string;
@@ -159,15 +159,6 @@ export interface IRole {
     isDeleted?: boolean;
     deletedAt?: boolean | null;
     updatedAt?: string;
-}
-
-export interface Address {
-    number?: string;
-    street?: string;
-    ward?: string;
-    district?: string;
-    city?: string;
-    country?: string;
 }
 
 export interface Contact {

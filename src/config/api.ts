@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import type {
-    Address,
     Contact,
     IAccount,
     IApplicant,
@@ -23,7 +22,7 @@ Module Auth
 export const callRegister = (
     fullName: string,
     contact: Contact,
-    address: Address,
+    address: string,
     password: string,
     username: string,
     type: string,
@@ -84,11 +83,11 @@ export const callCreateRecruiter = (
     password: string,
     username: string,
     contact: Contact,
-    address: Address,
+    address: string,
     description?: string,
     logo?: string,
-    role?: {roleId: string, name: string},
-    website?: string
+    role?: { roleId: string; name: string },
+    website?: string,
 ) => {
     return axios.post<IBackendRes<IRecruiter>>('/api/v1/recruiters', {
         fullName,
@@ -110,11 +109,11 @@ export const callUpdateRecruiter = (
     password: string,
     username: string,
     contact: Contact,
-    address: Address,
+    address: string,
     description?: string,
     logo?: string,
-    role?: {roleId: string, name: string},
-    website?: string
+    role?: { roleId: string; name: string },
+    website?: string,
 ) => {
     return axios.put<IBackendRes<IRecruiter>>(`/api/v1/recruiters`, {
         userId: recruiterId,
@@ -148,7 +147,7 @@ Module Applicant
 ***/
 export const callCreateApplicant = (
     fullName: string,
-    address: Address,
+    address: string,
     contact: Contact,
     dob: Date,
     gender: string,
@@ -178,7 +177,7 @@ export const callCreateApplicant = (
 export const callUpdateApplicant = (
     applicantId: string,
     fullName: string,
-    address: Address,
+    address: string,
     contact: Contact,
     dob: Date,
     gender: string,

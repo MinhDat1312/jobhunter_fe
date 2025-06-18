@@ -15,8 +15,6 @@ const RegisterPage = () => {
     };
 
     const onFinish = async (values: any) => {
-        console.log(values);
-
         const { fullName, username, password, dob, gender, address, contact, type } = values;
         setIsSubmit(true);
         const res = await callRegister(fullName, contact, address, password as string, username, type, dob, gender);
@@ -144,73 +142,18 @@ const RegisterPage = () => {
                                 </Row>
                             )}
 
-                            <Form.Item labelCol={{ span: 24 }}>
-                                <Row gutter={16}>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'number']}
-                                            label="Số nhà"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'street']}
-                                            label="Đường"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'ward']}
-                                            label="Phường/Xã"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'district']}
-                                            label="Quận/Huyện"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'city']}
-                                            label="Tỉnh/Thành phố"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name={['address', 'country']}
-                                            label="Quốc gia"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true, message: 'Không được để trống!' }]}
-                                        >
-                                            <Input />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                            </Form.Item>
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item
+                                        name="address"
+                                        label="Địa chỉ"
+                                        labelCol={{ span: 24 }}
+                                        rules={[{ required: true, message: 'Không được để trống!' }]}
+                                    >
+                                        <Input />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
 
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" loading={isSubmit}>

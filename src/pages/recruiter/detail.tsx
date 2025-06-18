@@ -44,9 +44,7 @@ const ClientRecruiterDetailPage = () => {
                                 <div className={styles['location']}>
                                     <EnvironmentOutlined style={{ color: '#58aaab' }} />
                                     &nbsp;
-                                    {recruiterDetail.address
-                                        ? Object.values(recruiterDetail.address).filter(Boolean).join(', ')
-                                        : ''}
+                                    {recruiterDetail.address ? recruiterDetail.address : ''}
                                 </div>
 
                                 <Divider />
