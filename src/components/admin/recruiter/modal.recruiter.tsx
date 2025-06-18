@@ -6,13 +6,7 @@ import { isMobile } from 'react-device-detect';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
-import {
-    callCreateRecruiter,
-    callFetchRole,
-    callFetchRoleById,
-    callUpdateRecruiter,
-    callUploadSingleFile,
-} from '../../../config/api';
+import { callCreateRecruiter, callFetchRole, callUpdateRecruiter, callUploadSingleFile } from '../../../config/api';
 import { v4 as uuidv4 } from 'uuid';
 import vi_VN from 'antd/locale/vi_VN';
 import type { IRecruiter } from '../../../types/backend';
@@ -43,7 +37,6 @@ const ModalRecruiter = (props: IProps) => {
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;
 
     const [animation, setAnimation] = useState<string>('open');
-
     const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
     const [dataLogo, setDataLogo] = useState<IRecruiterLogo[]>([]);
     const [roles, setRoles] = useState<IRecruiterSelect[]>([]);
@@ -246,7 +239,7 @@ const ModalRecruiter = (props: IProps) => {
             {openModal && (
                 <>
                     <ModalForm
-                        title={<>{dataInit?.userId ? 'Cập nhật Recruiter' : 'Tạo mới Recruiter'}</>}
+                        title={<>{dataInit?.userId ? 'Cập nhật nhà tuyển dụng' : 'Tạo mới nhà tuyển dụng'}</>}
                         open={openModal}
                         modalProps={{
                             onCancel: () => {
@@ -259,7 +252,7 @@ const ModalRecruiter = (props: IProps) => {
                             keyboard: false,
                             maskClosable: false,
                             className: `modal-recruiter ${animation}`,
-                            rootClassName: `modal-company-root ${animation}`,
+                            rootClassName: `modal-recruiter-root ${animation}`,
                         }}
                         scrollToFirstError={true}
                         preserve={false}
@@ -278,7 +271,7 @@ const ModalRecruiter = (props: IProps) => {
                         }}
                     >
                         <Row gutter={16}>
-                            <Col span={12}>
+                            <Col lg={12} md={12} sm={24} xs={24}>
                                 <ProFormText
                                     label="Tên nhà tuyển dụng"
                                     name="fullName"
@@ -286,83 +279,12 @@ const ModalRecruiter = (props: IProps) => {
                                     placeholder="Nhập tên nhà tuyển dụng"
                                 />
                             </Col>
-                            <Col span={12}>
-                                <ProFormText
-                                    label="Tên hiển thị"
-                                    name="username"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
-                                    placeholder="Nhập tên đăng nhập"
-                                />
-                            </Col>
-                            {!dataInit?.userId && (
-                                <Col span={12}>
-                                    <ProFormText
-                                        label="Mật khẩu"
-                                        name="password"
-                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống mật khẩu' }]}
-                                        placeholder="Nhập mật khẩu"
-                                    />
-                                </Col>
-                            )}
-                            <Col span={12}>
-                                <ProFormText
-                                    label="Email"
-                                    name={['contact', 'email']}
-                                    rules={[
-                                        { required: true, message: 'Vui lòng không bỏ trống email' },
-                                        { type: 'email', message: 'Email không hợp lệ' },
-                                    ]}
-                                    placeholder="Nhập email"
-                                />
-                            </Col>
-                            <Col span={12}>
-                                <ProFormText
-                                    label="Số điện thoại"
-                                    name={['contact', 'phone']}
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống số điện thoại' }]}
-                                    placeholder="Nhập số điện thoại"
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText label="Số nhà" name={['address', 'number']} placeholder="Nhập số nhà" />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText
-                                    label="Tên đường"
-                                    name={['address', 'street']}
-                                    placeholder="Nhập tên đường"
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText
-                                    label="Phường/xã"
-                                    name={['address', 'ward']}
-                                    placeholder="Nhập phường/xã"
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText
-                                    label="Quận/huyện"
-                                    name={['address', 'district']}
-                                    placeholder="Nhập quận/huyện"
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText
-                                    label="Thành phố"
-                                    name={['address', 'city']}
-                                    placeholder="Nhập thành phố"
-                                />
-                            </Col>
-                            <Col span={8}>
-                                <ProFormText
-                                    label="Quốc gia"
-                                    name={['address', 'country']}
-                                    placeholder="Nhập quốc gia"
-                                />
-                            </Col>
-                            <Col lg={6} md={6} sm={24} xs={24}>
-                                <ProForm.Item name="role" label="Vai trò">
+                            <Col lg={6} md={6} sm={12} xs={12}>
+                                <ProForm.Item
+                                    name="role"
+                                    label="Vai trò"
+                                    rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}
+                                >
                                     <DebounceSelect
                                         allowClear
                                         showSearch
@@ -376,7 +298,60 @@ const ModalRecruiter = (props: IProps) => {
                                     />
                                 </ProForm.Item>
                             </Col>
-                            <Col span={8}>
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    label="Tên hiển thị"
+                                    name="username"
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
+                                    placeholder="Nhập tên đăng nhập"
+                                />
+                            </Col>
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    disabled={dataInit?.userId ? true : false}
+                                    label="Mật khẩu"
+                                    name="password"
+                                    rules={[
+                                        () => ({
+                                            validator(_, value) {
+                                                if (!dataInit?.userId && !value) {
+                                                    return Promise.reject('Vui lòng không bỏ trống mật khẩu');
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        }),
+                                    ]}
+                                    placeholder="Nhập mật khẩu"
+                                />
+                            </Col>
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    label="Email"
+                                    name={['contact', 'email']}
+                                    rules={[
+                                        { required: true, message: 'Vui lòng không bỏ trống email' },
+                                        { type: 'email', message: 'Email không hợp lệ' },
+                                    ]}
+                                    placeholder="Nhập email"
+                                />
+                            </Col>
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    label="Số điện thoại"
+                                    name={['contact', 'phone']}
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống số điện thoại' }]}
+                                    placeholder="Nhập số điện thoại"
+                                />
+                            </Col>
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    label="Địa chỉ"
+                                    name="address"
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống địa chỉ' }]}
+                                    placeholder="Nhập địa chỉ"
+                                />
+                            </Col>
+                            <Col lg={12} md={12} sm={24} xs={24}>
                                 <Form.Item
                                     labelCol={{ span: 24 }}
                                     label="Ảnh Logo"

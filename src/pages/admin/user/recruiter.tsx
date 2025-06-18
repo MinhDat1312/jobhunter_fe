@@ -43,7 +43,7 @@ const RecruiterPage = () => {
         },
         {
             title: 'Địa chỉ',
-            dataIndex: ['address', 'city'],
+            dataIndex: 'address',
             sorter: true,
             search: true,
             valueType: 'text',
@@ -145,10 +145,10 @@ const RecruiterPage = () => {
         };
 
         if (clone.fullName) q.filter = `${sfLike('fullName', clone.fullName)}`;
-        if (clone.address?.city) {
+        if (clone.address) {
             q.filter = clone.fullName
-                ? q.filter + ' and ' + `${sfLike('address.city', clone.address?.city)}`
-                : `${sfLike('address.city', clone.address?.city)}`;
+                ? q.filter + ' and ' + `${sfLike('address', clone.address)}`
+                : `${sfLike('address', clone.address)}`;
         }
 
         if (!q.filter) delete q.filter;
@@ -159,8 +159,8 @@ const RecruiterPage = () => {
         if (sort && sort.fullName) {
             sortBy = sort.fullName === 'ascend' ? 'sort=fullName,asc' : 'sort=fullName,desc';
         }
-        if (sort && sort['address,city']) {
-            sortBy = sort['address,city'] === 'ascend' ? 'sort=address.city,asc' : 'sort=address.city,desc';
+        if (sort && sort.address) {
+            sortBy = sort.address === 'ascend' ? 'sort=address,asc' : 'sort=address,desc';
         }
         if (sort && sort.createdAt) {
             sortBy = sort.createdAt === 'ascend' ? 'sort=createdAt,asc' : 'sort=createdAt,desc';
