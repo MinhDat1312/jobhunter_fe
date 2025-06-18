@@ -156,19 +156,21 @@ export const callCreateApplicant = (
     availableStatus: boolean,
     education?: string,
     level?: string,
+    role?: { roleId: string; name: string },
     resumeUrl?: string,
 ) => {
     return axios.post<IBackendRes<IApplicant>>('/api/v1/applicants', {
         fullName,
         address,
         contact,
-        dob,
+        dob: dob ? dayjs(dob).format('YYYY-MM-DD') : undefined,
         gender,
         password,
         username,
         availableStatus,
         education,
         level,
+        role,
         resumeUrl,
         type: 'applicant',
     });
@@ -186,6 +188,7 @@ export const callUpdateApplicant = (
     availableStatus: boolean,
     education?: string,
     level?: string,
+    role?: { roleId: string; name: string },
     resumeUrl?: string,
 ) => {
     return axios.put<IBackendRes<IApplicant>>(`/api/v1/applicants`, {
@@ -193,13 +196,14 @@ export const callUpdateApplicant = (
         fullName,
         address,
         contact,
-        dob,
+        dob: dob ? dayjs(dob).format('YYYY-MM-DD') : undefined,
         gender,
         password,
         username,
         availableStatus,
         education,
         level,
+        role,
         resumeUrl,
         type: 'applicant',
     });

@@ -280,11 +280,7 @@ const ModalRecruiter = (props: IProps) => {
                                 />
                             </Col>
                             <Col lg={6} md={6} sm={12} xs={12}>
-                                <ProForm.Item
-                                    name="role"
-                                    label="Vai trò"
-                                    rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}
-                                >
+                                <ProForm.Item name="role" label="Vai trò">
                                     <DebounceSelect
                                         allowClear
                                         showSearch
