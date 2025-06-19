@@ -20,6 +20,12 @@ export const ALL_PERMISSIONS = {
         UPDATE: { method: 'PUT', apiPath: '/api/v1/skills', module: 'SKILLS' },
         DELETE: { method: 'DELETE', apiPath: '/api/v1/skills/{id}', module: 'SKILLS' },
     },
+    CAREERS: {
+        GET_PAGINATE: { method: 'GET', apiPath: '/api/v1/careers', module: 'CAREERS' },
+        CREATE: { method: 'POST', apiPath: '/api/v1/careers', module: 'CAREERS' },
+        UPDATE: { method: 'PUT', apiPath: '/api/v1/careers', module: 'CAREERS' },
+        DELETE: { method: 'DELETE', apiPath: '/api/v1/careers/{id}', module: 'CAREERS' },
+    },
     PERMISSIONS: {
         GET_PAGINATE: { method: 'GET', apiPath: '/api/v1/permissions', module: 'PERMISSIONS' },
         CREATE: { method: 'POST', apiPath: '/api/v1/permissions', module: 'PERMISSIONS' },

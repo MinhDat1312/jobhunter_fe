@@ -1,6 +1,7 @@
 import { Tabs, type TabsProps } from 'antd';
 import JobPage from './job';
 import SkillPage from './skill';
+import CareerPage from './career';
 
 const JobTab = () => {
     const items: TabsProps['items'] = [
@@ -13,6 +14,11 @@ const JobTab = () => {
             key: '2',
             label: 'Kỹ năng',
             children: <SkillPage />,
+        },
+        {
+            key: '3',
+            label: 'Ngành nghề',
+            children: <CareerPage />,
         },
     ];
 

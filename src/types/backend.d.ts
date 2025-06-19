@@ -84,6 +84,18 @@ export interface ISkill {
     deletedAt?: boolean | null;
 }
 
+export interface ICareer {
+    careerId?: string;
+    name?: string;
+
+    createdAt?: string;
+    createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
+    isDeleted?: boolean;
+    deletedAt?: boolean | null;
+}
+
 export interface IJob {
     jobId?: string;
     description: string;
@@ -104,6 +116,7 @@ export interface IJob {
         type?: string;
     };
     skills: ISkill[];
+    career: ICareer;
 
     createdAt?: string;
     createdBy?: string;

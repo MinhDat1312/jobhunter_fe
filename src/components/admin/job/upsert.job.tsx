@@ -18,6 +18,7 @@ import { LOCATION_LIST } from '../../../config/utils';
 import { DebounceSelect } from '../debounce.select';
 import {
     callCreateJob,
+    callFetchAllCareer,
     callFetchAllSkill,
     callFetchJobById,
     callFetchRecruiter,
@@ -43,6 +44,7 @@ const ViewUpsertJob = () => {
     const [dataUpdate, setDataUpdate] = useState<IJob | null>(null);
     const [recruiters, setRecruiters] = useState<ISelect[]>([]);
     const [skills, setSkills] = useState<ISelect[]>([]);
+    const [careers, setCareers] = useState<ISelect[]>([]);
     const [description, setDescription] = useState<string>('');
 
     const [form] = Form.useForm();
@@ -51,6 +53,9 @@ const ViewUpsertJob = () => {
         const init = async () => {
             const temp = await fetchSkillList();
             setSkills(temp);
+
+            const tmp = await fetchCareerList();
+            setCareers(tmp);
 
             if (jobId) {
                 const res = await callFetchJobById(jobId);
@@ -65,13 +70,20 @@ const ViewUpsertJob = () => {
                         },
                     ]);
 
-                    const temp: any = res.data?.skills?.map((item: ISkill) => {
+                    const temp: ISelect[] = res.data?.skills?.map((item: ISkill) => {
                         return {
                             label: item.name,
                             value: item.skillId,
                             key: item.skillId,
                         };
                     });
+
+                    const tmp: ISelect = {
+                        label: res.data?.career?.name,
+                        value: res.data?.career?.careerId,
+                        key: res.data?.career?.careerId,
+                    };
+
                     form.setFieldsValue({
                         ...res.data,
                         recruiter: {
@@ -80,6 +92,7 @@ const ViewUpsertJob = () => {
                             key: res.data.recruiter?.userId,
                         },
                         skills: temp,
+                        career: tmp,
                     });
                 }
             }
@@ -90,6 +103,7 @@ const ViewUpsertJob = () => {
     }, [jobId]);
 
     const onFinish = async (values: any) => {
+        console.log(values)
         if (dataUpdate?.jobId) {
             let cp = [];
             if (typeof values?.recruiter === 'object') {
@@ -108,6 +122,14 @@ const ViewUpsertJob = () => {
                     return { skillId: +item };
                 });
             }
+
+            let career = null;
+            if (typeof values?.career === 'object') {
+                career = { careerId: values?.career?.value };
+            } else {
+                career = { careerId: +values?.career };
+            }
+
             const job = {
                 title: values.title,
                 skills: arrSkills,
@@ -130,6 +152,7 @@ const ViewUpsertJob = () => {
                     : values.endDate,
                 active: values.active ? true : false,
                 workingType: values.workingType,
+                career: career,
             };
             const res = await callUpdateJob(job, dataUpdate.jobId);
             if (res.data) {
@@ -146,6 +169,7 @@ const ViewUpsertJob = () => {
             const arrSkills = values?.skills?.map((item: string) => {
                 return { skillId: +item };
             });
+            const career = { careerId: +values?.career };
             const job = {
                 title: values.title,
                 skills: arrSkills,
@@ -164,6 +188,7 @@ const ViewUpsertJob = () => {
                 endDate: dayjs(values.endDate, 'DD/MM/YYYY').toDate(),
                 active: values.active ? true : false,
                 workingType: values.workingType,
+                career: career,
             };
             const res = await callCreateJob(job);
             if (res.data) {
@@ -186,6 +211,20 @@ const ViewUpsertJob = () => {
                 return {
                     label: item.name as string,
                     value: `${item.skillId}` as string,
+                };
+            });
+            return temp;
+        } else return [];
+    }
+
+    async function fetchCareerList(): Promise<ISelect[]> {
+        const res = await callFetchAllCareer(`page=1&size=100`);
+        if (res && res.data) {
+            const list = res.data.result;
+            const temp = list.map((item) => {
+                return {
+                    label: item.name as string,
+                    value: `${item.careerId}` as string,
                 };
             });
             return temp;
@@ -248,74 +287,23 @@ const ViewUpsertJob = () => {
                         }}
                     >
                         <Row gutter={[20, 20]}>
+                            <Col span={24} md={6}>
+                                <ProFormSwitch
+                                    label="Trạng thái"
+                                    name="active"
+                                    checkedChildren="BẬT"
+                                    unCheckedChildren="TẮT"
+                                    initialValue={dataUpdate?.active}
+                                />
+                            </Col>
+                        </Row>
+                        <Row gutter={[20, 20]}>
                             <Col span={24} md={12}>
                                 <ProFormText
                                     label="Tiêu đề"
                                     name="title"
                                     rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
                                     placeholder="Nhập tên tiêu đề"
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    name="skills"
-                                    label="Kỹ năng yêu cầu"
-                                    options={skills}
-                                    placeholder="Chọn ít nhất 1 kỹ năng"
-                                    rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
-                                    allowClear
-                                    mode="multiple"
-                                    fieldProps={{
-                                        suffixIcon: null,
-                                        maxTagCount: 2,
-                                        maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
-                                    }}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    showSearch
-                                    name="location"
-                                    label="Địa điểm"
-                                    options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
-                                    placeholder="Chọn địa điểm"
-                                    rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormDigit
-                                    label="Mức lương"
-                                    name="salary"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                    placeholder="Nhập mức lương"
-                                    fieldProps={{
-                                        addonAfter: ' đ',
-                                        formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                        parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
-                                    }}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormDigit
-                                    label="Số lượng"
-                                    name="quantity"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                    placeholder="Nhập số lượng"
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    name="level"
-                                    label="Trình độ"
-                                    valueEnum={{
-                                        FRESHER: 'Fresher',
-                                        JUNIOR: 'Junior',
-                                        SENIOR: 'Senior',
-                                        INTERN: 'Intern',
-                                        MIDDLE: 'Middle',
-                                    }}
-                                    placeholder="Chọn trình độ"
-                                    rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
                                 />
                             </Col>
                             {(dataUpdate?.jobId || !jobId) && (
@@ -339,6 +327,69 @@ const ViewUpsertJob = () => {
                                     </ProForm.Item>
                                 </Col>
                             )}
+                            <Col span={24} md={6}>
+                                <ProFormSelect
+                                    showSearch
+                                    name="location"
+                                    label="Địa điểm"
+                                    options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
+                                    placeholder="Chọn địa điểm"
+                                    rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
+                                />
+                            </Col>
+                        </Row>
+                        <Row gutter={[20, 20]}>
+                            <Col span={24} md={6}>
+                                <ProFormDigit
+                                    label="Mức lương"
+                                    name="salary"
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                    placeholder="Nhập mức lương"
+                                    fieldProps={{
+                                        addonAfter: ' đ',
+                                        formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                        parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
+                                    }}
+                                />
+                            </Col>
+                            <Col span={24} md={6}>
+                                <ProFormDigit
+                                    label="Số lượng"
+                                    name="quantity"
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                    placeholder="Nhập số lượng"
+                                />
+                            </Col>
+                            <Col span={24} md={6}>
+                                <ProFormSelect
+                                    showSearch
+                                    name="career"
+                                    label="Ngành nghề"
+                                    options={careers}
+                                    placeholder="Chọn ngành nghề"
+                                    rules={[{ required: true, message: 'Vui lòng chọn ngành nghề!' }]}
+                                    allowClear
+                                    fieldProps={{
+                                        suffixIcon: null,
+                                    }}
+                                />
+                            </Col>
+                            <Col span={24} md={6}>
+                                <ProFormSelect
+                                    name="skills"
+                                    label="Kỹ năng yêu cầu"
+                                    options={skills}
+                                    placeholder="Chọn ít nhất 1 kỹ năng"
+                                    rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
+                                    allowClear
+                                    mode="multiple"
+                                    fieldProps={{
+                                        suffixIcon: null,
+                                        maxTagCount: 2,
+                                        maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
+                                    }}
+                                />
+                            </Col>
                         </Row>
                         <Row gutter={[20, 20]}>
                             <Col span={24} md={6}>
@@ -348,6 +399,7 @@ const ViewUpsertJob = () => {
                                     normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
                                     fieldProps={{
                                         format: 'DD/MM/YYYY',
+                                        style: { width: '100%' },
                                     }}
                                     rules={[
                                         { required: true, message: 'Vui lòng chọn ngày bắt đầu' },
@@ -373,6 +425,7 @@ const ViewUpsertJob = () => {
                                     normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
                                     fieldProps={{
                                         format: 'DD/MM/YYYY',
+                                        style: { width: '100%' },
                                     }}
                                     rules={[
                                         { required: true, message: 'Vui lòng chọn ngày kết thúc' },
@@ -392,12 +445,18 @@ const ViewUpsertJob = () => {
                                 />
                             </Col>
                             <Col span={24} md={6}>
-                                <ProFormSwitch
-                                    label="Trạng thái"
-                                    name="active"
-                                    checkedChildren="Bật"
-                                    unCheckedChildren="Tắt"
-                                    initialValue={dataUpdate?.active}
+                                <ProFormSelect
+                                    name="level"
+                                    label="Trình độ"
+                                    valueEnum={{
+                                        FRESHER: 'Fresher',
+                                        JUNIOR: 'Junior',
+                                        SENIOR: 'Senior',
+                                        INTERN: 'Intern',
+                                        MIDDLE: 'Middle',
+                                    }}
+                                    placeholder="Chọn trình độ"
+                                    rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
                                 />
                             </Col>
                             <Col span={24} md={6}>
@@ -414,6 +473,8 @@ const ViewUpsertJob = () => {
                                     rules={[{ required: true, message: 'Vui lòng chọn hình thức!' }]}
                                 />
                             </Col>
+                        </Row>
+                        <Row>
                             <Col span={24}>
                                 <ProForm.Item
                                     name="description"

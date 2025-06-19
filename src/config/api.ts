@@ -5,6 +5,7 @@ import type {
     IApplicant,
     IApplication,
     IBackendRes,
+    ICareer,
     IGetAccount,
     IJob,
     IModelPaginate,
@@ -238,6 +239,25 @@ export const callDeleteSkill = (skillId: string) => {
 
 export const callFetchAllSkill = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<ISkill>>>(`/api/v1/skills?${query}`);
+};
+
+/***
+Module Career
+***/
+export const callCreateCareer = (name: string) => {
+    return axios.post<IBackendRes<ICareer>>('/api/v1/careers', { name });
+};
+
+export const callUpdateCareer = (careerId: string, name: string) => {
+    return axios.put<IBackendRes<ICareer>>(`/api/v1/careers`, { careerId, name });
+};
+
+export const callDeleteCareer = (careerId: string) => {
+    return axios.delete<IBackendRes<ICareer>>(`/api/v1/careers/${careerId}`);
+};
+
+export const callFetchAllCareer = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<ICareer>>>(`/api/v1/careers?${query}`);
 };
 
 /***
