@@ -19,8 +19,8 @@ interface IState {
                 apiPath: string;
                 method: string;
                 module: string;
-            }[]
-        }
+            }[];
+        };
     };
     activeMenu: string;
 }
@@ -29,21 +29,21 @@ const initialState: IState = {
     isAuthenticated: false,
     isLoading: true,
     isRefreshToken: false,
-    errorRefreshToken: "",
+    errorRefreshToken: '',
     user: {
-        userId: "",
-        email: "",
-        fullName: "",
+        userId: '',
+        email: '',
+        fullName: '',
         role: {
-            roleId: "",
-            name: "",
+            roleId: '',
+            name: '',
             permissions: [],
         },
     },
-    activeMenu: 'home'
+    activeMenu: 'home',
 };
 
-export const accountSlide = createSlice({
+export const accountSlice = createSlice({
     name: 'account',
     initialState,
     reducers: {
@@ -67,21 +67,21 @@ export const accountSlide = createSlice({
             localStorage.removeItem('access_token');
             state.isAuthenticated = false;
             state.user = {
-                userId: "",
-                email: "",
-                fullName: "",
+                userId: '',
+                email: '',
+                fullName: '',
                 role: {
-                    roleId: "",
-                    name: "",
+                    roleId: '',
+                    name: '',
                     permissions: [],
                 },
-            }
+            };
         },
 
         setRefreshTokenAction: (state, action) => {
             state.isRefreshToken = action.payload?.status ?? false;
-            state.errorRefreshToken = action.payload?.message ?? "";
-        }
+            state.errorRefreshToken = action.payload?.message ?? '';
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchAccount.pending, (state, action) => {
@@ -89,7 +89,7 @@ export const accountSlide = createSlice({
                 state.isAuthenticated = false;
                 state.isLoading = true;
             }
-        })
+        });
 
         builder.addCase(fetchAccount.fulfilled, (state, action) => {
             if (action.payload) {
@@ -103,28 +103,22 @@ export const accountSlide = createSlice({
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
             }
-        })
+        });
 
         builder.addCase(fetchAccount.rejected, (state, action) => {
             if (action.payload) {
                 state.isAuthenticated = false;
                 state.isLoading = false;
             }
-        })
+        });
     },
-
 });
 
-export const fetchAccount = createAsyncThunk(
-    'account/fetchAccount',
-    async () => {
-        const response = await callFetchAccount();
-        return response.data;
-    }
-)
+export const fetchAccount = createAsyncThunk('account/fetchAccount', async () => {
+    const response = await callFetchAccount();
+    return response.data;
+});
 
-export const {
-    setActiveMenu, setUserLoginInfo, setLogoutAction, setRefreshTokenAction
-} = accountSlide.actions;
+export const { setActiveMenu, setUserLoginInfo, setLogoutAction, setRefreshTokenAction } = accountSlice.actions;
 
-export default accountSlide.reducer;
+export default accountSlice.reducer;

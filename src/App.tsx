@@ -16,6 +16,8 @@ import LayoutAdmin from './components/admin/layout.admin';
 import ProtectedRoute from './components/share/protected-route/protected-route';
 import DashboardPage from './pages/admin/dashboard';
 import UserTab from './pages/admin/user/user.tab';
+import JobTab from './pages/admin/job/job.tab';
+import ViewUpsertJob from './components/admin/job/upsert.job';
 
 const router = createBrowserRouter([
     {
@@ -70,6 +72,27 @@ const router = createBrowserRouter([
                         <UserTab />
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path: 'job',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <ProtectedRoute>
+                                <JobTab />
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: 'upsert',
+                        element: (
+                            <ProtectedRoute>
+                                <ViewUpsertJob />
+                            </ProtectedRoute>
+                        ),
+                    },
+                ],
             },
         ],
     },

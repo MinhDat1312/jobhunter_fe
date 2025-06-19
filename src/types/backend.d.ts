@@ -100,6 +100,7 @@ export interface IJob {
         userId: string;
         fullName: string;
         logo?: string;
+        type?: string;
     };
     skills: ISkill[];
 

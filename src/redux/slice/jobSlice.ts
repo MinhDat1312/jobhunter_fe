@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { IRecruiter } from '../../types/backend';
-import { callFetchRecruiter } from '../../config/api';
+import type { IJob } from '../../types/backend';
+import { callFetchJob } from '../../config/api';
 
 interface IState {
     isFetching: boolean;
@@ -10,7 +10,7 @@ interface IState {
         pages: number;
         total: number;
     };
-    result: IRecruiter[];
+    result: IJob[];
 }
 
 const initialState: IState = {
@@ -24,16 +24,16 @@ const initialState: IState = {
     result: [],
 };
 
-export const recruiterSlice = createSlice({
-    name: 'recruiter',
+export const jobSlice = createSlice({
+    name: 'job',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchRecruiter.pending, (state, _action) => {
+        builder.addCase(fetchJob.pending, (state, _action) => {
             state.isFetching = true;
         });
 
-        builder.addCase(fetchRecruiter.fulfilled, (state, action) => {
+        builder.addCase(fetchJob.fulfilled, (state, action) => {
             if (action.payload && action.payload.data) {
                 state.isFetching = false;
                 state.meta = action.payload.data.meta;
@@ -41,15 +41,15 @@ export const recruiterSlice = createSlice({
             }
         });
 
-        builder.addCase(fetchRecruiter.rejected, (state, _action) => {
+        builder.addCase(fetchJob.rejected, (state, _action) => {
             state.isFetching = false;
         });
     },
 });
 
-export const fetchRecruiter = createAsyncThunk('recruiter/fetchRecruiter', async ({ query }: { query: string }) => {
-    const response = await callFetchRecruiter(query);
+export const fetchJob = createAsyncThunk('job/fetchJob', async ({ query }: { query: string }) => {
+    const response = await callFetchJob(query);
     return response;
 });
 
-export default recruiterSlice.reducer;
+export default jobSlice.reducer;
