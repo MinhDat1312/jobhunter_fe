@@ -3,6 +3,7 @@ import accountReducer from './slice/accountSlice';
 import recruiterReducer from './slice/recruiterSlice';
 import applicantReducer from './slice/applicantSlice';
 import jobReducer from './slice/jobSlice';
+import skillReducer from './slice/skillSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         recruiter: recruiterReducer,
         applicant: applicantReducer,
         job: jobReducer,
+        skill: skillReducer,
     },
 });
 

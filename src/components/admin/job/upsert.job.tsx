@@ -165,7 +165,6 @@ const ViewUpsertJob = () => {
                 active: values.active ? true : false,
                 workingType: values.workingType,
             };
-            console.log(job);
             const res = await callCreateJob(job);
             if (res.data) {
                 message.success('Tạo mới tin thành công');
@@ -418,8 +417,8 @@ const ViewUpsertJob = () => {
                             <Col span={24}>
                                 <ProForm.Item
                                     name="description"
-                                    label="Miêu tả tin"
-                                    rules={[{ required: true, message: 'Vui lòng nhập miêu tả tin!' }]}
+                                    label="Mô tả tin"
+                                    rules={[{ required: true, message: 'Vui lòng nhập mô tả tin!' }]}
                                 >
                                     <ReactQuill theme="snow" value={description} onChange={setDescription} />
                                 </ProForm.Item>

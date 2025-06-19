@@ -78,9 +78,10 @@ export interface ISkill {
 
     createdAt?: string;
     createdBy?: string;
+    updatedAt?: string;
+    updatedBy?: string;
     isDeleted?: boolean;
     deletedAt?: boolean | null;
-    updatedAt?: string;
 }
 
 export interface IJob {
