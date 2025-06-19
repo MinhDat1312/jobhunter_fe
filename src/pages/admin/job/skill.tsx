@@ -77,7 +77,7 @@ const SkillPage = () => {
             width: 50,
             render: (_value, entity, _index, _action) => (
                 <Space>
-                    <Access permission={ALL_PERMISSIONS.SKILLS.UPDATE}>
+                    <Access permission={ALL_PERMISSIONS.SKILLS.UPDATE} hideChildren>
                         <EditOutlined
                             style={{
                                 fontSize: 20,
@@ -90,7 +90,7 @@ const SkillPage = () => {
                             }}
                         />
                     </Access>
-                    <Access permission={ALL_PERMISSIONS.SKILLS.DELETE}>
+                    <Access permission={ALL_PERMISSIONS.SKILLS.DELETE} hideChildren>
                         <Popconfirm
                             placement="leftTop"
                             title={'Xác nhận xóa kỹ năng'}

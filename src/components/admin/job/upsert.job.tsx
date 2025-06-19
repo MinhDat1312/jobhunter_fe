@@ -103,7 +103,6 @@ const ViewUpsertJob = () => {
     }, [jobId]);
 
     const onFinish = async (values: any) => {
-        console.log(values)
         if (dataUpdate?.jobId) {
             let cp = [];
             if (typeof values?.recruiter === 'object') {

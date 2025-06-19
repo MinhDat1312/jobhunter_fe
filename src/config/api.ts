@@ -301,20 +301,24 @@ export const callCreateApplication = (resumeUrl: string, email: string, jobId: a
     });
 };
 
-export const callUpdateApplicationStatus = (applicationId: any, status: string) => {
-    return axios.put<IBackendRes<IApplication>>(`/api/v1/applications`, { applicationId, status });
+export const callUpdateApplicationStatus = (applicationId: any, status: string, resumeUrl: string) => {
+    return axios.put<IBackendRes<IApplication>>(`/api/v1/applications`, { applicationId, status, resumeUrl });
 };
 
 export const callDeleteApplication = (applicationId: string) => {
     return axios.delete<IBackendRes<IApplication>>(`/api/v1/applications/${applicationId}`);
 };
 
-export const callFetchApplication = (query: string) => {
-    return axios.get<IBackendRes<IModelPaginate<IApplication>>>(`/api/v1/applications?${query}`);
-};
-
 export const callFetchApplicationById = (applicationId: string) => {
     return axios.get<IBackendRes<IApplication>>(`/api/v1/applications/${applicationId}`);
+};
+
+export const callFetchApplication = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IApplication>>>(`/api/v1/all-applications?${query}`);
+};
+
+export const callFetchApplicationByRecruiter = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IApplication>>>(`/api/v1/applications?${query}`);
 };
 
 export const callFetchApplicationByApplicant = () => {

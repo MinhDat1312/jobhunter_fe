@@ -18,6 +18,7 @@ import DashboardPage from './pages/admin/dashboard';
 import UserTab from './pages/admin/user/user.tab';
 import JobTab from './pages/admin/job/job.tab';
 import ViewUpsertJob from './components/admin/job/upsert.job';
+import ApplicationPage from './pages/admin/application';
 
 const router = createBrowserRouter([
     {
@@ -93,6 +94,14 @@ const router = createBrowserRouter([
                         ),
                     },
                 ],
+            },
+            {
+                path: 'application',
+                element: (
+                    <ProtectedRoute>
+                        <ApplicationPage />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },

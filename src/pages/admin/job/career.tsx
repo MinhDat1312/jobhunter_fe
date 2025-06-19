@@ -77,7 +77,7 @@ const CareerPage = () => {
             width: 50,
             render: (_value, entity, _index, _action) => (
                 <Space>
-                    <Access permission={ALL_PERMISSIONS.CAREERS.UPDATE}>
+                    <Access permission={ALL_PERMISSIONS.CAREERS.UPDATE} hideChildren>
                         <EditOutlined
                             style={{
                                 fontSize: 20,
@@ -90,7 +90,7 @@ const CareerPage = () => {
                             }}
                         />
                     </Access>
-                    <Access permission={ALL_PERMISSIONS.CAREERS.DELETE}>
+                    <Access permission={ALL_PERMISSIONS.CAREERS.DELETE} hideChildren>
                         <Popconfirm
                             placement="leftTop"
                             title={'Xác nhận xóa ngành nghề'}

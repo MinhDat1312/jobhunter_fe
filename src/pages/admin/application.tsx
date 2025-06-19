@@ -1,0 +1,210 @@
+import { useRef, useState } from 'react';
+import DataTable from '../../components/data.table';
+import Access from '../../components/share/access';
+import { ALL_PERMISSIONS } from '../../config/permissions';
+import type { IApplication } from '../../types/backend';
+import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro-components';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import dayjs from 'dayjs';
+import { Space } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
+import { sfIn } from 'spring-filter-query-builder';
+import queryString from 'query-string';
+import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
+import ViewDetailApplication from '../../components/admin/application/view.application';
+
+const ApplicationPage = () => {
+    const dispatch = useAppDispatch();
+    const isFetching = useAppSelector((state) => state.application.isFetching);
+    const meta = useAppSelector((state) => state.application.meta);
+    const applications = useAppSelector((state) => state.application.result);
+    const user = useAppSelector((state) => state.account.user);
+
+    const tableRef = useRef<ActionType>(null);
+    const [dataInit, setDataInit] = useState<IApplication | null>(null);
+    const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
+
+    const columns: ProColumns<IApplication>[] = [
+        {
+            title: 'Id',
+            dataIndex: 'applicationId',
+            width: 50,
+            render: (_text, record, _index, _action) => {
+                return (
+                    <a
+                        href="#"
+                        onClick={() => {
+                            setOpenViewDetail(true);
+                            setDataInit(record);
+                        }}
+                    >
+                        {record.applicationId}
+                    </a>
+                );
+            },
+            hideInSearch: true,
+        },
+        {
+            title: 'Trạng Thái',
+            dataIndex: 'status',
+            sorter: true,
+            renderFormItem: (_item, _props, _form) => (
+                <ProFormSelect
+                    showSearch
+                    mode="multiple"
+                    allowClear
+                    valueEnum={{
+                        PENDING: 'Đang xét',
+                        ACCEPTED: 'Chấp nhận',
+                        REJECTED: 'Từ chối',
+                    }}
+                    placeholder="Chọn trạng thái"
+                />
+            ),
+        },
+
+        {
+            title: 'Tin tuyển dụng',
+            dataIndex: ['job', 'title'],
+            hideInSearch: true,
+        },
+        {
+            title: 'Nhà tuyển dụng',
+            dataIndex: 'recruiterName',
+            hideInSearch: true,
+        },
+
+        {
+            title: 'Created At',
+            dataIndex: 'createdAt',
+            width: 200,
+            sorter: true,
+            render: (_text, record, _index, _action) => {
+                return <>{record.createdAt ? dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss') : ''}</>;
+            },
+            hideInSearch: true,
+        },
+        {
+            title: 'UpdatedAt',
+            dataIndex: 'updatedAt',
+            width: 200,
+            sorter: true,
+            render: (_text, record, _index, _action) => {
+                return <>{record.updatedAt ? dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss') : ''}</>;
+            },
+            hideInSearch: true,
+        },
+
+        ...(user?.role?.name === 'SUPER_ADMIN'
+            ? []
+            : [
+                  {
+                      title: 'Actions',
+                      hideInSearch: true,
+                      width: 100,
+                      render: (_value, entity, _index, _action) => (
+                          <Space>
+                              <Access permission={ALL_PERMISSIONS.APPLICATIONS.UPDATE} hideChildren>
+                                  <EditOutlined
+                                      style={{
+                                          fontSize: 20,
+                                          color: '#ffa500',
+                                      }}
+                                      type=""
+                                      onClick={() => {
+                                          setOpenViewDetail(true);
+                                          setDataInit(entity);
+                                      }}
+                                  />
+                              </Access>
+                          </Space>
+                      ),
+                  },
+              ]),
+    ];
+
+    const buildQuery = (params: any, sort: any, _filter: any) => {
+        const clone = { ...params };
+        if (clone?.status?.length) {
+            clone.filter = sfIn('status', clone.status).toString();
+            delete clone.status;
+        }
+        clone.page = clone.current;
+        clone.size = clone.pageSize;
+        delete clone.current;
+        delete clone.pageSize;
+        let temp = queryString.stringify(clone);
+
+        let sortBy = '';
+        if (sort && sort.status) {
+            sortBy = sort.status === 'ascend' ? 'sort=status,asc' : 'sort=status,desc';
+        }
+        if (sort && sort.createdAt) {
+            sortBy = sort.createdAt === 'ascend' ? 'sort=createdAt,asc' : 'sort=createdAt,desc';
+        }
+        if (sort && sort.updatedAt) {
+            sortBy = sort.updatedAt === 'ascend' ? 'sort=updatedAt,asc' : 'sort=updatedAt,desc';
+        }
+
+        if (Object.keys(sortBy).length === 0) {
+            temp = `${temp}&sort=updatedAt,desc`;
+        } else {
+            temp = `${temp}&${sortBy}`;
+        }
+
+        return temp;
+    };
+
+    const reloadTable = () => {
+        tableRef?.current?.reload();
+    };
+
+    return (
+        <div>
+            <Access permission={ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE}>
+                <DataTable<IApplication>
+                    actionRef={tableRef}
+                    headerTitle="Danh sách hồ sơ ứng tuyển"
+                    rowKey="applicationId"
+                    loading={isFetching}
+                    columns={columns}
+                    dataSource={applications}
+                    request={async (params, sort, filter): Promise<any> => {
+                        const query = buildQuery(params, sort, filter);
+                        user.role.name === 'SUPER_ADMIN'
+                            ? await dispatch(fetchApplication({ query }))
+                            : await dispatch(fetchApplicationByRecruiter({ query }));
+                    }}
+                    scroll={{ x: true }}
+                    pagination={{
+                        current: meta.page,
+                        pageSize: meta.pageSize,
+                        showSizeChanger: true,
+                        total: meta.total,
+                        showTotal: (total, range) => {
+                            return (
+                                <div>
+                                    {' '}
+                                    {range[0]}-{range[1]} trên {total} rows
+                                </div>
+                            );
+                        },
+                    }}
+                    rowSelection={false}
+                    toolBarRender={(_action, _rows): any => {
+                        return <></>;
+                    }}
+                />
+            </Access>
+            <ViewDetailApplication
+                open={openViewDetail}
+                onClose={setOpenViewDetail}
+                dataInit={dataInit}
+                setDataInit={setDataInit}
+                reloadTable={reloadTable}
+            />
+        </div>
+    );
+};
+
+export default ApplicationPage;
