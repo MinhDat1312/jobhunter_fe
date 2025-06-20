@@ -1,3 +1,5 @@
+import { grey, green, blue, red, orange } from '@ant-design/colors';
+
 export const LOCATION_LIST = [
     { label: 'Hà Nội', value: 'HANOI' },
     { label: 'Hải Phòng', value: 'HAIPHONG' },
@@ -83,3 +85,31 @@ export const getLocationName = (value?: string) => {
     if (locationFilter.length) return locationFilter[0].label;
     return 'unknown';
 };
+
+export function colorMethod(method: 'POST' | 'PUT' | 'GET' | 'DELETE' | string) {
+    switch (method) {
+        case 'POST':
+            return green[6];
+        case 'PUT':
+            return orange[6];
+        case 'GET':
+            return blue[6];
+        case 'DELETE':
+            return red[6];
+        default:
+            return grey[10];
+    }
+}
+
+export function colorStatus(status: 'ACCEPTED' | 'PENDING' | 'REJECTED' | string) {
+    switch (status) {
+        case 'ACCEPTED':
+            return { color: green[6], label: 'Chấp nhận' };
+        case 'PENDING':
+            return { color: orange[6], label: 'Đang xét' };
+        case 'REJECTED':
+            return { color: red[6], label: 'Từ chối' };
+        default:
+            return { color: grey[6], label: 'Có lỗi' };
+    }
+}

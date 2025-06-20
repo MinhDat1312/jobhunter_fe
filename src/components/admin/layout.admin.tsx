@@ -58,12 +58,6 @@ const LayoutAdmin = () => {
                     item.method === ALL_PERMISSIONS.ROLES.GET_PAGINATE.method,
             );
 
-            const viewPermission = permissions?.find(
-                (item) =>
-                    item.apiPath === ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE.apiPath &&
-                    item.method === ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE.method,
-            );
-
             const full = [
                 {
                     label: <Link to="/admin">Dashboard</Link>,
@@ -95,15 +89,6 @@ const LayoutAdmin = () => {
                               label: <Link to="/admin/application">Application</Link>,
                               key: '/admin/application',
                               icon: <AliwangwangOutlined />,
-                          },
-                      ]
-                    : []),
-                ...(viewPermission || ACL_ENABLE === 'false'
-                    ? [
-                          {
-                              label: <Link to="/admin/permission">Permission</Link>,
-                              key: '/admin/permission',
-                              icon: <ApiOutlined />,
                           },
                       ]
                     : []),

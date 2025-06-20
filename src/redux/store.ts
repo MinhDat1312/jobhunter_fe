@@ -6,6 +6,7 @@ import jobReducer from './slice/jobSlice';
 import skillReducer from './slice/skillSlice';
 import careerReducer from './slice/careerSlice';
 import applicationReducer from './slice/applicationSlice';
+import permissionReducer from './slice/permissionSlice';
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         skill: skillReducer,
         career: careerReducer,
         application: applicationReducer,
+        permission: permissionReducer,
     },
 });
 
