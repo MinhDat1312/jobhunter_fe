@@ -12,6 +12,7 @@ import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
 import ViewDetailApplication from '../../components/admin/application/view.application';
+import { colorStatus } from '../../config/utils';
 
 const ApplicationPage = () => {
     const dispatch = useAppDispatch();
@@ -48,6 +49,20 @@ const ApplicationPage = () => {
             title: 'Trạng Thái',
             dataIndex: 'status',
             sorter: true,
+            render: (_text, record) => {
+                const { color, label } = colorStatus(record.status);
+                return (
+                    <p
+                        style={{
+                            fontWeight: 'bold',
+                            marginBottom: 0,
+                            color: color,
+                        }}
+                    >
+                        {label}
+                    </p>
+                );
+            },
             renderFormItem: (_item, _props, _form) => (
                 <ProFormSelect
                     showSearch
@@ -202,6 +217,7 @@ const ApplicationPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
                 reloadTable={reloadTable}
+                isAdmin={user.role.name === 'SUPER_ADMIN' ? true : false}
             />
         </div>
     );

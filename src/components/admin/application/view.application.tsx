@@ -12,10 +12,11 @@ interface IProps {
     dataInit: IApplication | null | any;
     setDataInit: (v: any) => void;
     reloadTable: () => void;
+    isAdmin: boolean;
 }
 
 const ViewDetailApplication = (props: IProps) => {
-    const { onClose, open, dataInit, setDataInit, reloadTable } = props;
+    const { onClose, open, dataInit, setDataInit, reloadTable, isAdmin } = props;
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [form] = Form.useForm();
 
@@ -52,9 +53,13 @@ const ViewDetailApplication = (props: IProps) => {
                 width={'40vw'}
                 maskClosable={false}
                 extra={
-                    <Button loading={isSubmit} type="primary" onClick={handleChangeStatus}>
-                        Cập nhật
-                    </Button>
+                    isAdmin ? (
+                        <></>
+                    ) : (
+                        <Button loading={isSubmit} type="primary" onClick={handleChangeStatus}>
+                            Cập nhật
+                        </Button>
+                    )
                 }
             >
                 <Descriptions title="" bordered column={2} layout="vertical">
@@ -62,7 +67,7 @@ const ViewDetailApplication = (props: IProps) => {
                     <Descriptions.Item label="Trạng thái">
                         <Form form={form}>
                             <Form.Item name={'status'}>
-                                <Select style={{ width: '100%' }} defaultValue={dataInit?.status}>
+                                <Select style={{ width: '100%' }} defaultValue={dataInit?.status} disabled={isAdmin}>
                                     <Option value="PENDING">Đang xét</Option>
                                     <Option value="ACCEPTED">Chấp nhận</Option>
                                     <Option value="REJECTED">Từ chối</Option>
