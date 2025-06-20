@@ -1,4 +1,6 @@
 import { grey, green, blue, red, orange } from '@ant-design/colors';
+import type { IPermission } from '../types/backend';
+import { groupBy, map } from 'lodash';
 
 export const LOCATION_LIST = [
     { label: 'Hà Nội', value: 'HANOI' },
@@ -113,3 +115,10 @@ export function colorStatus(status: 'ACCEPTED' | 'PENDING' | 'REJECTED' | string
             return { color: grey[6], label: 'Có lỗi' };
     }
 }
+
+export const groupByPermission = (data: any[]): { module: string; permissions: IPermission[] }[] => {
+    const groupedData = groupBy(data, (x) => x.module);
+    return map(groupedData, (value, key) => {
+        return { module: key, permissions: value as IPermission[] };
+    });
+};
