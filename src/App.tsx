@@ -19,7 +19,6 @@ import UserTab from './pages/admin/user/user.tab';
 import JobTab from './pages/admin/job/job.tab';
 import ViewUpsertJob from './components/admin/job/upsert.job';
 import ApplicationPage from './pages/admin/application';
-import PermissionPage from './pages/admin/role/permission';
 import RoleTab from './pages/admin/role/role.tab';
 
 const router = createBrowserRouter([

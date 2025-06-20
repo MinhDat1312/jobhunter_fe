@@ -24,7 +24,7 @@ const LayoutAdmin = () => {
     const navigate = useNavigate();
 
     const [collapsed, setCollapsed] = useState(false);
-    const [activeMenu, setActiveMenu] = useState('');
+    const [activeMenu, setActiveMenu] = useState('/admin');
     const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
 
     const dispatch = useAppDispatch();
