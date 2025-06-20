@@ -4,6 +4,7 @@ import { callFetchApplicationByApplicant } from '../../../../config/api';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { Table } from 'antd';
+import { eventBus } from '../../../../config/eventBus';
 
 const ApplicantApplication = () => {
     const [listApplication, setListApplication] = useState<IApplication[]>([]);
@@ -20,6 +21,10 @@ const ApplicantApplication = () => {
         };
 
         init();
+
+        eventBus.on('jobApplied', init);
+
+        return () => eventBus.off('jobApplied', init);
     }, []);
 
     const columns: ColumnsType<IApplication> = [

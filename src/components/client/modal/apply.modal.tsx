@@ -1,4 +1,15 @@
-import { Button, Col, ConfigProvider, Divider, message, Modal, notification, Row, Upload, type UploadProps } from 'antd';
+import {
+    Button,
+    Col,
+    ConfigProvider,
+    Divider,
+    message,
+    Modal,
+    notification,
+    Row,
+    Upload,
+    type UploadProps,
+} from 'antd';
 import type { IJob } from '../../../types/backend';
 import { useAppSelector } from '../../../redux/hook';
 import viVN from 'antd/es/locale/vi_VN';
@@ -7,6 +18,7 @@ import { callCreateApplication, callUploadSingleFile } from '../../../config/api
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { eventBus } from '../../../config/eventBus';
 
 interface IProps {
     isModalOpen: boolean;
@@ -35,6 +47,7 @@ const ApplyModal = (props: IProps) => {
             if (jobDetail) {
                 const res = await callCreateApplication(urlCV, user.email, jobDetail?.jobId, user.userId);
                 if (res.data) {
+                    eventBus.emit('jobApplied');
                     message.success('Ứng tuyển thành công!');
                     setIsModalOpen(false);
                 } else {
