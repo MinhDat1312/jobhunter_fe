@@ -48,17 +48,15 @@ const JobCard = (props: IProps) => {
             const querySkills = searchParams.get('skills');
             if (queryLocation || querySkills) {
                 let q = '';
-
                 if (queryLocation) {
                     const locationNames = queryLocation.split(',').map((item) => getLocationName(item));
                     q = sfIn('location', locationNames).toString();
                 }
                 if (querySkills) {
                     q = queryLocation
-                        ? q + ' and ' + `${sfIn('skills', querySkills.split(','))}`
-                        : `${sfIn('skills', querySkills.split(','))}`;
+                        ? q + ' and ' + `${sfIn('skills.name', querySkills.split(','))}`
+                        : `${sfIn('skills.name', querySkills.split(','))}`;
                 }
-
                 query += `&filter=${encodeURIComponent(q)}`;
             }
 
@@ -102,36 +100,44 @@ const JobCard = (props: IProps) => {
 
                         {displayJob?.map((item) => {
                             return (
-                                <Col span={24} md={12} key={item.jobId}>
-                                    <Card size="small" title={null} hoverable onClick={() => handleViewDetailJob(item)}>
-                                        <div className={styles['card-job-content']}>
-                                            <div className={styles['card-job-left']}>
-                                                <img
-                                                    alt="example"
-                                                    src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                        item?.recruiter?.logo
-                                                    }`}
-                                                />
+                                item.active && (
+                                    <Col span={24} md={12} key={item.jobId}>
+                                        <Card
+                                            size="small"
+                                            title={null}
+                                            hoverable
+                                            onClick={() => handleViewDetailJob(item)}
+                                        >
+                                            <div className={styles['card-job-content']}>
+                                                <div className={styles['card-job-left']}>
+                                                    <img
+                                                        alt="example"
+                                                        src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
+                                                            item?.recruiter?.logo
+                                                        }`}
+                                                    />
+                                                </div>
+                                                <div className={styles['card-job-right']}>
+                                                    <div className={styles['job-title']}>{item.title}</div>
+                                                    <div className={styles['job-location']}>
+                                                        <EnvironmentOutlined style={{ color: '#58aaab' }} />
+                                                        &nbsp;{item.location}
+                                                    </div>
+                                                    <div>
+                                                        <ThunderboltOutlined style={{ color: 'orange' }} />
+                                                        &nbsp;
+                                                        {(item.salary + '')?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} đ
+                                                    </div>
+                                                    <div className={styles['job-updatedAt']}>
+                                                        {item.updatedAt
+                                                            ? dayjs(item.updatedAt).locale('en').fromNow()
+                                                            : dayjs(item.createdAt).locale('en').fromNow()}
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className={styles['card-job-right']}>
-                                                <div className={styles['job-title']}>{item.title}</div>
-                                                <div className={styles['job-location']}>
-                                                    <EnvironmentOutlined style={{ color: '#58aaab' }} />
-                                                    &nbsp;{item.location}
-                                                </div>
-                                                <div>
-                                                    <ThunderboltOutlined style={{ color: 'orange' }} />
-                                                    &nbsp;{(item.salary + '')?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} đ
-                                                </div>
-                                                <div className={styles['job-updatedAt']}>
-                                                    {item.updatedAt
-                                                        ? dayjs(item.updatedAt).locale('en').fromNow()
-                                                        : dayjs(item.createdAt).locale('en').fromNow()}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </Card>
-                                </Col>
+                                        </Card>
+                                    </Col>
+                                )
                             );
                         })}
 

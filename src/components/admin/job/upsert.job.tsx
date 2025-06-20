@@ -14,7 +14,7 @@ import {
     ProFormText,
 } from '@ant-design/pro-components';
 import { CheckSquareOutlined } from '@ant-design/icons';
-import { LOCATION_LIST } from '../../../config/utils';
+import { getLocationName, getLocationValue, LOCATION_LIST } from '../../../config/utils';
 import { DebounceSelect } from '../debounce.select';
 import {
     callCreateJob,
@@ -91,6 +91,10 @@ const ViewUpsertJob = () => {
                             value: `${res.data.recruiter?.userId}@#$${res.data.recruiter?.logo}` as string,
                             key: res.data.recruiter?.userId,
                         },
+                        location: {
+                            label: res.data?.location,
+                            value: getLocationValue(res.data?.location),
+                        },
                         skills: temp,
                         career: tmp,
                     });
@@ -138,7 +142,8 @@ const ViewUpsertJob = () => {
                     logo: cp && cp.length > 1 ? cp[1] : '',
                     type: 'recruiter',
                 },
-                location: values.location,
+                location:
+                    typeof values.location === 'object' ? values.location.label : getLocationName(values.location),
                 salary: values.salary,
                 quantity: values.quantity,
                 level: values.level,
@@ -178,7 +183,8 @@ const ViewUpsertJob = () => {
                     logo: cp && cp.length > 1 ? cp[1] : '',
                     type: 'recruiter',
                 },
-                location: values.location,
+                location:
+                    typeof values.location === 'object' ? values.location.label : getLocationName(values.location),
                 salary: values.salary,
                 quantity: values.quantity,
                 level: values.level,

@@ -90,6 +90,12 @@ export const getLocationName = (value?: string) => {
     return 'unknown';
 };
 
+export const getLocationValue = (label?: string) => {
+    const locationFilter = LOCATION_LIST.filter((item) => item.label === label);
+    if (locationFilter.length) return locationFilter[0].value;
+    return 'UNKNOWN';
+};
+
 export function colorMethod(method: 'POST' | 'PUT' | 'GET' | 'DELETE' | string) {
     switch (method) {
         case 'POST':
