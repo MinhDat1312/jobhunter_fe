@@ -13,6 +13,7 @@ interface IState {
         role: {
             roleId?: string;
             name?: string;
+            active?: boolean;
             permissions?: {
                 permissionId: string;
                 name: string;
@@ -37,6 +38,7 @@ const initialState: IState = {
         role: {
             roleId: '',
             name: '',
+            active: false,
             permissions: [],
         },
     },
@@ -73,6 +75,7 @@ export const accountSlice = createSlice({
                 role: {
                     roleId: '',
                     name: '',
+                    active: false,
                     permissions: [],
                 },
             };

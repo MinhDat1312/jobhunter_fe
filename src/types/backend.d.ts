@@ -24,6 +24,7 @@ export interface IAccount {
         role: {
             roleId: string;
             name: string;
+            active: boolean;
             permissions: {
                 permissionId: string;
                 name: string;

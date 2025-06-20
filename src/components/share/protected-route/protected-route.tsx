@@ -6,8 +6,9 @@ import NotPermitted from './not-permitted';
 const RoleBaseRoute = (props: any) => {
     const user = useAppSelector((state) => state.account.user);
     const userRole = user.role.name;
+    const activeRole = user.role.active;
 
-    if (userRole !== 'APPLICANT') {
+    if (userRole !== 'APPLICANT' && activeRole) {
         return <>{props.children}</>;
     } else {
         return <NotPermitted />;
