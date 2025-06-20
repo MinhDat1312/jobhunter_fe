@@ -63,6 +63,8 @@ export const accountSlice = createSlice({
 
             if (!action?.payload?.user?.role) state.user.role = {};
             state.user.role.permissions = action?.payload?.role?.permissions ?? [];
+            state.user.role.active = action?.payload?.role?.active ?? false;
+            state.user.role.name = action?.payload?.role?.name ?? '';
         },
 
         setLogoutAction: (state) => {
@@ -105,6 +107,8 @@ export const accountSlice = createSlice({
 
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
+                state.user.role.active = action?.payload?.user.role?.active ?? false;
+                state.user.role.name = action?.payload?.user.role?.name ?? '';
             }
         });
 

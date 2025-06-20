@@ -68,7 +68,7 @@ const Header = () => {
             icon: <ContactsOutlined />,
         },
 
-        ...(user.role?.permissions?.length
+        ...(user.role?.permissions?.length && user.role?.active
             ? [
                   {
                       label: <Link to={'/admin'}>Trang Quản Trị</Link>,

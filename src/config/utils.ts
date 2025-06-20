@@ -2,6 +2,8 @@ import { grey, green, blue, red, orange } from '@ant-design/colors';
 import type { IPermission } from '../types/backend';
 import { groupBy, map } from 'lodash';
 
+export const ADMIN = 'SUPER_ADMIN';
+
 export const LOCATION_LIST = [
     { label: 'Hà Nội', value: 'HANOI' },
     { label: 'Hải Phòng', value: 'HAIPHONG' },

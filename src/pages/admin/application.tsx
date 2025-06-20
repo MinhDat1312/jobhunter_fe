@@ -12,7 +12,7 @@ import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
 import ViewDetailApplication from '../../components/admin/application/view.application';
-import { colorStatus } from '../../config/utils';
+import { ADMIN, colorStatus } from '../../config/utils';
 
 const ApplicationPage = () => {
     const dispatch = useAppDispatch();
@@ -110,7 +110,7 @@ const ApplicationPage = () => {
             hideInSearch: true,
         },
 
-        ...(user?.role?.name === 'SUPER_ADMIN'
+        ...(user?.role?.name === ADMIN
             ? []
             : [
                   {
@@ -186,7 +186,7 @@ const ApplicationPage = () => {
                     dataSource={applications}
                     request={async (params, sort, filter): Promise<any> => {
                         const query = buildQuery(params, sort, filter);
-                        user.role.name === 'SUPER_ADMIN'
+                        user.role.name === ADMIN
                             ? await dispatch(fetchApplication({ query }))
                             : await dispatch(fetchApplicationByRecruiter({ query }));
                     }}
@@ -217,7 +217,7 @@ const ApplicationPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
                 reloadTable={reloadTable}
-                isAdmin={user.role.name === 'SUPER_ADMIN' ? true : false}
+                isAdmin={user.role.name === ADMIN ? true : false}
             />
         </div>
     );

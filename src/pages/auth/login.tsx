@@ -19,7 +19,6 @@ const LoginPage = () => {
     useEffect(() => {
         if (isAuthenticated) {
             navigate('/');
-            // window.location.href = '/';
         }
     }, []);
 

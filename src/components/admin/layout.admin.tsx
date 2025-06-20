@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { ALL_PERMISSIONS } from '../../config/permissions';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 
@@ -22,14 +22,19 @@ const { Content, Sider } = Layout;
 
 const LayoutAdmin = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [collapsed, setCollapsed] = useState(false);
-    const [activeMenu, setActiveMenu] = useState('/admin');
+    const [activeMenu, setActiveMenu] = useState(location.pathname);
     const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
 
     const dispatch = useAppDispatch();
     const permissions = useAppSelector((state) => state.account.user.role.permissions);
     const user = useAppSelector((state) => state.account.user);
+
+    useEffect(() => {
+        setActiveMenu(location.pathname);
+    }, [location.pathname]);
 
     useEffect(() => {
         const ACL_ENABLE = import.meta.env.VITE_ACL_ENABLE;

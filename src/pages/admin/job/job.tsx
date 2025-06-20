@@ -13,12 +13,14 @@ import { callDeleteJob } from '../../../config/api';
 import { fetchJob } from '../../../redux/slice/jobSlice';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
+import { ADMIN } from '../../../config/utils';
 
 const JobPage = () => {
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.job.isFetching);
     const meta = useAppSelector((state) => state.job.meta);
     const jobs = useAppSelector((state) => state.job.result);
+    const user = useAppSelector((state) => state.account.user);
 
     const tableRef = useRef<ActionType>(null);
     const navigate = useNavigate();
@@ -156,6 +158,7 @@ const JobPage = () => {
     const buildQuery = (params: any, sort: any, _filter: any) => {
         const clone = { ...params };
         let parts = [];
+        if (user.role.name !== ADMIN) parts.push(`recruiter.fullName ~ '${user.fullName}'`);
         if (clone.title) parts.push(`title ~ '${clone.title}'`);
         if (clone.salary) parts.push(`salary ~ '${clone.salary}'`);
         if (clone?.level?.length) {
