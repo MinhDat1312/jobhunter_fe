@@ -7,7 +7,7 @@ import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import dayjs from 'dayjs';
 import { Space } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, FolderViewOutlined, FundViewOutlined } from '@ant-design/icons';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
@@ -110,32 +110,41 @@ const ApplicationPage = () => {
             hideInSearch: true,
         },
 
-        ...(user?.role?.name === ADMIN
-            ? []
-            : [
-                  {
-                      title: 'Actions',
-                      hideInSearch: true,
-                      width: 100,
-                      render: (_value, entity, _index, _action) => (
-                          <Space>
-                              <Access permission={ALL_PERMISSIONS.APPLICATIONS.UPDATE} hideChildren>
-                                  <EditOutlined
-                                      style={{
-                                          fontSize: 20,
-                                          color: '#ffa500',
-                                      }}
-                                      type=""
-                                      onClick={() => {
-                                          setOpenViewDetail(true);
-                                          setDataInit(entity);
-                                      }}
-                                  />
-                              </Access>
-                          </Space>
-                      ),
-                  },
-              ]),
+        {
+            title: 'Actions',
+            hideInSearch: true,
+            width: 100,
+            render: (_value, entity, _index, _action) => (
+                <Space>
+                    <Access permission={ALL_PERMISSIONS.APPLICATIONS.UPDATE} hideChildren>
+                        <EditOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#ffa500',
+                            }}
+                            type=""
+                            onClick={() => {
+                                setOpenViewDetail(true);
+                                setDataInit(entity);
+                            }}
+                        />
+                    </Access>
+                    <a
+                        style={{ cursor: 'pointer', margin: '0 10px' }}
+                        href={`${import.meta.env.VITE_BACKEND_URL}/storage/resumes/${entity?.resumeUrl}`}
+                        target="_blank"
+                    >
+                        <FolderViewOutlined
+                            style={{
+                                fontSize: 20,
+                                color: '#ff4d4f',
+                            }}
+                            type=""
+                        ></FolderViewOutlined>
+                    </a>
+                </Space>
+            ),
+        },
     ];
 
     const buildQuery = (params: any, sort: any, _filter: any) => {
