@@ -21,6 +21,7 @@ export interface IAccount {
         userId: string;
         email: string;
         fullName: string;
+        username: string;
         role: {
             roleId: string;
             name: string;

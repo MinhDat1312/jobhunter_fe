@@ -28,6 +28,8 @@ import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
+import Access from '../../share/access';
+import { ALL_PERMISSIONS } from '../../../config/permissions';
 
 interface ISelect {
     label: string;
@@ -260,241 +262,243 @@ const ViewUpsertJob = () => {
     }
 
     return (
-        <div className={styles['upsert-job-container']}>
-            <div className={styles['title']}>
-                <Breadcrumb
-                    separator=">"
-                    items={[
-                        {
-                            title: <Link to="/admin/job">Tin tuyển dụng</Link>,
-                        },
-                        {
-                            title: `${dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}`,
-                        },
-                    ]}
-                />
-            </div>
-            <div>
-                <ConfigProvider locale={viVN}>
-                    <ProForm
-                        form={form}
-                        onFinish={onFinish}
-                        submitter={{
-                            searchConfig: {
-                                resetText: 'Hủy',
-                                submitText: <>{dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}</>,
+        <Access permission={ALL_PERMISSIONS.JOBS.CREATE}>
+            <div className={styles['upsert-job-container']}>
+                <div className={styles['title']}>
+                    <Breadcrumb
+                        separator=">"
+                        items={[
+                            {
+                                title: <Link to="/admin/job">Tin tuyển dụng</Link>,
                             },
-                            onReset: () => navigate('/admin/job'),
-                            render: (_: any, dom: any) => <FooterToolbar>{dom}</FooterToolbar>,
-                            submitButtonProps: {
-                                icon: <CheckSquareOutlined />,
+                            {
+                                title: `${dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}`,
                             },
-                        }}
-                    >
-                        <Row gutter={[20, 20]}>
-                            <Col span={24} md={6}>
-                                <ProFormSwitch
-                                    label="Trạng thái"
-                                    name="active"
-                                    checkedChildren="BẬT"
-                                    unCheckedChildren="TẮT"
-                                    initialValue={dataUpdate?.active}
-                                />
-                            </Col>
-                        </Row>
-                        <Row gutter={[20, 20]}>
-                            <Col span={24} md={12}>
-                                <ProFormText
-                                    label="Tiêu đề"
-                                    name="title"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                    placeholder="Nhập tên tiêu đề"
-                                />
-                            </Col>
-                            {(dataUpdate?.jobId || !jobId) && (
+                        ]}
+                    />
+                </div>
+                <div>
+                    <ConfigProvider locale={viVN}>
+                        <ProForm
+                            form={form}
+                            onFinish={onFinish}
+                            submitter={{
+                                searchConfig: {
+                                    resetText: 'Hủy',
+                                    submitText: <>{dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}</>,
+                                },
+                                onReset: () => navigate('/admin/job'),
+                                render: (_: any, dom: any) => <FooterToolbar>{dom}</FooterToolbar>,
+                                submitButtonProps: {
+                                    icon: <CheckSquareOutlined />,
+                                },
+                            }}
+                        >
+                            <Row gutter={[20, 20]}>
                                 <Col span={24} md={6}>
+                                    <ProFormSwitch
+                                        label="Trạng thái"
+                                        name="active"
+                                        checkedChildren="BẬT"
+                                        unCheckedChildren="TẮT"
+                                        initialValue={dataUpdate?.active}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row gutter={[20, 20]}>
+                                <Col span={24} md={12}>
+                                    <ProFormText
+                                        label="Tiêu đề"
+                                        name="title"
+                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        placeholder="Nhập tên tiêu đề"
+                                    />
+                                </Col>
+                                {(dataUpdate?.jobId || !jobId) && (
+                                    <Col span={24} md={6}>
+                                        <ProForm.Item
+                                            name="recruiter"
+                                            label="Thuộc nhà tuyển dụng"
+                                            rules={[{ required: true, message: 'Vui lòng chọn nhà tuyển dụng!' }]}
+                                        >
+                                            <DebounceSelect
+                                                allowClear
+                                                showSearch
+                                                value={recruiters}
+                                                placeholder="Chọn nhà tuyển dụng"
+                                                fetchOptions={fetchRecruiterList}
+                                                onChange={(newValue: any) => {
+                                                    setRecruiters(newValue as ISelect[]);
+                                                }}
+                                                style={{ width: '100%' }}
+                                            />
+                                        </ProForm.Item>
+                                    </Col>
+                                )}
+                                <Col span={24} md={6}>
+                                    <ProFormSelect
+                                        showSearch
+                                        name="location"
+                                        label="Địa điểm"
+                                        options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
+                                        placeholder="Chọn địa điểm"
+                                        rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row gutter={[20, 20]}>
+                                <Col span={24} md={6}>
+                                    <ProFormDigit
+                                        label="Mức lương"
+                                        name="salary"
+                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        placeholder="Nhập mức lương"
+                                        fieldProps={{
+                                            addonAfter: ' đ',
+                                            formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                            parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
+                                        }}
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormDigit
+                                        label="Số lượng"
+                                        name="quantity"
+                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        placeholder="Nhập số lượng"
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormSelect
+                                        showSearch
+                                        name="career"
+                                        label="Ngành nghề"
+                                        options={careers}
+                                        placeholder="Chọn ngành nghề"
+                                        rules={[{ required: true, message: 'Vui lòng chọn ngành nghề!' }]}
+                                        allowClear
+                                        fieldProps={{
+                                            suffixIcon: null,
+                                        }}
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormSelect
+                                        name="skills"
+                                        label="Kỹ năng yêu cầu"
+                                        options={skills}
+                                        placeholder="Chọn ít nhất 1 kỹ năng"
+                                        rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
+                                        allowClear
+                                        mode="multiple"
+                                        fieldProps={{
+                                            suffixIcon: null,
+                                            maxTagCount: 2,
+                                            maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
+                                        }}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row gutter={[20, 20]}>
+                                <Col span={24} md={6}>
+                                    <ProFormDatePicker
+                                        label="Ngày bắt đầu"
+                                        name="startDate"
+                                        normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
+                                        fieldProps={{
+                                            format: 'DD/MM/YYYY',
+                                            style: { width: '100%' },
+                                        }}
+                                        rules={[
+                                            { required: true, message: 'Vui lòng chọn ngày bắt đầu' },
+                                            {
+                                                validator: async (_, value, callback) => {
+                                                    const endDate = form.getFieldValue('endDate');
+                                                    if (endDate && value && !dayjs(value).isBefore(dayjs(endDate))) {
+                                                        return Promise.reject(
+                                                            new Error('Ngày bắt đầu phải trước ngày kết thúc'),
+                                                        );
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            },
+                                        ]}
+                                        placeholder="dd/mm/yyyy"
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormDatePicker
+                                        label="Ngày kết thúc"
+                                        name="endDate"
+                                        normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
+                                        fieldProps={{
+                                            format: 'DD/MM/YYYY',
+                                            style: { width: '100%' },
+                                        }}
+                                        rules={[
+                                            { required: true, message: 'Vui lòng chọn ngày kết thúc' },
+                                            {
+                                                validator: async (_, value, callback) => {
+                                                    const startDate = form.getFieldValue('startDate');
+                                                    if (startDate && value && !dayjs(value).isAfter(dayjs(startDate))) {
+                                                        return Promise.reject(
+                                                            new Error('Ngày kết thúc phải sau ngày bắt đầu'),
+                                                        );
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            },
+                                        ]}
+                                        placeholder="dd/mm/yyyy"
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormSelect
+                                        name="level"
+                                        label="Trình độ"
+                                        valueEnum={{
+                                            FRESHER: 'Fresher',
+                                            JUNIOR: 'Junior',
+                                            SENIOR: 'Senior',
+                                            INTERN: 'Intern',
+                                            MIDDLE: 'Middle',
+                                        }}
+                                        placeholder="Chọn trình độ"
+                                        rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
+                                    />
+                                </Col>
+                                <Col span={24} md={6}>
+                                    <ProFormSelect
+                                        name="workingType"
+                                        label="Hình thức"
+                                        valueEnum={{
+                                            FULLTIME: 'Full time',
+                                            PARTTIME: 'Part time',
+                                            ONLINE: 'Online',
+                                            OFFLINE: 'Offline',
+                                        }}
+                                        placeholder="Chọn hình thức"
+                                        rules={[{ required: true, message: 'Vui lòng chọn hình thức!' }]}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col span={24}>
                                     <ProForm.Item
-                                        name="recruiter"
-                                        label="Thuộc nhà tuyển dụng"
-                                        rules={[{ required: true, message: 'Vui lòng chọn nhà tuyển dụng!' }]}
+                                        name="description"
+                                        label="Mô tả tin"
+                                        rules={[{ required: true, message: 'Vui lòng nhập mô tả tin!' }]}
                                     >
-                                        <DebounceSelect
-                                            allowClear
-                                            showSearch
-                                            value={recruiters}
-                                            placeholder="Chọn nhà tuyển dụng"
-                                            fetchOptions={fetchRecruiterList}
-                                            onChange={(newValue: any) => {
-                                                setRecruiters(newValue as ISelect[]);
-                                            }}
-                                            style={{ width: '100%' }}
-                                        />
+                                        <ReactQuill theme="snow" value={description} onChange={setDescription} />
                                     </ProForm.Item>
                                 </Col>
-                            )}
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    showSearch
-                                    name="location"
-                                    label="Địa điểm"
-                                    options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
-                                    placeholder="Chọn địa điểm"
-                                    rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
-                                />
-                            </Col>
-                        </Row>
-                        <Row gutter={[20, 20]}>
-                            <Col span={24} md={6}>
-                                <ProFormDigit
-                                    label="Mức lương"
-                                    name="salary"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                    placeholder="Nhập mức lương"
-                                    fieldProps={{
-                                        addonAfter: ' đ',
-                                        formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                        parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
-                                    }}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormDigit
-                                    label="Số lượng"
-                                    name="quantity"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                    placeholder="Nhập số lượng"
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    showSearch
-                                    name="career"
-                                    label="Ngành nghề"
-                                    options={careers}
-                                    placeholder="Chọn ngành nghề"
-                                    rules={[{ required: true, message: 'Vui lòng chọn ngành nghề!' }]}
-                                    allowClear
-                                    fieldProps={{
-                                        suffixIcon: null,
-                                    }}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    name="skills"
-                                    label="Kỹ năng yêu cầu"
-                                    options={skills}
-                                    placeholder="Chọn ít nhất 1 kỹ năng"
-                                    rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
-                                    allowClear
-                                    mode="multiple"
-                                    fieldProps={{
-                                        suffixIcon: null,
-                                        maxTagCount: 2,
-                                        maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
-                                    }}
-                                />
-                            </Col>
-                        </Row>
-                        <Row gutter={[20, 20]}>
-                            <Col span={24} md={6}>
-                                <ProFormDatePicker
-                                    label="Ngày bắt đầu"
-                                    name="startDate"
-                                    normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
-                                    fieldProps={{
-                                        format: 'DD/MM/YYYY',
-                                        style: { width: '100%' },
-                                    }}
-                                    rules={[
-                                        { required: true, message: 'Vui lòng chọn ngày bắt đầu' },
-                                        {
-                                            validator: async (_, value, callback) => {
-                                                const endDate = form.getFieldValue('endDate');
-                                                if (endDate && value && !dayjs(value).isBefore(dayjs(endDate))) {
-                                                    return Promise.reject(
-                                                        new Error('Ngày bắt đầu phải trước ngày kết thúc'),
-                                                    );
-                                                }
-                                                return Promise.resolve();
-                                            },
-                                        },
-                                    ]}
-                                    placeholder="dd/mm/yyyy"
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormDatePicker
-                                    label="Ngày kết thúc"
-                                    name="endDate"
-                                    normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
-                                    fieldProps={{
-                                        format: 'DD/MM/YYYY',
-                                        style: { width: '100%' },
-                                    }}
-                                    rules={[
-                                        { required: true, message: 'Vui lòng chọn ngày kết thúc' },
-                                        {
-                                            validator: async (_, value, callback) => {
-                                                const startDate = form.getFieldValue('startDate');
-                                                if (startDate && value && !dayjs(value).isAfter(dayjs(startDate))) {
-                                                    return Promise.reject(
-                                                        new Error('Ngày kết thúc phải sau ngày bắt đầu'),
-                                                    );
-                                                }
-                                                return Promise.resolve();
-                                            },
-                                        },
-                                    ]}
-                                    placeholder="dd/mm/yyyy"
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    name="level"
-                                    label="Trình độ"
-                                    valueEnum={{
-                                        FRESHER: 'Fresher',
-                                        JUNIOR: 'Junior',
-                                        SENIOR: 'Senior',
-                                        INTERN: 'Intern',
-                                        MIDDLE: 'Middle',
-                                    }}
-                                    placeholder="Chọn trình độ"
-                                    rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
-                                />
-                            </Col>
-                            <Col span={24} md={6}>
-                                <ProFormSelect
-                                    name="workingType"
-                                    label="Hình thức"
-                                    valueEnum={{
-                                        FULLTIME: 'Full time',
-                                        PARTTIME: 'Part time',
-                                        ONLINE: 'Online',
-                                        OFFLINE: 'Offline',
-                                    }}
-                                    placeholder="Chọn hình thức"
-                                    rules={[{ required: true, message: 'Vui lòng chọn hình thức!' }]}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <ProForm.Item
-                                    name="description"
-                                    label="Mô tả tin"
-                                    rules={[{ required: true, message: 'Vui lòng nhập mô tả tin!' }]}
-                                >
-                                    <ReactQuill theme="snow" value={description} onChange={setDescription} />
-                                </ProForm.Item>
-                            </Col>
-                        </Row>
-                        <Divider />
-                    </ProForm>
-                </ConfigProvider>
+                            </Row>
+                            <Divider />
+                        </ProForm>
+                    </ConfigProvider>
+                </div>
             </div>
-        </div>
+        </Access>
     );
 };
 

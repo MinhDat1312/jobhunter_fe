@@ -199,9 +199,11 @@ const CareerPage = () => {
                     rowSelection={false}
                     toolBarRender={(_action, _rows): any => {
                         return (
-                            <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                Thêm mới
-                            </Button>
+                            <Access permission={ALL_PERMISSIONS.CAREERS.CREATE} hideChildren>
+                                <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
+                                    Thêm mới
+                                </Button>
+                            </Access>
                         );
                     }}
                     search={{ labelWidth: 'auto' }}

@@ -250,9 +250,11 @@ const JobPage = () => {
                     rowSelection={false}
                     toolBarRender={(_action, _rows): any => {
                         return (
-                            <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('upsert')}>
-                                Thêm mới
-                            </Button>
+                            <Access permission={ALL_PERMISSIONS.JOBS.CREATE} hideChildren>
+                                <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('upsert')}>
+                                    Thêm mới
+                                </Button>
+                            </Access>
                         );
                     }}
                 />
