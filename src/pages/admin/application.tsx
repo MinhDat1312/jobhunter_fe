@@ -7,7 +7,7 @@ import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import dayjs from 'dayjs';
 import { Space } from 'antd';
-import { EditOutlined, FolderViewOutlined, FundViewOutlined } from '@ant-design/icons';
+import { EditOutlined, FolderViewOutlined } from '@ant-design/icons';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';

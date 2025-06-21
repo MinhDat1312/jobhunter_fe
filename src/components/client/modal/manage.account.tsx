@@ -49,11 +49,18 @@ const ManageAccount = (props: IProps) => {
                 width={isMobile ? '100%' : '1000px'}
             >
                 {activeRole ? (
-                    <div style={{ minHeight: 400 }}>
+                    <div
+                        style={{
+                            height: 400,
+                            overflowY: 'auto',
+                            scrollbarWidth: 'none',
+                            msOverflowStyle: 'none',
+                        }}
+                    >
                         <Tabs defaultActiveKey="applicant-application" items={items} />
                     </div>
                 ) : (
-                    <NotPermitted onClose={onClose}/>
+                    <NotPermitted onClose={onClose} />
                 )}
             </Modal>
         </>

@@ -7,6 +7,7 @@ import { Table } from 'antd';
 import { eventBus } from '../../../../config/eventBus';
 import Access from '../../../share/access';
 import { ALL_PERMISSIONS } from '../../../../config/permissions';
+import { colorStatus } from '../../../../config/utils';
 
 const ApplicantApplication = () => {
     const [listApplication, setListApplication] = useState<IApplication[]>([]);
@@ -50,6 +51,20 @@ const ApplicantApplication = () => {
         {
             title: 'Trạng thái',
             dataIndex: 'status',
+            render: (_text, record) => {
+                const { color, label } = colorStatus(record.status);
+                return (
+                    <p
+                        style={{
+                            fontWeight: 'bold',
+                            marginBottom: 0,
+                            color: color,
+                        }}
+                    >
+                        {label}
+                    </p>
+                );
+            },
         },
         {
             title: 'Ngày nộp',
