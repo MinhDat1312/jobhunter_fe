@@ -21,34 +21,27 @@ import axios from './axios-customize';
 Module Auth
 ***/
 export const callRegister = (
-    fullName: string,
     contact: Contact,
-    address: string,
     password: string,
-    username: string,
     type: string,
-    dob?: Date,
-    gender?: string,
+    username?: string,
+    address?: string,
+    fullName?: string,
 ) => {
     if (type === 'recruiter') {
         return axios.post<IBackendRes<IRecruiter>>('/api/v1/auth/register/recruiter', {
-            fullName,
             contact,
-            address,
             password,
-            username,
             type,
+            username,
+            address,
+            fullName,
         });
     } else if (type === 'applicant') {
         return axios.post<IBackendRes<IRecruiter>>('/api/v1/auth/register/applicant', {
-            fullName,
             contact,
-            address,
             password,
-            username,
             type,
-            dob: dob ? dayjs(dob).format('YYYY-MM-DD') : undefined,
-            gender,
         });
     }
 };
