@@ -113,7 +113,7 @@ const JobCard = (props: IProps) => {
                                                     <img
                                                         alt="example"
                                                         src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                            item?.recruiter?.logo
+                                                            item?.recruiter?.avatar
                                                         }`}
                                                     />
                                                 </div>

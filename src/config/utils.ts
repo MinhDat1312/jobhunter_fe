@@ -1,6 +1,6 @@
 import { grey, green, blue, red, orange } from '@ant-design/colors';
 import type { IPermission } from '../types/backend';
-import { groupBy, map } from 'lodash';
+import { groupBy, map, values } from 'lodash';
 
 export const ADMIN = 'SUPER_ADMIN';
 
@@ -39,6 +39,21 @@ export const LOCATION_LIST = [
     { label: 'Đồng Tháp', value: 'DONGTHAP' },
     { label: 'Cà Mau', value: 'CAMAU' },
     { label: 'An Giang', value: 'ANGIANG' },
+];
+
+export const EDUCATION_LIST = [
+    { label: 'Cao đẳng', value: 'COLLEGE' },
+    { label: 'Đại học', value: 'UNIVERSITY' },
+    { label: 'THPT', value: 'SCHOOL' },
+    { label: 'Kỹ sư', value: 'ENGINEER' },
+];
+
+export const LEVEL_LIST = [
+    { label: 'Fresher', value: 'FRESHER' },
+    { label: 'Junior', value: 'JUNIOR' },
+    { label: 'Senior', value: 'SENIOR' },
+    { label: 'Intern', value: 'INTERN' },
+    { label: 'Middle', value: 'MIDDLE' },
 ];
 
 export const nonAccentVietnamese = (str: string) => {

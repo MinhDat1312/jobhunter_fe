@@ -89,7 +89,7 @@ const RecruiterCard = (props: IProps) => {
                                                     style={{ maxWidth: '200px' }}
                                                     alt="example"
                                                     src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                        item?.logo
+                                                        item?.avatar
                                                     }`}
                                                 />
                                             </div>

@@ -22,7 +22,7 @@ interface IProps {
     reloadTable: () => void;
 }
 
-interface IRecruiterLogo {
+interface IRecruiterAvatar {
     uid: string;
     name: string;
 }
@@ -38,7 +38,7 @@ const ModalRecruiter = (props: IProps) => {
 
     const [animation, setAnimation] = useState<string>('open');
     const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
-    const [dataLogo, setDataLogo] = useState<IRecruiterLogo[]>([]);
+    const [dataAvatar, setDataAvatar] = useState<IRecruiterAvatar[]>([]);
     const [roles, setRoles] = useState<IRecruiterSelect[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -61,8 +61,8 @@ const ModalRecruiter = (props: IProps) => {
             if (dataInit.description) {
                 setValue(dataInit.description);
             }
-            if (dataInit.logo) {
-                setDataLogo([{ name: dataInit?.logo, uid: uuidv4() }]);
+            if (dataInit.avatar) {
+                setDataAvatar([{ name: dataInit?.avatar, uid: uuidv4() }]);
             }
         }
     }, [dataInit]);
@@ -72,7 +72,7 @@ const ModalRecruiter = (props: IProps) => {
         let { role } = valuesForm;
         let { password } = valuesForm;
 
-        if (dataLogo.length === 0) {
+        if (dataAvatar.length === 0) {
             message.error('Vui lòng upload ảnh Logo');
             return;
         }
@@ -94,7 +94,7 @@ const ModalRecruiter = (props: IProps) => {
                 contact,
                 address,
                 value,
-                dataLogo[0].name,
+                dataAvatar[0].name,
                 role ? role : undefined,
             );
             if (res.data) {
@@ -115,7 +115,7 @@ const ModalRecruiter = (props: IProps) => {
                 contact,
                 address,
                 value,
-                dataLogo[0].name,
+                dataAvatar[0].name,
                 role ? role : undefined,
             );
             if (res.data) {
@@ -144,7 +144,7 @@ const ModalRecruiter = (props: IProps) => {
     };
 
     const handleRemoveFile = (file: any) => {
-        setDataLogo([]);
+        setDataAvatar([]);
     };
 
     const handlePreview = async (file: any) => {
@@ -195,7 +195,7 @@ const ModalRecruiter = (props: IProps) => {
     const handleUploadFileLogo = async ({ file, onSuccess, onError }: any) => {
         const res = await callUploadSingleFile(file, 'recruiters');
         if (res && res.data) {
-            setDataLogo([
+            setDataAvatar([
                 {
                     name: res.data.fileName,
                     uid: uuidv4(),
@@ -204,7 +204,7 @@ const ModalRecruiter = (props: IProps) => {
             if (onSuccess) onSuccess('ok');
         } else {
             if (onError) {
-                setDataLogo([]);
+                setDataAvatar([]);
                 const error = new Error(res.message);
                 onError({ event: error });
             }
@@ -355,13 +355,13 @@ const ModalRecruiter = (props: IProps) => {
                                 <Form.Item
                                     labelCol={{ span: 24 }}
                                     label="Ảnh Logo"
-                                    name="logo"
+                                    name="avatar"
                                     rules={[
                                         {
                                             required: true,
                                             message: 'Vui lòng không bỏ trống',
                                             validator: () => {
-                                                if (dataLogo.length > 0 || dataInit?.logo) return Promise.resolve();
+                                                if (dataAvatar.length > 0 || dataInit?.avatar) return Promise.resolve();
                                                 else return Promise.reject(false);
                                             },
                                         },
@@ -369,7 +369,7 @@ const ModalRecruiter = (props: IProps) => {
                                 >
                                     <ConfigProvider locale={vi_VN}>
                                         <Upload
-                                            name="logo"
+                                            name="avatar"
                                             listType="picture-card"
                                             className="avatar-uploader"
                                             maxCount={1}
@@ -380,15 +380,15 @@ const ModalRecruiter = (props: IProps) => {
                                             onRemove={(file) => handleRemoveFile(file)}
                                             onPreview={handlePreview}
                                             defaultFileList={
-                                                dataInit?.userId && dataInit?.logo
+                                                dataInit?.userId && dataInit?.avatar
                                                     ? [
                                                           {
                                                               uid: uuidv4(),
-                                                              name: dataInit?.logo ?? '',
+                                                              name: dataInit?.avatar ?? '',
                                                               status: 'done',
                                                               url: `${
                                                                   import.meta.env.VITE_BACKEND_URL
-                                                              }/storage/recruiters/${dataInit?.logo}`,
+                                                              }/storage/recruiters/${dataInit?.avatar}`,
                                                           },
                                                       ]
                                                     : []

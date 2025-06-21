@@ -22,6 +22,7 @@ export interface IAccount {
         email: string;
         fullName: string;
         username: string;
+        avatar?: string;
         role: {
             roleId: string;
             name: string;
@@ -47,7 +48,8 @@ export interface IUser {
     dob?: Date;
     gender?: string;
     password: string;
-    username: string;
+    username?: string;
+    avatar?: string;
 
     role?: {
         roleId: string;
@@ -63,7 +65,6 @@ export interface IUser {
 
 export interface IRecruiter extends IUser {
     description?: string;
-    logo?: string;
     website?: string;
 }
 
@@ -73,6 +74,8 @@ export interface IApplicant extends IUser {
     level?: string;
     resumeUrl?: string;
 }
+
+export interface IFullUser extends IApplicant, IRecruiter {}
 
 export interface ISkill {
     skillId?: string;
@@ -114,7 +117,7 @@ export interface IJob {
     recruiter?: {
         userId: string;
         fullName: string;
-        logo?: string;
+        avatar?: string;
         type?: string;
     };
     skills: ISkill[];

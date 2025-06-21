@@ -89,7 +89,7 @@ const ClientJobDetailPage = () => {
                                             width={'200px'}
                                             alt="example"
                                             src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                jobDetail.recruiter?.logo
+                                                jobDetail.recruiter?.avatar
                                             }`}
                                         />
                                     </div>

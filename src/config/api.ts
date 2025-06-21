@@ -6,6 +6,7 @@ import type {
     IApplication,
     IBackendRes,
     ICareer,
+    IFullUser,
     IGetAccount,
     IJob,
     IModelPaginate,
@@ -69,6 +70,10 @@ export const callFetchUser = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IUser>>>(`/api/v1/users?${query}`);
 };
 
+export const callFetchUserByEmail = () => {
+    return axios.post<IBackendRes<IFullUser>>('/api/v1/users');
+};
+
 /***
 Module Recruiter
 ***/
@@ -79,7 +84,7 @@ export const callCreateRecruiter = (
     contact: Contact,
     address: string,
     description?: string,
-    logo?: string,
+    avatar?: string,
     role?: { roleId: string; name: string },
     website?: string,
 ) => {
@@ -90,9 +95,9 @@ export const callCreateRecruiter = (
         contact,
         address,
         description,
-        logo,
         role,
         website,
+        avatar,
         type: 'recruiter',
     });
 };
@@ -105,7 +110,7 @@ export const callUpdateRecruiter = (
     contact: Contact,
     address: string,
     description?: string,
-    logo?: string,
+    avatar?: string,
     role?: { roleId: string; name: string },
     website?: string,
 ) => {
@@ -117,9 +122,9 @@ export const callUpdateRecruiter = (
         contact,
         address,
         description,
-        logo,
         role,
         website,
+        avatar,
         type: 'recruiter',
     });
 };
@@ -152,6 +157,7 @@ export const callCreateApplicant = (
     level?: string,
     role?: { roleId: string; name: string },
     resumeUrl?: string,
+    avatar?: string,
 ) => {
     return axios.post<IBackendRes<IApplicant>>('/api/v1/applicants', {
         fullName,
@@ -166,6 +172,7 @@ export const callCreateApplicant = (
         level,
         role,
         resumeUrl,
+        avatar,
         type: 'applicant',
     });
 };
@@ -184,6 +191,7 @@ export const callUpdateApplicant = (
     level?: string,
     role?: { roleId: string; name: string },
     resumeUrl?: string,
+    avatar?: string,
 ) => {
     return axios.put<IBackendRes<IApplicant>>(`/api/v1/applicants`, {
         userId: applicantId,
@@ -199,6 +207,7 @@ export const callUpdateApplicant = (
         level,
         role,
         resumeUrl,
+        avatar,
         type: 'applicant',
     });
 };
