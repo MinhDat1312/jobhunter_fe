@@ -97,6 +97,12 @@ const ApplicantApplication = () => {
                 dataSource={listApplication}
                 loading={isFetching}
                 pagination={false}
+                style={{
+                    height: 400,
+                    overflowY: 'auto',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                }}
             />
         </Access>
     );
