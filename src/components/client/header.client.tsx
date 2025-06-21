@@ -134,8 +134,8 @@ const Header = () => {
                                     ) : (
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: 'pointer' }}>
-                                                <span>Welcome {user?.fullName}</span>
-                                                <Avatar> {user?.fullName?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                                <span>Welcome {user?.username}</span>
+                                                <Avatar> {user?.username?.substring(0, 2)?.toUpperCase()} </Avatar>
                                             </Space>
                                         </Dropdown>
                                     )}

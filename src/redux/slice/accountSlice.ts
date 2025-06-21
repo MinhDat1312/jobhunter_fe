@@ -10,6 +10,7 @@ interface IState {
         userId: string;
         email: string;
         fullName: string;
+        username: string;
         role: {
             roleId?: string;
             name?: string;
@@ -35,6 +36,7 @@ const initialState: IState = {
         userId: '',
         email: '',
         fullName: '',
+        username: '',
         role: {
             roleId: '',
             name: '',
@@ -59,6 +61,7 @@ export const accountSlice = createSlice({
             state.user.userId = action?.payload?.userId;
             state.user.email = action.payload.email;
             state.user.fullName = action.payload.fullName;
+            state.user.username = action.payload.username;
             state.user.role = action?.payload?.role;
 
             if (!action?.payload?.user?.role) state.user.role = {};
@@ -74,6 +77,7 @@ export const accountSlice = createSlice({
                 userId: '',
                 email: '',
                 fullName: '',
+                username: '',
                 role: {
                     roleId: '',
                     name: '',
@@ -103,6 +107,7 @@ export const accountSlice = createSlice({
                 state.user.userId = action?.payload?.user?.userId;
                 state.user.email = action.payload.user?.email;
                 state.user.fullName = action.payload.user?.fullName;
+                state.user.username = action.payload?.user?.username;
                 state.user.role = action?.payload?.user?.role;
 
                 if (!action?.payload?.user?.role) state.user.role = {};
