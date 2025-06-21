@@ -203,7 +203,11 @@ const ModalApplicant = (props: IProps) => {
                                 />
                             </Col>
                             <Col lg={6} md={6} sm={24} xs={24}>
-                                <ProForm.Item name="role" label="Vai trò">
+                                <ProForm.Item
+                                    name="role"
+                                    label="Vai trò"
+                                    rules={[{ required: true, message: 'Vui lòng chọn vai trò' }]}
+                                >
                                     <DebounceSelect
                                         allowClear
                                         showSearch
