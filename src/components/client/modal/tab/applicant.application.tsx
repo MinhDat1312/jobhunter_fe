@@ -5,6 +5,8 @@ import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { Table } from 'antd';
 import { eventBus } from '../../../../config/eventBus';
+import Access from '../../../share/access';
+import { ALL_PERMISSIONS } from '../../../../config/permissions';
 
 const ApplicantApplication = () => {
     const [listApplication, setListApplication] = useState<IApplication[]>([]);
@@ -73,7 +75,7 @@ const ApplicantApplication = () => {
     ];
 
     return (
-        <div>
+        <Access permission={ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE_APPLICANT}>
             <Table<IApplication>
                 columns={columns}
                 rowKey={'applicationId'}
@@ -81,7 +83,7 @@ const ApplicantApplication = () => {
                 loading={isFetching}
                 pagination={false}
             />
-        </div>
+        </Access>
     );
 };
 

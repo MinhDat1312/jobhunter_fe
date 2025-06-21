@@ -3,6 +3,8 @@ import type { TabsProps } from 'antd/lib';
 import { isMobile } from 'react-device-detect';
 import ApplicantApplication from './tab/applicant.application';
 import JobByEmail from './tab/job.email';
+import { useAppSelector } from '../../../redux/hook';
+import NotPermitted from '../../share/protected-route/not-permitted';
 
 interface IProps {
     open: boolean;
@@ -11,6 +13,7 @@ interface IProps {
 
 const ManageAccount = (props: IProps) => {
     const { open, onClose } = props;
+    const activeRole = useAppSelector((state) => state.account?.user?.role?.active);
 
     const items: TabsProps['items'] = [
         {
@@ -45,9 +48,13 @@ const ManageAccount = (props: IProps) => {
                 footer={null}
                 width={isMobile ? '100%' : '1000px'}
             >
-                <div style={{ minHeight: 400 }}>
-                    <Tabs defaultActiveKey="applicant-application" items={items} />
-                </div>
+                {activeRole ? (
+                    <div style={{ minHeight: 400 }}>
+                        <Tabs defaultActiveKey="applicant-application" items={items} />
+                    </div>
+                ) : (
+                    <NotPermitted onClose={onClose}/>
+                )}
             </Modal>
         </>
     );

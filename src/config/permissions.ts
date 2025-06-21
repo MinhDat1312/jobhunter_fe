@@ -34,6 +34,7 @@ export const ALL_PERMISSIONS = {
     },
     APPLICATIONS: {
         GET_PAGINATE: { method: 'GET', apiPath: '/api/v1/applications', module: 'APPLICATIONS' },
+        GET_PAGINATE_APPLICANT: { method: 'GET', apiPath: '/api/v1/applications/by-applicant', module: 'APPLICATIONS' },
         CREATE: { method: 'POST', apiPath: '/api/v1/applications', module: 'APPLICATIONS' },
         UPDATE: { method: 'PUT', apiPath: '/api/v1/applications', module: 'APPLICATIONS' },
         DELETE: { method: 'DELETE', apiPath: '/api/v1/applications/{id}', module: 'APPLICATIONS' },

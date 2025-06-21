@@ -6,6 +6,7 @@ import {
     message,
     Modal,
     notification,
+    Result,
     Row,
     Upload,
     type UploadProps,
@@ -17,7 +18,7 @@ import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { callCreateApplication, callUploadSingleFile } from '../../../config/api';
 import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { eventBus } from '../../../config/eventBus';
 
 interface IProps {
@@ -30,19 +31,24 @@ const ApplyModal = (props: IProps) => {
     const { isModalOpen, setIsModalOpen, jobDetail } = props;
 
     const navigate = useNavigate();
+    const location = useLocation();
     const isAuthenticated = useAppSelector((state) => state.account.isAuthenticated);
     const user = useAppSelector((state) => state.account.user);
+    const role = user?.role;
     const [urlCV, setUrlCV] = useState<string>('');
 
     const handleOkButton = async () => {
-        if (!urlCV && isAuthenticated) {
+        if (!urlCV && isAuthenticated && role.active) {
             message.error('Vui lòng upload CV!');
             return;
         }
 
         if (!isAuthenticated) {
             setIsModalOpen(false);
-            navigate(`/login?callback=${window.location.href}`);
+            navigate(`/login?callback=${location.pathname}${location.search}`);
+        } else if (!role.active) {
+            setIsModalOpen(false);
+            navigate(`/`);
         } else {
             if (jobDetail) {
                 const res = await callCreateApplication(urlCV, user.email, jobDetail?.jobId, user.userId);
@@ -96,52 +102,60 @@ const ApplyModal = (props: IProps) => {
                 onOk={() => handleOkButton()}
                 onCancel={() => setIsModalOpen(false)}
                 maskClosable={false}
-                okText={isAuthenticated ? 'Ứng tuyển' : 'Đăng nhập'}
+                okText={!isAuthenticated ? 'Đăng nhập' : role.active ? 'Ứng tuyển' : 'Trang chủ'}
                 cancelButtonProps={{ style: { display: 'none' } }}
             >
                 <Divider />
                 {isAuthenticated ? (
                     <div>
-                        <ConfigProvider locale={viVN}>
-                            <ProForm
-                                submitter={{
-                                    render: () => <></>,
-                                }}
-                            >
-                                <Row gutter={[10, 10]}>
-                                    <Col span={24}>
-                                        <div>
-                                            Bạn đang ứng tuyển công việc <b>{jobDetail?.title} </b>tại{' '}
-                                            <b>{jobDetail?.recruiter?.fullName}</b>
-                                        </div>
-                                    </Col>
-                                    <Col span={24}>
-                                        <ProFormText
-                                            fieldProps={{
-                                                type: 'email',
-                                            }}
-                                            label="Email"
-                                            name={'email'}
-                                            labelAlign="right"
-                                            disabled
-                                            initialValue={user?.email}
-                                        />
-                                    </Col>
-                                    <Col span={24}>
-                                        <ProForm.Item
-                                            label={'Upload file CV'}
-                                            rules={[{ required: true, message: 'Vui lòng upload file!' }]}
-                                        >
-                                            <Upload {...propsUpload}>
-                                                <Button icon={<UploadOutlined />}>
-                                                    Tải lên CV của bạn ( Hỗ trợ *.doc, *.docx, *.pdf, and &lt; 5MB )
-                                                </Button>
-                                            </Upload>
-                                        </ProForm.Item>
-                                    </Col>
-                                </Row>
-                            </ProForm>
-                        </ConfigProvider>
+                        {role.active ? (
+                            <ConfigProvider locale={viVN}>
+                                <ProForm
+                                    submitter={{
+                                        render: () => <></>,
+                                    }}
+                                >
+                                    <Row gutter={[10, 10]}>
+                                        <Col span={24}>
+                                            <div>
+                                                Bạn đang ứng tuyển công việc <b>{jobDetail?.title} </b>tại{' '}
+                                                <b>{jobDetail?.recruiter?.fullName}</b>
+                                            </div>
+                                        </Col>
+                                        <Col span={24}>
+                                            <ProFormText
+                                                fieldProps={{
+                                                    type: 'email',
+                                                }}
+                                                label="Email"
+                                                name={'email'}
+                                                labelAlign="right"
+                                                disabled
+                                                initialValue={user?.email}
+                                            />
+                                        </Col>
+                                        <Col span={24}>
+                                            <ProForm.Item
+                                                label={'Upload file CV'}
+                                                rules={[{ required: true, message: 'Vui lòng upload file!' }]}
+                                            >
+                                                <Upload {...propsUpload}>
+                                                    <Button icon={<UploadOutlined />}>
+                                                        Tải lên CV của bạn ( Hỗ trợ *.doc, *.docx, *.pdf, and &lt; 5MB )
+                                                    </Button>
+                                                </Upload>
+                                            </ProForm.Item>
+                                        </Col>
+                                    </Row>
+                                </ProForm>
+                            </ConfigProvider>
+                        ) : (
+                            <Result
+                                status="403"
+                                title="Truy cập bị từ chối"
+                                subTitle="Xin lỗi, bạn không có quyền hạn truy cập thông tin này."
+                            />
+                        )}
                     </div>
                 ) : (
                     <div>Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể "Ứng tuyển" nhé.</div>

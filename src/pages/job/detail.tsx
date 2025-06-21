@@ -9,6 +9,8 @@ import { callFetchJobById } from '../../config/api';
 import { DollarOutlined, EnvironmentOutlined, HistoryOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
 import ApplyModal from '../../components/client/modal/apply.modal';
+import Access from '../../components/share/access';
+import { ALL_PERMISSIONS } from '../../config/permissions';
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = () => {
@@ -45,11 +47,11 @@ const ClientJobDetailPage = () => {
                         <>
                             <Col span={24} md={16}>
                                 <div className={styles['header']}>{jobDetail.title}</div>
-                                <div>
+                                <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
                                     <button onClick={() => setIsModalOpen(true)} className={styles['btn-apply']}>
                                         Apply Now
                                     </button>
-                                </div>
+                                </Access>
                                 <Divider />
                                 <div className={styles['skills']}>
                                     {jobDetail?.skills?.map((item, index) => {

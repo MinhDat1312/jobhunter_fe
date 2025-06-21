@@ -1,7 +1,12 @@
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
-const NotPermitted = () => {
+interface IProps {
+    onClose?: (v: boolean) => void;
+}
+
+const NotPermitted = (props: IProps) => {
+    const { onClose } = props;
     const navigate = useNavigate();
 
     return (
@@ -10,7 +15,15 @@ const NotPermitted = () => {
             title="403"
             subTitle="Xin lỗi, bạn không có quyền hạn truy cập thông tin này."
             extra={
-                <Button type="primary" onClick={() => navigate('/')}>
+                <Button
+                    type="primary"
+                    onClick={() => {
+                        if (onClose) {
+                            onClose(false);
+                        }
+                        navigate('/');
+                    }}
+                >
                     Back Home
                 </Button>
             }
