@@ -12,6 +12,7 @@ interface IState {
         fullName: string;
         username: string;
         avatar: string;
+        type: string;
         role: {
             roleId?: string;
             name?: string;
@@ -39,6 +40,7 @@ const initialState: IState = {
         fullName: '',
         username: '',
         avatar: '',
+        type: '',
         role: {
             roleId: '',
             name: '',
@@ -65,6 +67,7 @@ export const accountSlice = createSlice({
             state.user.fullName = action.payload.fullName;
             state.user.username = action.payload.username;
             state.user.avatar = action?.payload?.avatar;
+            state.user.type = action?.payload?.type;
             state.user.role = action?.payload?.role;
 
             if (!action?.payload?.user?.role) state.user.role = {};
@@ -82,6 +85,7 @@ export const accountSlice = createSlice({
                 fullName: '',
                 username: '',
                 avatar: '',
+                type: '',
                 role: {
                     roleId: '',
                     name: '',
@@ -113,6 +117,7 @@ export const accountSlice = createSlice({
                 state.user.fullName = action.payload.user?.fullName;
                 state.user.username = action.payload?.user?.username;
                 state.user.avatar = action?.payload?.user?.avatar;
+                state.user.type = action?.payload?.user?.type;
                 state.user.role = action?.payload?.user?.role;
 
                 if (!action?.payload?.user?.role) state.user.role = {};

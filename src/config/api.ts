@@ -190,8 +190,8 @@ export const callUpdateApplicant = (
     education?: string,
     level?: string,
     role?: { roleId: string; name: string },
-    resumeUrl?: string,
     avatar?: string,
+    resumeUrl?: string,
 ) => {
     return axios.put<IBackendRes<IApplicant>>(`/api/v1/applicants`, {
         userId: applicantId,
@@ -206,8 +206,8 @@ export const callUpdateApplicant = (
         education,
         level,
         role,
-        resumeUrl,
         avatar,
+        resumeUrl,
         type: 'applicant',
     });
 };

@@ -135,7 +135,19 @@ const Header = () => {
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: 'pointer' }}>
                                                 <span>Welcome {user?.username}</span>
-                                                <Avatar> {user?.username?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                                <Avatar
+                                                    src={
+                                                        user?.avatar && user?.type === 'APPLICANT'
+                                                            ? `${import.meta.env.VITE_BACKEND_URL}/storage/applicants/${
+                                                                  user.avatar
+                                                              }`
+                                                            : `${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
+                                                                  user.avatar
+                                                              }`
+                                                    }
+                                                >
+                                                    {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
+                                                </Avatar>
                                             </Space>
                                         </Dropdown>
                                     )}

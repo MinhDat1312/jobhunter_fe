@@ -5,6 +5,10 @@ import ApplicantApplication from './tab/applicant.application';
 import JobByEmail from './tab/job.email';
 import { useAppSelector } from '../../../redux/hook';
 import NotPermitted from '../../share/protected-route/not-permitted';
+import UpdateInfo from './tab/update.info';
+import { useEffect, useState } from 'react';
+import { callFetchUserByEmail } from '../../../config/api';
+import type { IFullUser } from '../../../types/backend';
 
 interface IProps {
     open: boolean;
@@ -14,6 +18,8 @@ interface IProps {
 const ManageAccount = (props: IProps) => {
     const { open, onClose } = props;
     const activeRole = useAppSelector((state) => state.account?.user?.role?.active);
+    const userSlice = useAppSelector((state) => state.account.user);
+    const [user, setUser] = useState<IFullUser | null>(null);
 
     const items: TabsProps['items'] = [
         {
@@ -22,21 +28,27 @@ const ManageAccount = (props: IProps) => {
             children: <ApplicantApplication />,
         },
         {
+            key: 'user-update-info',
+            label: `Cập nhật thông tin`,
+            children: <UpdateInfo onClose={onClose} dataInit={user} />,
+        },
+        {
             key: 'email-by-skills',
             label: `Nhận Jobs qua Email`,
             children: <JobByEmail />,
         },
-        {
-            key: 'user-update-info',
-            label: `Cập nhật thông tin`,
-            children: `//todo`,
-        },
-        {
-            key: 'user-password',
-            label: `Thay đổi mật khẩu`,
-            children: `//todo`,
-        },
     ];
+
+    useEffect(() => {
+        const init = async () => {
+            const res = await callFetchUserByEmail();
+            if (res?.data.userId) {
+                setUser(res.data);
+            }
+        };
+
+        init();
+    }, []);
 
     return (
         <>

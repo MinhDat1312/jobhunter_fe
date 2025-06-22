@@ -1,6 +1,6 @@
 import { grey, green, blue, red, orange } from '@ant-design/colors';
 import type { IPermission } from '../types/backend';
-import { groupBy, map, values } from 'lodash';
+import { groupBy, map } from 'lodash';
 
 export const ADMIN = 'SUPER_ADMIN';
 

@@ -32,6 +32,29 @@ export interface IApplicantSelect {
     key?: string;
 }
 
+export async function fetchRoleList(name: string): Promise<IApplicantSelect[]> {
+    const q: any = {
+        page: 1,
+        size: 100,
+        filter: '',
+    };
+    q.filter = `${sfLike('name', name)}`;
+    if (!q.filter) delete q.filter;
+    let temp = queryString.stringify(q);
+
+    const res = await callFetchRole(temp);
+    if (res && res.data) {
+        const list = res.data.result;
+        const temp = list.map((item) => {
+            return {
+                label: item.name as string,
+                value: item.roleId as string,
+            };
+        });
+        return temp;
+    } else return [];
+}
+
 const ModalApplicant = (props: IProps) => {
     const { openModal, setOpenModal, dataInit, setDataInit, reloadTable } = props;
 
@@ -126,29 +149,6 @@ const ModalApplicant = (props: IProps) => {
         setOpenModal(false);
         setAnimation('open');
     };
-
-    async function fetchRoleList(name: string): Promise<IApplicantSelect[]> {
-        const q: any = {
-            page: 1,
-            size: 100,
-            filter: '',
-        };
-        q.filter = `${sfLike('name', name)}`;
-        if (!q.filter) delete q.filter;
-        let temp = queryString.stringify(q);
-
-        const res = await callFetchRole(temp);
-        if (res && res.data) {
-            const list = res.data.result;
-            const temp = list.map((item) => {
-                return {
-                    label: item.name as string,
-                    value: item.roleId as string,
-                };
-            });
-            return temp;
-        } else return [];
-    }
 
     return (
         <>

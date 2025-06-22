@@ -23,6 +23,7 @@ export interface IAccount {
         fullName: string;
         username: string;
         avatar?: string;
+        type?: string;
         role: {
             roleId: string;
             name: string;

@@ -172,11 +172,11 @@ const ModalRecruiter = (props: IProps) => {
         if (!isJpgOrPng) {
             message.error('You can only upload JPG/PNG file!');
         }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+            message.error('Image must smaller than 5MB!');
         }
-        return isJpgOrPng && isLt2M;
+        return isJpgOrPng && isLt5M;
     };
 
     const handleChange = (info: any) => {
