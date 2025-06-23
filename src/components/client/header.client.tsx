@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import ManageAccount from './modal/manage.account';
+import { ROLE_LIST } from '../../config/utils';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -137,7 +138,7 @@ const Header = () => {
                                                 <span>Welcome {user?.username}</span>
                                                 <Avatar
                                                     src={
-                                                        user?.avatar && user?.type === 'APPLICANT'
+                                                        user?.avatar && user?.type === ROLE_LIST[2].value
                                                             ? `${import.meta.env.VITE_BACKEND_URL}/storage/applicants/${
                                                                   user.avatar
                                                               }`

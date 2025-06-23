@@ -4,6 +4,12 @@ import { groupBy, map } from 'lodash';
 
 export const ADMIN = 'SUPER_ADMIN';
 
+export const ROLE_LIST = [
+    { label: 'Admin', value: 'SUPER_ADMIN' },
+    { label: 'HR', value: 'HR' },
+    { label: 'Applicant', value: 'APPLICANT' },
+];
+
 export const LOCATION_LIST = [
     { label: 'Hà Nội', value: 'HANOI' },
     { label: 'Hải Phòng', value: 'HAIPHONG' },

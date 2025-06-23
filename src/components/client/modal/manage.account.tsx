@@ -9,6 +9,7 @@ import UpdateInfo from './tab/update.info';
 import { useEffect, useState } from 'react';
 import { callFetchUserByEmail } from '../../../config/api';
 import type { IFullUser } from '../../../types/backend';
+import { ROLE_LIST } from '../../../config/utils';
 
 interface IProps {
     open: boolean;
@@ -18,24 +19,27 @@ interface IProps {
 const ManageAccount = (props: IProps) => {
     const { open, onClose } = props;
     const activeRole = useAppSelector((state) => state.account?.user?.role?.active);
-    const userSlice = useAppSelector((state) => state.account.user);
     const [user, setUser] = useState<IFullUser | null>(null);
 
     const items: TabsProps['items'] = [
-        {
-            key: 'applicant-application',
-            label: `Ứng tuyển`,
-            children: <ApplicantApplication />,
-        },
+        ...(user?.role?.name !== ROLE_LIST[2].value
+            ? []
+            : [
+                  {
+                      key: 'applicant-application',
+                      label: `Ứng tuyển`,
+                      children: <ApplicantApplication />,
+                  },
+                  {
+                      key: 'email-by-skills',
+                      label: `Nhận Jobs qua Email`,
+                      children: <JobByEmail />,
+                  },
+              ]),
         {
             key: 'user-update-info',
             label: `Cập nhật thông tin`,
             children: <UpdateInfo onClose={onClose} dataInit={user} />,
-        },
-        {
-            key: 'email-by-skills',
-            label: `Nhận Jobs qua Email`,
-            children: <JobByEmail />,
         },
     ];
 

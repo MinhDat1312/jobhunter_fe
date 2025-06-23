@@ -2,10 +2,16 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../redux/hook';
 import { Result } from 'antd';
 
+interface IPermission {
+    method: string;
+    apiPath: string;
+    module: string;
+}
+
 interface IProps {
     hideChildren?: boolean;
     children: React.ReactNode;
-    permission: { method: string; apiPath: string; module: string };
+    permission: IPermission | IPermission[];
 }
 
 const Access = (props: IProps) => {
@@ -13,19 +19,21 @@ const Access = (props: IProps) => {
     const [allow, setAllow] = useState<boolean>(true);
     const permissions = useAppSelector((state) => state.account.user.role.permissions);
 
+    const permissionList = Array.isArray(permission) ? permission : [permission];
+
     useEffect(() => {
         if (permissions?.length) {
-            const check = permissions.find(
-                (item) =>
-                    item.apiPath === permission.apiPath &&
-                    item.method === permission.method &&
-                    item.module === permission.module,
+            const check = permissions.some((item) =>
+                permissionList.some(
+                    (perm) =>
+                        item.apiPath === perm.apiPath && item.method === perm.method && item.module === perm.module,
+                ),
             );
             if (check) {
                 setAllow(true);
             } else setAllow(false);
         }
-    }, [permissions]);
+    }, [permissions, permission]);
 
     return (
         <>
