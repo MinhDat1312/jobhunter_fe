@@ -201,9 +201,7 @@ const RecruiterForm = (props: IProps) => {
                                               uid: uuidv4(),
                                               name: dataInit?.avatar ?? '',
                                               status: 'done',
-                                              url: `${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                  dataInit?.avatar
-                                              }`,
+                                              url: `${dataInit?.avatar}`,
                                           },
                                       ]
                                     : []

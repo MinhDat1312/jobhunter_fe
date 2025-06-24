@@ -101,11 +101,9 @@ const UpdateInfo = (props: IProps) => {
             setFileList([
                 {
                     uid: '-1',
-                    name: res.data.fileName,
+                    name: res.data.url,
                     status: 'done',
-                    url: `${import.meta.env.VITE_BACKEND_URL}/storage/${
-                        typeUser === ROLE_LIST[2].value ? 'applicants' : 'recruiters'
-                    }/${res.data.fileName}`,
+                    url: `${res.data.url}`,
                 },
             ]);
             if (onSuccess) onSuccess('ok');

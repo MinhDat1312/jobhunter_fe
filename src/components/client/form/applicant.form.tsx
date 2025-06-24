@@ -1,7 +1,6 @@
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
 import { Col, DatePicker, Form, message, notification, Row, Upload } from 'antd';
-import type { FormInstance } from 'antd/lib';
 import { EDUCATION_LIST, LEVEL_LIST } from '../../../config/utils';
 import type { IFullUser } from '../../../types/backend';
 import { v4 as uuidv4 } from 'uuid';
@@ -212,9 +211,7 @@ const ApplicantForm = (props: IProps) => {
                                               uid: uuidv4(),
                                               name: dataInit?.avatar ?? '',
                                               status: 'done',
-                                              url: `${import.meta.env.VITE_BACKEND_URL}/storage/applicants/${
-                                                  dataInit?.avatar
-                                              }`,
+                                              url: `${dataInit?.avatar}`,
                                           },
                                       ]
                                     : []

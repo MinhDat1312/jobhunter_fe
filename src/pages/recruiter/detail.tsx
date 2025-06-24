@@ -54,13 +54,7 @@ const ClientRecruiterDetailPage = () => {
                             <Col span={24} md={8}>
                                 <div className={styles['recruiter']}>
                                     <div>
-                                        <img
-                                            width={200}
-                                            alt="example"
-                                            src={`${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                recruiterDetail?.avatar
-                                            }`}
-                                        />
+                                        <img width={200} alt="example" src={`${recruiterDetail?.avatar}`} />
                                     </div>
                                     <div>{recruiterDetail?.fullName}</div>
                                 </div>

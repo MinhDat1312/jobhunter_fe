@@ -156,8 +156,8 @@ export const callCreateApplicant = (
     education?: string,
     level?: string,
     role?: { roleId: string; name: string },
-    resumeUrl?: string,
     avatar?: string,
+    resumeUrl?: string,
 ) => {
     return axios.post<IBackendRes<IApplicant>>('/api/v1/applicants', {
         fullName,
@@ -171,8 +171,8 @@ export const callCreateApplicant = (
         education,
         level,
         role,
-        resumeUrl,
         avatar,
+        resumeUrl,
         type: 'applicant',
     });
 };
@@ -381,7 +381,7 @@ export const callUploadSingleFile = (file: any, folderType: string) => {
     bodyFormData.append('file', file);
     bodyFormData.append('folder', folderType);
 
-    return axios<IBackendRes<{ fileName: string }>>({
+    return axios<IBackendRes<{ publicId: string; url: string }>>({
         method: 'post',
         url: '/api/v1/files',
         data: bodyFormData,

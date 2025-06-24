@@ -18,7 +18,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import ManageAccount from './modal/manage.account';
-import { ROLE_LIST } from '../../config/utils';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -136,17 +135,7 @@ const Header = () => {
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: 'pointer' }}>
                                                 <span>Welcome {user?.username}</span>
-                                                <Avatar
-                                                    src={
-                                                        user?.avatar && user?.type === ROLE_LIST[2].value
-                                                            ? `${import.meta.env.VITE_BACKEND_URL}/storage/applicants/${
-                                                                  user.avatar
-                                                              }`
-                                                            : `${import.meta.env.VITE_BACKEND_URL}/storage/recruiters/${
-                                                                  user.avatar
-                                                              }`
-                                                    }
-                                                >
+                                                <Avatar src={`${user.avatar}`}>
                                                     {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
                                                 </Avatar>
                                             </Space>
