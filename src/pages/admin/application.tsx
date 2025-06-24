@@ -131,7 +131,7 @@ const ApplicationPage = () => {
                     </Access>
                     <a
                         style={{ cursor: 'pointer', margin: '0 10px' }}
-                        href={`${import.meta.env.VITE_BACKEND_URL}/storage/resumes/${entity?.resumeUrl}`}
+                        href={`${entity?.resumeUrl}`}
                         target="_blank"
                     >
                         <FolderViewOutlined

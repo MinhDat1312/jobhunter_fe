@@ -79,7 +79,7 @@ const ApplicantApplication = () => {
             render(record) {
                 return (
                     <a
-                        href={`${import.meta.env.VITE_BACKEND_URL}/storage/resumes/${record?.resumeUrl}`}
+                        href={`${record?.resumeUrl}`}
                         target="_blank"
                     >
                         Chi tiết
