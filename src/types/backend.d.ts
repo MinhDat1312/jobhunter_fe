@@ -70,7 +70,7 @@ export interface IRecruiter extends IUser {
 }
 
 export interface IApplicant extends IUser {
-    availableStatus: boolean;
+    availableStatus?: boolean;
     education?: string;
     level?: string;
     resumeUrl?: string;
@@ -185,6 +185,12 @@ export interface IRole {
 export interface Contact {
     phone?: string;
     email?: string;
+}
+
+export interface ISelect {
+    label: string;
+    value: string;
+    key?: string;
 }
 
 // export interface ISubscribers {

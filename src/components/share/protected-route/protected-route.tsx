@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { useAppSelector } from '../../../redux/hook';
+import { useAppSelector } from '../../../hooks/hook';
 import Loading from '../loading';
 import NotPermitted from './not-permitted';
 

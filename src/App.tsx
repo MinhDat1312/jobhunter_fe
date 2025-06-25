@@ -5,7 +5,7 @@ import LayoutClient from './components/client/layout.client';
 import NotFound from './components/share/not.found';
 import LoginPage from './pages/auth/login';
 import { useEffect } from 'react';
-import { useAppDispatch } from './redux/hook';
+import { useAppDispatch } from './hooks/hook';
 import { fetchAccount } from './redux/slice/accountSlice';
 import HomePage from './pages/home/home';
 import ClientJobPage from './pages/job/job';

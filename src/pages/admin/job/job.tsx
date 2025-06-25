@@ -4,7 +4,7 @@ import Access from '../../../components/share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import type { IJob } from '../../../types/backend';
 import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro-components';
-import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
 import { Button, message, notification, Popconfirm, Space, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import DataTable from '../../../components/data.table';
 import Access from '../../../components/share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
-import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
 import type { IPermission, IRole } from '../../../types/backend';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { Button, message, notification, Popconfirm, Space, Tag } from 'antd';

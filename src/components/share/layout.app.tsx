@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { setRefreshTokenAction } from '../../redux/slice/accountSlice';
 import { message } from 'antd';
 import { useEffect } from 'react';

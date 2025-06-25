@@ -4,7 +4,7 @@ import Access from '../../components/share/access';
 import { ALL_PERMISSIONS } from '../../config/permissions';
 import type { IApplication } from '../../types/backend';
 import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro-components';
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import dayjs from 'dayjs';
 import { Space } from 'antd';
 import { EditOutlined, FolderViewOutlined } from '@ant-design/icons';
@@ -129,11 +129,7 @@ const ApplicationPage = () => {
                             }}
                         />
                     </Access>
-                    <a
-                        style={{ cursor: 'pointer', margin: '0 10px' }}
-                        href={`${entity?.resumeUrl}`}
-                        target="_blank"
-                    >
+                    <a style={{ cursor: 'pointer', margin: '0 10px' }} href={`${entity?.resumeUrl}`} target="_blank">
                         <FolderViewOutlined
                             style={{
                                 fontSize: 20,

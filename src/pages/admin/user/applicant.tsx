@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
 import type { IApplicant } from '../../../types/backend';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import dayjs from 'dayjs';

@@ -3,7 +3,7 @@ import DataTable from '../../../components/data.table';
 import Access from '../../../components/share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import type { IRecruiter } from '../../../types/backend';
-import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
 import dayjs from 'dayjs';
 import { Button, message, notification, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';

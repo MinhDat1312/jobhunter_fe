@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAppSelector } from '../../redux/hook';
+import { useAppSelector } from '../../hooks/hook';
 import { Result } from 'antd';
 
 interface IPermission {

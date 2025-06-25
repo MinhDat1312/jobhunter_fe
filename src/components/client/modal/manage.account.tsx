@@ -3,7 +3,7 @@ import type { TabsProps } from 'antd/lib';
 import { isMobile } from 'react-device-detect';
 import ApplicantApplication from './tab/applicant.application';
 import JobByEmail from './tab/job.email';
-import { useAppSelector } from '../../../redux/hook';
+import { useAppSelector } from '../../../hooks/hook';
 import NotPermitted from '../../share/protected-route/not-permitted';
 import UpdateInfo from './tab/update.info';
 import { useEffect, useState } from 'react';

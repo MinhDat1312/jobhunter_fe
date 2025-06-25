@@ -14,7 +14,7 @@ import {
     RiseOutlined,
     TwitterOutlined,
 } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import ManageAccount from './modal/manage.account';

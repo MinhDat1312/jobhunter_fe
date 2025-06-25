@@ -12,7 +12,7 @@ import {
     type UploadProps,
 } from 'antd';
 import type { IJob } from '../../../types/backend';
-import { useAppSelector } from '../../../redux/hook';
+import { useAppSelector } from '../../../hooks/hook';
 import viVN from 'antd/es/locale/vi_VN';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { callCreateApplication, callUploadSingleFile } from '../../../config/api';

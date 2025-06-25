@@ -1,4 +1,4 @@
-import { ProTable, type ActionType, type ParamsType, type ProTableProps } from '@ant-design/pro-components';
+import { ProTable, type ParamsType, type ProTableProps } from '@ant-design/pro-components';
 import { ConfigProvider } from 'antd';
 import vi_VN from 'antd/locale/vi_VN';
 

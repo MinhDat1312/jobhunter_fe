@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUserLoginInfo } from '../../redux/slice/accountSlice';
 import styles from '../../styles/auth.module.scss';
-import { useAppSelector } from '../../redux/hook';
+import { useAppSelector } from '../../hooks/hook';
 
 const LoginPage = () => {
     const navigate = useNavigate();

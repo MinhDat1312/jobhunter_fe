@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import DataTable from '../../../components/data.table';
 import type { ISkill } from '../../../types/backend';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { useAppDispatch, useAppSelector } from '../../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
 import dayjs from 'dayjs';
 import { Button, message, notification, Popconfirm, Space } from 'antd';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';

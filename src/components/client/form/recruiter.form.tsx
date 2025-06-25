@@ -1,16 +1,18 @@
 import { Col, Form, message, notification, Row, Upload, type FormInstance } from 'antd';
-import type { IFullUser } from '../../../types/backend';
+import type { IFullUser, ISelect } from '../../../types/backend';
 import { ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 import { DebounceSelect } from '../../admin/debounce.select';
 import { useEffect, useState } from 'react';
-import { fetchRoleList } from '../../admin/applicant/modal.applicant';
 import ReactQuill from 'react-quill';
-import { callUpdateRecruiter } from '../../../config/api';
+import { callCreateRecruiter, callUpdateRecruiter } from '../../../config/api';
+import { fetchRoleList } from '../../../config/utils';
 
 interface IProps {
+    form: FormInstance<any>;
     dataInit: IFullUser | null;
+    setDataInit?: (v: any) => void;
     onClose?: (v: boolean) => void;
     uploadFileLogo: (options: any) => Promise<void>;
     beforeUpload: (file: any) => boolean;
@@ -18,19 +20,19 @@ interface IProps {
     removeFile: (file: any) => void;
     onPreview: (file: any) => Promise<void>;
     visibleUpload?: boolean;
+    setVisibleUpload?: (v: any) => void;
     loadingUpload?: boolean;
     fileList: any;
-}
-
-interface IRoleSelect {
-    label: string;
-    value: string;
-    key?: string;
+    setFileList?: (v: any) => void;
+    onRole: boolean;
+    reloadTable?: () => void;
 }
 
 const RecruiterForm = (props: IProps) => {
     const {
+        form,
         dataInit,
+        setDataInit,
         onClose,
         uploadFileLogo,
         beforeUpload,
@@ -38,12 +40,15 @@ const RecruiterForm = (props: IProps) => {
         removeFile,
         onPreview,
         visibleUpload,
+        setVisibleUpload,
         loadingUpload,
         fileList,
+        setFileList,
+        onRole,
+        reloadTable,
     } = props;
-    const [roles, setRoles] = useState<IRoleSelect[]>([]);
+    const [roles, setRoles] = useState<ISelect[]>([]);
     const [description, setDescription] = useState<string>('');
-    const [form] = Form.useForm();
 
     useEffect(() => {
         if (dataInit?.userId) {
@@ -67,36 +72,75 @@ const RecruiterForm = (props: IProps) => {
                 contact: dataInit.contact,
                 address: dataInit.address,
             });
+        } else {
+            form.resetFields();
         }
     }, [dataInit]);
 
     const onFinish = async (values: any) => {
         const { fullName, username, contact, address } = values;
+        let { role } = values;
+        let { password } = values;
 
-        if (!dataInit || !dataInit.userId) {
-            message.error('Không tìm thấy thông tin nhà tuyển dụng để cập nhật.');
-            return;
-        }
-        const res = await callUpdateRecruiter(
-            dataInit.userId as string,
-            fullName,
-            dataInit.password,
-            username,
-            contact,
-            address,
-            description,
-            fileList.length > 0 ? fileList[0].name : '',
-            { roleId: dataInit.role?.roleId ?? '', name: '' },
-        );
-        if (res.data) {
-            message.success('Cập nhật nhà tuyển dụng thành công');
-            if (onClose) onClose(false);
+        if (typeof role === 'number') {
+            role = {
+                roleId: role,
+                name: '',
+            };
         } else {
-            notification.error({
-                message: 'Có lỗi xảy ra',
-                description: res.message,
-            });
+            role = dataInit?.role;
         }
+
+        if (dataInit?.userId) {
+            const res = await callUpdateRecruiter(
+                dataInit.userId as string,
+                fullName,
+                !onRole ? dataInit.password : '12345678',
+                username,
+                contact,
+                address,
+                description,
+                fileList.length > 0 ? fileList[0].url : '',
+                !onRole
+                    ? { roleId: dataInit.role?.roleId ?? '', name: '' }
+                    : role
+                    ? { roleId: role.roleId, name: role.name }
+                    : undefined,
+            );
+            if (res.data) {
+                message.success('Cập nhật nhà tuyển dụng thành công');
+                if (onClose) onClose(false);
+                if (reloadTable) reloadTable();
+            } else {
+                notification.error({
+                    message: 'Có lỗi xảy ra',
+                    description: res.message,
+                });
+            }
+        } else {
+            const res = await callCreateRecruiter(
+                fullName,
+                password,
+                username,
+                contact,
+                address,
+                description,
+                fileList.length > 0 ? fileList[0].url : '',
+                { roleId: role.roleId, name: role.name },
+            );
+            if (res.data) {
+                message.success('Thêm mới nhà tuyển dụng thành công');
+                if (onClose) onClose(false);
+                if (reloadTable) reloadTable();
+            } else {
+                notification.error({
+                    message: 'Có lỗi xảy ra',
+                    description: res.message,
+                });
+            }
+        }
+        if (setVisibleUpload) setVisibleUpload(true);
+        if (setFileList) setFileList([]);
     };
 
     return (
@@ -106,10 +150,18 @@ const RecruiterForm = (props: IProps) => {
             submitter={{
                 searchConfig: {
                     resetText: 'Hủy',
-                    submitText: <>Cập nhật</>,
+                    submitText: <>{dataInit?.userId ? 'Cập nhật' : 'Tạo mới'}</>,
                 },
-                onReset: () => {
-                    if (onClose) onClose(false);
+                resetButtonProps: {
+                    preventDefault: true,
+                    onClick: () => {
+                        if (onClose) {
+                            if (setDataInit) setDataInit(null);
+                            onClose(false);
+                            setRoles([]);
+                            if (setFileList) setFileList([]);
+                        }
+                    },
                 },
                 render: (_: any, dom: any) => (
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
@@ -139,14 +191,14 @@ const RecruiterForm = (props: IProps) => {
                         <Col lg={12} md={12} sm={24} xs={24}>
                             <ProForm.Item name="role" label="Vai trò">
                                 <DebounceSelect
-                                    disabled
+                                    disabled={onRole ? false : true}
                                     allowClear
                                     showSearch
                                     value={roles}
                                     placeholder="Chọn vai trò"
                                     fetchOptions={fetchRoleList}
                                     onChange={(newValue: any) => {
-                                        setRoles(newValue as IRoleSelect[]);
+                                        setRoles(newValue as ISelect[]);
                                     }}
                                     style={{ width: '100%' }}
                                 />
@@ -154,14 +206,45 @@ const RecruiterForm = (props: IProps) => {
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col lg={12} md={12} sm={24} xs={24}>
-                            <ProFormText
-                                label="Tên hiển thị"
-                                name="username"
-                                placeholder="Nhập tên đăng nhập"
-                                rules={[{ required: true, message: 'Vui lòng nhập tên hiển thị' }]}
-                            />
-                        </Col>
+                        {!onRole ? (
+                            <Col lg={12} md={12} sm={24} xs={24}>
+                                <ProFormText
+                                    label="Tên hiển thị"
+                                    name="username"
+                                    placeholder="Nhập tên đăng nhập"
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
+                                />
+                            </Col>
+                        ) : (
+                            <>
+                                <Col lg={6} md={6} sm={24} xs={24}>
+                                    <ProFormText
+                                        label="Tên hiển thị"
+                                        name="username"
+                                        placeholder="Nhập tên đăng nhập"
+                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
+                                    />
+                                </Col>
+                                <Col lg={6} md={6} sm={24} xs={24}>
+                                    <ProFormText
+                                        disabled={dataInit?.userId ? true : false}
+                                        label="Mật khẩu"
+                                        name="password"
+                                        rules={[
+                                            () => ({
+                                                validator(_, value) {
+                                                    if (!dataInit?.userId && !value) {
+                                                        return Promise.reject('Vui lòng nhập mật khẩu');
+                                                    }
+                                                    return Promise.resolve();
+                                                },
+                                            }),
+                                        ]}
+                                        placeholder="Nhập mật khẩu"
+                                    />
+                                </Col>
+                            </>
+                        )}
                         <Col lg={12} md={12} sm={24} xs={24}>
                             <ProFormText
                                 label="Email"
@@ -180,8 +263,6 @@ const RecruiterForm = (props: IProps) => {
                         labelCol={{ span: 24 }}
                         label={<span style={{ textAlign: 'center' }}>Ảnh đại diện</span>}
                         name="avatar"
-                        valuePropName="fileList"
-                        getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
                     >
                         <Upload
                             name="avatar"
@@ -199,7 +280,7 @@ const RecruiterForm = (props: IProps) => {
                                     ? [
                                           {
                                               uid: uuidv4(),
-                                              name: dataInit?.avatar ?? '',
+                                              name: dataInit?.fullName ?? '',
                                               status: 'done',
                                               url: `${dataInit?.avatar}`,
                                           },

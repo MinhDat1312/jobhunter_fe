@@ -1,6 +1,9 @@
 import { grey, green, blue, red, orange } from '@ant-design/colors';
-import type { IPermission } from '../types/backend';
+import type { IPermission, ISelect } from '../types/backend';
 import { groupBy, map } from 'lodash';
+import { sfLike } from 'spring-filter-query-builder';
+import queryString from 'query-string';
+import { callFetchRole } from './api';
 
 export const ADMIN = 'SUPER_ADMIN';
 
@@ -151,3 +154,26 @@ export const groupByPermission = (data: any[]): { module: string; permissions: I
         return { module: key, permissions: value as IPermission[] };
     });
 };
+
+export async function fetchRoleList(name: string): Promise<ISelect[]> {
+    const q: any = {
+        page: 1,
+        size: 100,
+        filter: '',
+    };
+    q.filter = `${sfLike('name', name)}`;
+    if (!q.filter) delete q.filter;
+    let temp = queryString.stringify(q);
+
+    const res = await callFetchRole(temp);
+    if (res && res.data) {
+        const list = res.data.result;
+        const temp = list.map((item) => {
+            return {
+                label: item.name as string,
+                value: item.roleId as string,
+            };
+        });
+        return temp;
+    } else return [];
+}
