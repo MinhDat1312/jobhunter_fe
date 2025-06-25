@@ -46,7 +46,7 @@ const ManageAccount = (props: IProps) => {
     useEffect(() => {
         const init = async () => {
             const res = await callFetchUserByEmail();
-            if (res?.data.userId) {
+            if (res?.data && res?.data.userId) {
                 setUser(res.data);
             }
         };

@@ -21,8 +21,8 @@ const RecruiterCard = (props: IProps) => {
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(4);
     const [total, setTotal] = useState(0);
-    const [filter, setFilter] = useState('');
-    const [sortQuery, setSortQuery] = useState('sort=updatedAt,desc');
+    const [filter, _setFilter] = useState('');
+    const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
 
     useEffect(() => {
         const fetchRecruiter = async () => {

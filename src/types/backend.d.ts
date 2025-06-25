@@ -188,9 +188,9 @@ export interface Contact {
 }
 
 export interface ISelect {
-    label: string;
-    value: string;
-    key?: string;
+    label: string | undefined;
+    value: string | undefined;
+    key?: string | undefined;
 }
 
 // export interface ISubscribers {

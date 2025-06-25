@@ -116,8 +116,8 @@ export const accountSlice = createSlice({
                 state.user.email = action.payload.user?.email;
                 state.user.fullName = action.payload.user?.fullName;
                 state.user.username = action.payload?.user?.username;
-                state.user.avatar = action?.payload?.user?.avatar;
-                state.user.type = action?.payload?.user?.type;
+                state.user.avatar = action?.payload?.user?.avatar as string;
+                state.user.type = action?.payload?.user?.type as string;
                 state.user.role = action?.payload?.user?.role;
 
                 if (!action?.payload?.user?.role) state.user.role = {};

@@ -2,7 +2,7 @@ import { Breadcrumb, Col, ConfigProvider, Divider, Form, message, notification, 
 import styles from '../../../styles/admin.module.scss';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import type { IJob, IRecruiter, ISkill } from '../../../types/backend';
+import type { ICareer, IJob, ISelect, ISkill } from '../../../types/backend';
 import viVN from 'antd/lib/locale/vi_VN';
 import {
     FooterToolbar,
@@ -30,12 +30,6 @@ import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
-
-interface ISelect {
-    label: string;
-    value: string;
-    key?: string;
-}
 
 const ViewUpsertJob = () => {
     const navigate = useNavigate();
@@ -67,7 +61,7 @@ const ViewUpsertJob = () => {
                     setRecruiters([
                         {
                             label: res.data.recruiter?.fullName as string,
-                            value: `${res.data.recruiter?.userId}@#$${res.data.recruiter?.logo}` as string,
+                            value: `${res.data.recruiter?.userId}@#$${res.data.recruiter?.avatar}` as string,
                             key: res.data.recruiter?.userId,
                         },
                     ]);
@@ -90,7 +84,7 @@ const ViewUpsertJob = () => {
                         ...res.data,
                         recruiter: {
                             label: res.data.recruiter?.fullName as string,
-                            value: `${res.data.recruiter?.userId}@#$${res.data.recruiter?.logo}` as string,
+                            value: `${res.data.recruiter?.userId}@#$${res.data.recruiter?.avatar}` as string,
                             key: res.data.recruiter?.userId,
                         },
                         location: {
@@ -175,27 +169,29 @@ const ViewUpsertJob = () => {
             const arrSkills = values?.skills?.map((item: string) => {
                 return { skillId: +item };
             });
-            const career = { careerId: +values?.career };
+            const career = { careerId: values?.career };
             const job = {
-                title: values.title,
-                skills: arrSkills,
+                title: values.title as string,
+                skills: arrSkills as ISkill[],
                 recruiter: {
-                    userId: cp && cp.length > 0 ? cp[0] : '',
-                    fullName: values.recruiter.label,
-                    logo: cp && cp.length > 1 ? cp[1] : '',
+                    userId: cp && cp.length > 0 ? (cp[0] as string) : '',
+                    fullName: values.recruiter.label as string,
+                    logo: cp && cp.length > 1 ? (cp[1] as string) : '',
                     type: 'recruiter',
                 },
                 location:
-                    typeof values.location === 'object' ? values.location.label : getLocationName(values.location),
-                salary: values.salary,
-                quantity: values.quantity,
-                level: values.level,
-                description: description,
+                    typeof values.location === 'object'
+                        ? (values.location.label as string)
+                        : getLocationName(values.location),
+                salary: values.salary as number,
+                quantity: values.quantity as number,
+                level: values.level as string,
+                description: description as string,
                 startDate: dayjs(values.startDate, 'DD/MM/YYYY').toDate(),
                 endDate: dayjs(values.endDate, 'DD/MM/YYYY').toDate(),
                 active: values.active ? true : false,
-                workingType: values.workingType,
-                career: career,
+                workingType: values.workingType as string,
+                career: career as ICareer,
             };
             const res = await callCreateJob(job);
             if (res.data) {
@@ -254,7 +250,7 @@ const ViewUpsertJob = () => {
             const temp = list.map((item) => {
                 return {
                     label: item.fullName as string,
-                    value: `${item.userId}@#$${item.logo}` as string,
+                    value: `${item.userId}@#$${item.avatar}` as string,
                 };
             });
             return temp;
@@ -404,7 +400,7 @@ const ViewUpsertJob = () => {
                                     <ProFormDatePicker
                                         label="Ngày bắt đầu"
                                         name="startDate"
-                                        normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
+                                        normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
                                         fieldProps={{
                                             format: 'DD/MM/YYYY',
                                             style: { width: '100%' },
@@ -412,7 +408,7 @@ const ViewUpsertJob = () => {
                                         rules={[
                                             { required: true, message: 'Vui lòng chọn ngày bắt đầu' },
                                             {
-                                                validator: async (_, value, callback) => {
+                                                validator: async (_: any, value: any, _callback: any) => {
                                                     const endDate = form.getFieldValue('endDate');
                                                     if (endDate && value && !dayjs(value).isBefore(dayjs(endDate))) {
                                                         return Promise.reject(
@@ -430,7 +426,7 @@ const ViewUpsertJob = () => {
                                     <ProFormDatePicker
                                         label="Ngày kết thúc"
                                         name="endDate"
-                                        normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
+                                        normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
                                         fieldProps={{
                                             format: 'DD/MM/YYYY',
                                             style: { width: '100%' },
@@ -438,7 +434,7 @@ const ViewUpsertJob = () => {
                                         rules={[
                                             { required: true, message: 'Vui lòng chọn ngày kết thúc' },
                                             {
-                                                validator: async (_, value, callback) => {
+                                                validator: async (_: any, value: any, _callback: any) => {
                                                     const startDate = form.getFieldValue('startDate');
                                                     if (startDate && value && !dayjs(value).isAfter(dayjs(startDate))) {
                                                         return Promise.reject(

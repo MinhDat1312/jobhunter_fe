@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const SearchClient = () => {
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, _setSearchParams] = useSearchParams();
     const queryLocation = searchParams.get('location');
     const querySkills = searchParams.get('skills');
 
@@ -41,7 +41,7 @@ const SearchClient = () => {
                     res?.data?.result?.map((item) => {
                         return {
                             label: item.name as string,
-                            value: item.name.toUpperCase() as string,
+                            value: item.name ? item.name.toUpperCase() : '' as string,
                         };
                     }) ?? [];
                 setOptionsSkills(arr);
