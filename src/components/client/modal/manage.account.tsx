@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { callFetchUserByEmail } from '../../../config/api';
 import type { IFullUser } from '../../../types/backend';
 import { ROLE_LIST } from '../../../config/utils';
+import UpdatePassword from './tab/update.password';
 
 interface IProps {
     open: boolean;
@@ -40,6 +41,11 @@ const ManageAccount = (props: IProps) => {
             key: 'user-update-info',
             label: `Cập nhật thông tin`,
             children: <UpdateInfo onClose={onClose} dataInit={user} />,
+        },
+        {
+            key: 'user-update-password',
+            label: `Cập nhật mật khẩu`,
+            children: <UpdatePassword onClose={onClose} dataInit={user} />,
         },
     ];
 

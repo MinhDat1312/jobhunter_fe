@@ -74,6 +74,14 @@ export const callFetchUserByEmail = () => {
     return axios.post<IBackendRes<IFullUser>>('/api/v1/users');
 };
 
+export const callUpdatePassword = (currentPassword: string, newPassword: string, rePassword: string) => {
+    return axios.put<IBackendRes<IAccount>>('/api/v1/users/update-password', {
+        currentPassword,
+        newPassword,
+        rePassword,
+    });
+};
+
 /***
 Module Recruiter
 ***/
