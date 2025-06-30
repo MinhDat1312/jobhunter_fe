@@ -1,23 +1,15 @@
 import { isMobile } from 'react-device-detect';
-import { FaReact } from 'react-icons/fa';
 import styles from '../../styles/client.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Avatar, ConfigProvider, Drawer, Dropdown, Menu, message, Space, type MenuProps } from 'antd';
+import { Avatar, ConfigProvider, Drawer, Dropdown, Image, Menu, message, Space, type MenuProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-    CodeOutlined,
-    ContactsOutlined,
-    FireOutlined,
-    LogoutOutlined,
-    MenuFoldOutlined,
-    RiseOutlined,
-    TwitterOutlined,
-} from '@ant-design/icons';
+import { ContactsOutlined, FireOutlined, LogoutOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import ManageAccount from './modal/manage.account';
+import logo from '../../assets/images/logo.png';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -37,19 +29,16 @@ const Header = () => {
 
     const items: MenuProps['items'] = [
         {
-            label: <Link to={'/'}>Trang Chủ</Link>,
+            label: <Link to={'/'}>Trang chủ</Link>,
             key: '/',
-            icon: <TwitterOutlined />,
         },
         {
-            label: <Link to={'/job'}>Việc Làm</Link>,
+            label: <Link to={'/job'}>Việc làm</Link>,
             key: '/job',
-            icon: <CodeOutlined />,
         },
         {
-            label: <Link to={'/recruiter'}>Top Công ty</Link>,
+            label: <Link to={'/recruiter'}>Top công ty</Link>,
             key: '/recruiter',
-            icon: <RiseOutlined />,
         },
     ];
 
@@ -103,25 +92,28 @@ const Header = () => {
     return (
         <>
             <div className={styles['header-section']}>
-                <div className={styles['container']}>
+                <div className={`${styles.container} ${styles.nav}`}>
                     {!isMobile ? (
-                        <div style={{ display: 'flex', gap: 30 }}>
-                            <div className={styles['brand']}>
-                                <FaReact onClick={() => navigate('/')} title="Job Hunter" />
+                        <div style={{ height: 55, display: 'flex', gap: 30 }}>
+                            <div className={styles['brand']} onClick={() => navigate('/')}>
+                                <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
                             <div className={styles['top-menu']}>
                                 <ConfigProvider
                                     theme={{
                                         token: {
-                                            colorPrimary: '#ffffff',
-                                            colorBgContainer: '#222831',
-                                            colorText: '#a7a7a7',
+                                            colorPrimary: '#00b452',
+                                            colorBgContainer: '#ffffff',
+                                            colorText: '#37434f',
                                         },
                                     }}
                                 >
                                     <Menu
                                         style={{
                                             borderBottom: 'none',
+                                            fontSize: '15px',
+                                            fontWeight: 'bold',
+                                            width: '100%',
                                         }}
                                         selectedKeys={[current]}
                                         mode="horizontal"
@@ -130,7 +122,7 @@ const Header = () => {
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
                                     {isAuthenticated === false ? (
-                                        <Link to={'/login'}>Đăng Nhập</Link>
+                                        <Link to={'/login'}>Đăng nhập</Link>
                                     ) : (
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: 'pointer' }}>
