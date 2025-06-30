@@ -14,6 +14,7 @@ import type {
     IRecruiter,
     IRole,
     ISkill,
+    ISubscriber,
     IUser,
 } from '../types/backend';
 import axios from './axios-customize';
@@ -379,6 +380,33 @@ export const callFetchRole = (query: string) => {
 
 export const callFetchRoleById = (roleId: string) => {
     return axios.get<IBackendRes<IRole>>(`/api/v1/roles/${roleId}`);
+};
+
+/***
+Module Subscriber
+***/
+export const callCreateSubscriber = (subs: ISubscriber) => {
+    return axios.post<IBackendRes<ISubscriber>>('/api/v1/subscribers', { ...subs });
+};
+
+export const callUpdateSubscriber = (subs: ISubscriber) => {
+    return axios.put<IBackendRes<ISubscriber>>(`/api/v1/subscribers`, { ...subs });
+};
+
+export const callDeleteSubscriber = (id: string) => {
+    return axios.delete<IBackendRes<ISubscriber>>(`/api/v1/subscribers/${id}`);
+};
+
+export const callFetchSubscriberById = (id: string) => {
+    return axios.get<IBackendRes<ISubscriber>>(`/api/v1/subscribers/${id}`);
+};
+
+export const callFetchSubscriber = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<ISubscriber>>>(`/api/v1/subscribers?${query}`);
+};
+
+export const callGetSubscriberSkills = () => {
+    return axios.post<IBackendRes<ISubscriber>>('/api/v1/subscribers/skills');
 };
 
 /***

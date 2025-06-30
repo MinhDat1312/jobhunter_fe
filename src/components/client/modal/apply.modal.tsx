@@ -12,7 +12,6 @@ import {
     type UploadProps,
 } from 'antd';
 import type { IJob } from '../../../types/backend';
-import { useAppSelector } from '../../../hooks/hook';
 import viVN from 'antd/es/locale/vi_VN';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { callCreateApplication, callUploadSingleFile } from '../../../config/api';
@@ -20,6 +19,7 @@ import { useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { eventBus } from '../../../config/eventBus';
+import { useAppSelector } from '../../../hooks/hook';
 
 interface IProps {
     isModalOpen: boolean;
