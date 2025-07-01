@@ -1,4 +1,4 @@
-import { Button, Col, Form, message, notification, Row, Select } from 'antd';
+import { Button, Card, Col, Form, message, notification, Row, Select } from 'antd';
 import { useAppSelector } from '../../../../hooks/hook';
 import { useEffect, useState } from 'react';
 import { MonitorOutlined } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import {
 import Access from '../../../share/access';
 import { ALL_PERMISSIONS } from '../../../../config/permissions';
 
-const JobByEmail = () => {
+const SubscriptionEmail = () => {
     const user = useAppSelector((state) => state.account.user);
     const [optionsSkills, setOptionsSkills] = useState<
         {
@@ -103,38 +103,40 @@ const JobByEmail = () => {
 
     return (
         <Access permission={ALL_PERMISSIONS.SKILLS.GET_PAGINATE}>
-            <Form onFinish={onFinish} form={form}>
-                <Row gutter={[20, 20]}>
-                    <Col span={24}>
-                        <Form.Item
-                            label={'Kỹ năng'}
-                            name={'skills'}
-                            rules={[{ required: true, message: 'Vui lòng chọn ít nhất 1 skill!' }]}
-                        >
-                            <Select
-                                mode="multiple"
-                                allowClear
-                                suffixIcon={null}
-                                style={{ width: '100%' }}
-                                placeholder={
-                                    <>
-                                        <MonitorOutlined /> Tìm theo kỹ năng...
-                                    </>
-                                }
-                                maxTagCount={5}
-                                maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
-                                optionLabelProp="label"
-                                options={optionsSkills}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Button onClick={() => form.submit()}>Cập nhật</Button>
-                    </Col>
-                </Row>
-            </Form>
+            <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+                <Form onFinish={onFinish} form={form}>
+                    <Row gutter={[20, 20]}>
+                        <Col span={24}>
+                            <Form.Item
+                                label={'Kỹ năng'}
+                                name={'skills'}
+                                rules={[{ required: true, message: 'Vui lòng chọn ít nhất 1 skill!' }]}
+                            >
+                                <Select
+                                    mode="multiple"
+                                    allowClear
+                                    suffixIcon={null}
+                                    style={{ width: '100%' }}
+                                    placeholder={
+                                        <>
+                                            <MonitorOutlined /> Tìm theo kỹ năng...
+                                        </>
+                                    }
+                                    maxTagCount={5}
+                                    maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
+                                    optionLabelProp="label"
+                                    options={optionsSkills}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Button onClick={() => form.submit()}>Cập nhật</Button>
+                        </Col>
+                    </Row>
+                </Form>
+            </Card>
         </Access>
     );
 };
 
-export default JobByEmail;
+export default SubscriptionEmail;

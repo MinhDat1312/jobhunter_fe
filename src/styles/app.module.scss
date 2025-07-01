@@ -1,4 +1,8 @@
 // @import 'variables.scss';
+$color-main: #00b452;
+$color-main-lighter: #c7f7dd;
+$color-font: #37434f;
+
 * {
     margin: 0;
     padding: 0;
@@ -7,4 +11,45 @@
 .content-app {
     height: 100%;
     width: 100%;
+}
+
+.sider-app {
+    max-height: 500px;
+    margin: 32px;
+    border-radius: 12px !important;
+    background-color: #ffffff;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-app {
+    height: 100%;
+    border-right: 0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+
+    :global(.ant-menu-item.ant-menu-item-selected),
+    :global(.ant-menu-item.ant-menu-item-selected.ant-menu-item-active):hover,
+    :global(.ant-menu-item.ant-menu-item-active):hover {
+        background-color: $color-main-lighter !important;
+        color: $color-main !important;
+    }
+
+    :global(.ant-menu-item.ant-menu-item-selected) :global(.ant-menu-title-content) {
+        color: $color-main !important;
+        font-weight: bold !important;
+    }
+
+    :global(.ant-menu-title-content) {
+        color: $color-font !important;
+        transition: none !important;
+
+        &:hover {
+            color: $color-main !important;
+        }
+    }
+
+    :global(.ant-menu-item-icon) {
+        font-size: 16px !important;
+    }
 }

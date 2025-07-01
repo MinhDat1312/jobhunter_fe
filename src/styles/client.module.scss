@@ -1,4 +1,5 @@
 $color-main: #00b452;
+$color-main-lighter: #c7f7dd;
 $color-font: #37434f;
 
 .container {
@@ -70,6 +71,20 @@ $color-font: #37434f;
         align-items: center;
         height: 55px;
         color: white;
+    }
+}
+
+:global(.ant-dropdown-menu-item) {
+    color: $color-font !important;
+    font-size: 15px !important;
+
+    &:hover {
+        background-color: $color-main-lighter !important;
+        color: $color-main !important;
+    }
+
+    svg {
+        font-size: 15px !important;
     }
 }
 

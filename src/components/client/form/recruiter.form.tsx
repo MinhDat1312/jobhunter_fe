@@ -170,12 +170,6 @@ const RecruiterForm = (props: IProps) => {
                     icon: <CheckSquareOutlined />,
                 },
             }}
-            style={{
-                height: 400,
-                overflowY: 'auto',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-            }}
         >
             <Row gutter={16}>
                 <Col lg={20} md={20} sm={24} xs={24}>
@@ -275,18 +269,7 @@ const RecruiterForm = (props: IProps) => {
                             onChange={onChange}
                             onRemove={(file) => removeFile(file)}
                             onPreview={onPreview}
-                            defaultFileList={
-                                dataInit?.userId && dataInit?.avatar
-                                    ? [
-                                          {
-                                              uid: uuidv4(),
-                                              name: dataInit?.fullName ?? '',
-                                              status: 'done',
-                                              url: `${dataInit?.avatar}`,
-                                          },
-                                      ]
-                                    : []
-                            }
+                            fileList={fileList}
                         >
                             {visibleUpload && fileList.length < 1 && (
                                 <div>

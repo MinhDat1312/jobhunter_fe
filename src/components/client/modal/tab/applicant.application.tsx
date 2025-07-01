@@ -3,7 +3,7 @@ import type { IApplication } from '../../../../types/backend';
 import { callFetchApplicationByApplicant } from '../../../../config/api';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { Table } from 'antd';
+import { Card, Table } from 'antd';
 import { eventBus } from '../../../../config/eventBus';
 import Access from '../../../share/access';
 import { ALL_PERMISSIONS } from '../../../../config/permissions';
@@ -78,10 +78,7 @@ const ApplicantApplication = () => {
             dataIndex: '',
             render(record) {
                 return (
-                    <a
-                        href={`${record?.resumeUrl}`}
-                        target="_blank"
-                    >
+                    <a href={`${record?.resumeUrl}`} target="_blank">
                         Chi tiết
                     </a>
                 );
@@ -91,19 +88,21 @@ const ApplicantApplication = () => {
 
     return (
         <Access permission={ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE_APPLICANT}>
-            <Table<IApplication>
-                columns={columns}
-                rowKey={'applicationId'}
-                dataSource={listApplication}
-                loading={isFetching}
-                pagination={false}
-                style={{
-                    height: 400,
-                    overflowY: 'auto',
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
-                }}
-            />
+            <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+                <Table<IApplication>
+                    columns={columns}
+                    rowKey={'applicationId'}
+                    dataSource={listApplication}
+                    loading={isFetching}
+                    pagination={false}
+                    style={{
+                        height: 400,
+                        overflowY: 'auto',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                    }}
+                />
+            </Card>
         </Access>
     );
 };

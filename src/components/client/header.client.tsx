@@ -8,7 +8,6 @@ import { ContactsOutlined, FireOutlined, LogoutOutlined, MenuFoldOutlined } from
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
-import ManageAccount from './modal/manage.account';
 import logo from '../../assets/images/logo.png';
 
 const Header = () => {
@@ -20,7 +19,6 @@ const Header = () => {
     const user = useAppSelector((state) => state.account.user);
 
     const [current, setCurrent] = useState('home');
-    const [openMangeAccount, setOpenManageAccount] = useState<boolean>(false);
     const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 
     useEffect(() => {
@@ -49,7 +47,7 @@ const Header = () => {
     const itemsDropdown = [
         {
             label: (
-                <label style={{ cursor: 'pointer' }} onClick={() => setOpenManageAccount(true)}>
+                <label style={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}>
                     Quản lý tài khoản
                 </label>
             ),
@@ -124,7 +122,7 @@ const Header = () => {
                                     {isAuthenticated === false ? (
                                         <Link to={'/login'}>Đăng nhập</Link>
                                     ) : (
-                                        <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
+                                        <Dropdown menu={{ items: itemsDropdown }} trigger={['hover']}>
                                             <Space style={{ cursor: 'pointer' }}>
                                                 <span>Welcome {user?.username}</span>
                                                 <Avatar src={`${user.avatar}`}>
@@ -138,7 +136,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className={styles['header-mobile']}>
-                            <span>Your APP</span>
+                            <span>Job Hunter</span>
                             <MenuFoldOutlined onClick={() => setOpenMobileMenu(true)} />
                         </div>
                     )}
@@ -148,8 +146,6 @@ const Header = () => {
             <Drawer title="Chức năng" placement="right" onClose={() => setOpenMobileMenu(false)} open={openMobileMenu}>
                 <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={itemsMobiles} />
             </Drawer>
-
-            <ManageAccount open={openMangeAccount} onClose={setOpenManageAccount} />
         </>
     );
 };

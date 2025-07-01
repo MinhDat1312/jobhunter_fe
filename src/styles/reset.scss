@@ -1,5 +1,12 @@
+html,
 body {
     font-family: 'Inter', sans-serif;
+    overflow-y: scroll !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
 }
 
 .ant-pro-footer-bar {

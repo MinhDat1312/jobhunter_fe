@@ -24,7 +24,7 @@ const NotPermitted = (props: IProps) => {
                         navigate('/');
                     }}
                 >
-                    Back Home
+                    Trang chủ
                 </Button>
             }
         />

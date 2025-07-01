@@ -20,6 +20,11 @@ import JobTab from './pages/admin/job/job.tab';
 import ViewUpsertJob from './components/admin/job/upsert.job';
 import ApplicationPage from './pages/admin/application';
 import RoleTab from './pages/admin/role/role.tab';
+import LayoutProfile from './components/layout.profile';
+import UpdateInfo from './components/client/modal/tab/update.info';
+import UpdatePassword from './components/client/modal/tab/update.password';
+import ApplicantApplication from './components/client/modal/tab/applicant.application';
+import SubscriptionEmail from './components/client/modal/tab/subscription.email';
 
 const router = createBrowserRouter([
     {
@@ -112,6 +117,21 @@ const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
             },
+        ],
+    },
+    {
+        path: '/profile',
+        element: (
+            <LayoutApp>
+                <LayoutProfile />
+            </LayoutApp>
+        ),
+        errorElement: <NotFound />,
+        children: [
+            { index: true, element: <UpdateInfo /> },
+            { path: 'setting', element: <UpdatePassword /> },
+            { path: 'my-jobs', element: <ApplicantApplication /> },
+            { path: 'subscription', element: <SubscriptionEmail /> },
         ],
     },
     {

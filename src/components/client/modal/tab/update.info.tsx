@@ -1,12 +1,12 @@
-import { ConfigProvider, Form, Modal, type UploadFile } from 'antd';
+import { Card, ConfigProvider, Form, Modal, type UploadFile } from 'antd';
 import viVN from 'antd/es/locale/vi_VN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import Access from '../../../share/access';
 import { ALL_PERMISSIONS } from '../../../../config/permissions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ROLE_LIST } from '../../../../config/utils';
-import { callUploadSingleFile } from '../../../../config/api';
+import { callFetchUserByEmail, callUploadSingleFile } from '../../../../config/api';
 import type { IFullUser } from '../../../../types/backend';
 import '../../../../styles/reset.scss';
 import ApplicantForm from '../../form/applicant.form';
@@ -15,14 +15,9 @@ import useUploadFile from '../../../../hooks/useUploadFile';
 
 dayjs.locale('vi');
 
-interface IProps {
-    onClose?: (v: boolean) => void;
-    dataInit: IFullUser | null;
-}
-
-const UpdateInfo = (props: IProps) => {
-    const { onClose, dataInit } = props;
-    const typeUser = dataInit?.role?.name;
+const UpdateInfo = () => {
+    const [user, setUser] = useState<IFullUser | null>(null);
+    const typeUser = user?.role?.name;
     const [form] = Form.useForm();
 
     const {
@@ -44,53 +39,64 @@ const UpdateInfo = (props: IProps) => {
     );
 
     useEffect(() => {
-        if (dataInit?.avatar) {
+        const init = async () => {
+            const res = await callFetchUserByEmail();
+            if (res?.data && res?.data.userId) {
+                setUser(res.data);
+            }
+        };
+
+        init();
+    }, []);
+
+    useEffect(() => {
+        if (user?.avatar) {
             const file: UploadFile = {
                 uid: '-1',
-                name: dataInit.fullName,
+                name: user.fullName,
                 status: 'done',
-                url: dataInit.avatar,
+                url: user.avatar,
             };
             setFileList([file]);
         } else {
             setFileList([]);
         }
-    }, [dataInit]);
+    }, [user, setFileList]);
 
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
             <ConfigProvider locale={viVN}>
-                {typeUser === ROLE_LIST[2].value ? (
-                    <ApplicantForm
-                        form={form}
-                        dataInit={dataInit}
-                        onClose={onClose}
-                        uploadFileLogo={handleUploadFile}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                        removeFile={handleRemoveFile}
-                        onPreview={handlePreview}
-                        visibleUpload={visibleUpload}
-                        loadingUpload={loadingUpload}
-                        fileList={fileList}
-                        onRole={false}
-                    />
-                ) : (
-                    <RecruiterForm
-                        form={form}
-                        dataInit={dataInit}
-                        onClose={onClose}
-                        uploadFileLogo={handleUploadFile}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                        removeFile={handleRemoveFile}
-                        onPreview={handlePreview}
-                        visibleUpload={visibleUpload}
-                        loadingUpload={loadingUpload}
-                        fileList={fileList}
-                        onRole={false}
-                    />
-                )}
+                <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+                    {typeUser === ROLE_LIST[2].value ? (
+                        <ApplicantForm
+                            form={form}
+                            dataInit={user ?? null}
+                            uploadFileLogo={handleUploadFile}
+                            beforeUpload={beforeUpload}
+                            onChange={handleChange}
+                            removeFile={handleRemoveFile}
+                            onPreview={handlePreview}
+                            visibleUpload={visibleUpload}
+                            loadingUpload={loadingUpload}
+                            fileList={fileList}
+                            onRole={false}
+                        />
+                    ) : (
+                        <RecruiterForm
+                            form={form}
+                            dataInit={user ?? null}
+                            uploadFileLogo={handleUploadFile}
+                            beforeUpload={beforeUpload}
+                            onChange={handleChange}
+                            removeFile={handleRemoveFile}
+                            onPreview={handlePreview}
+                            visibleUpload={visibleUpload}
+                            loadingUpload={loadingUpload}
+                            fileList={fileList}
+                            onRole={false}
+                        />
+                    )}
+                </Card>
                 <Modal
                     open={previewOpen}
                     title={previewTitle}
