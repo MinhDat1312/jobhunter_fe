@@ -1,16 +1,30 @@
-import { isMobile } from 'react-device-detect';
 import styles from '../../styles/client.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Avatar, ConfigProvider, Drawer, Dropdown, Image, Menu, message, Space, type MenuProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ContactsOutlined, FireOutlined, LogoutOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import {
+    CloseOutlined,
+    ContactsOutlined,
+    FireOutlined,
+    FundOutlined,
+    HomeOutlined,
+    LogoutOutlined,
+    MenuUnfoldOutlined,
+    ScheduleOutlined,
+} from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import logo from '../../assets/images/logo.png';
+import { Grid } from 'antd';
+const { useBreakpoint } = Grid;
 
 const Header = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -18,30 +32,34 @@ const Header = () => {
     const isAuthenticated = useAppSelector((state) => state.account.isAuthenticated);
     const user = useAppSelector((state) => state.account.user);
 
-    const [current, setCurrent] = useState('home');
+    const [current, setCurrent] = useState(location.pathname);
     const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 
     useEffect(() => {
         setCurrent(location.pathname);
-    }, [location]);
+    }, [location.pathname]);
 
     const items: MenuProps['items'] = [
         {
             label: <Link to={'/'}>Trang chủ</Link>,
             key: '/',
+            icon: <HomeOutlined />,
         },
         {
             label: <Link to={'/job'}>Việc làm</Link>,
             key: '/job',
+            icon: <ScheduleOutlined />,
         },
         {
             label: <Link to={'/recruiter'}>Top công ty</Link>,
             key: '/recruiter',
+            icon: <FundOutlined />,
         },
     ];
 
     const onClick: MenuProps['onClick'] = (e) => {
         setCurrent(e.key);
+        setOpenMobileMenu(false);
     };
 
     const itemsDropdown = [
@@ -51,7 +69,7 @@ const Header = () => {
                     Quản lý tài khoản
                 </label>
             ),
-            key: 'manage-account',
+            key: '/profile',
             icon: <ContactsOutlined />,
         },
 
@@ -59,7 +77,7 @@ const Header = () => {
             ? [
                   {
                       label: <Link to={'/admin'}>Trang Quản Trị</Link>,
-                      key: 'admin',
+                      key: '/admin',
                       icon: <FireOutlined />,
                   },
               ]
@@ -91,7 +109,20 @@ const Header = () => {
         <>
             <div className={styles['header-section']}>
                 <div className={`${styles.container} ${styles.nav}`}>
-                    {!isMobile ? (
+                    {isMobile || isTablet ? (
+                        <div className={styles['header-mobile']}>
+                            <MenuUnfoldOutlined
+                                style={{ fontSize: '24px', color: '#00b452' }}
+                                onClick={() => setOpenMobileMenu(true)}
+                            />
+                            <div className={styles['brand']} onClick={() => navigate('/')}>
+                                <Image width={100} src={logo} alt="Job Hunter" preview={false} />
+                            </div>
+                            <Avatar src={`${user.avatar}`}>
+                                {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
+                            </Avatar>
+                        </div>
+                    ) : (
                         <div style={{ height: 55, display: 'flex', gap: 30 }}>
                             <div className={styles['brand']} onClick={() => navigate('/')}>
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
@@ -106,17 +137,7 @@ const Header = () => {
                                         },
                                     }}
                                 >
-                                    <Menu
-                                        style={{
-                                            borderBottom: 'none',
-                                            fontSize: '15px',
-                                            fontWeight: 'bold',
-                                            width: '100%',
-                                        }}
-                                        selectedKeys={[current]}
-                                        mode="horizontal"
-                                        items={items}
-                                    />
+                                    <Menu selectedKeys={[current]} mode="horizontal" items={items} />
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
                                     {isAuthenticated === false ? (
@@ -134,16 +155,30 @@ const Header = () => {
                                 </div>
                             </div>
                         </div>
-                    ) : (
-                        <div className={styles['header-mobile']}>
-                            <span>Job Hunter</span>
-                            <MenuFoldOutlined onClick={() => setOpenMobileMenu(true)} />
-                        </div>
                     )}
                 </div>
             </div>
 
-            <Drawer title="Chức năng" placement="right" onClose={() => setOpenMobileMenu(false)} open={openMobileMenu}>
+            <Drawer
+                title={
+                    <div
+                        style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+                        onClick={() => setOpenMobileMenu(false)}
+                    >
+                        <span style={{ marginLeft: 'auto', marginRight: '12px' }}>Đóng</span>
+                    </div>
+                }
+                closeIcon={false}
+                extra={
+                    <CloseOutlined
+                        onClick={() => setOpenMobileMenu(false)}
+                        style={{ fontSize: 20, cursor: 'pointer', color: '#00b452' }}
+                    />
+                }
+                placement="left"
+                onClose={() => setOpenMobileMenu(false)}
+                open={openMobileMenu}
+            >
                 <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={itemsMobiles} />
             </Drawer>
         </>
