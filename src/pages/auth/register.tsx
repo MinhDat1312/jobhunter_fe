@@ -52,7 +52,7 @@ const RegisterPage = () => {
                         </div>
                         <Form name="basic" onFinish={onFinish} autoComplete="off">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
                                     <Form.Item
                                         labelCol={{ span: 24 }}
                                         label="Email"
@@ -62,7 +62,7 @@ const RegisterPage = () => {
                                         <Input type="email" />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
                                     <Form.Item
                                         label="Tôi là"
                                         name="type"
@@ -78,7 +78,7 @@ const RegisterPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
                                     <Form.Item
                                         labelCol={{ span: 24 }}
                                         label="Mật khẩu"
@@ -88,7 +88,7 @@ const RegisterPage = () => {
                                         <Input.Password />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
                                     <Form.Item
                                         labelCol={{ span: 24 }}
                                         label="Nhập lại mật khẩu"
@@ -113,7 +113,7 @@ const RegisterPage = () => {
                             {typeRegister !== 'applicant' && (
                                 <>
                                     <Row gutter={16}>
-                                        <Col span={12}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
                                             <Form.Item
                                                 labelCol={{ span: 24 }}
                                                 label="Họ tên"
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                                                 <Input />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={12}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
                                             <Form.Item
                                                 labelCol={{ span: 24 }}
                                                 label="Tên đăng nhập"
@@ -137,7 +137,7 @@ const RegisterPage = () => {
                                         </Col>
                                     </Row>
                                     <Row gutter={16}>
-                                        <Col span={12}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
                                             <Form.Item
                                                 labelCol={{ span: 24 }}
                                                 label="Số điện thoại"
@@ -149,7 +149,7 @@ const RegisterPage = () => {
                                                 <Input type="tel" />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={12}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
                                             <Form.Item
                                                 name="address"
                                                 label="Địa chỉ"
