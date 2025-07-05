@@ -1,16 +1,16 @@
 import { Button, Card, Col, Form, message, notification, Row, Select } from 'antd';
-import { useAppSelector } from '../../../../hooks/hook';
+import { useAppSelector } from '../../../hooks/hook';
 import { useEffect, useState } from 'react';
 import { MonitorOutlined } from '@ant-design/icons';
-import type { ISubscriber } from '../../../../types/backend';
+import type { ISubscriber } from '../../../types/backend';
 import {
     callCreateSubscriber,
     callFetchAllSkill,
     callGetSubscriberSkills,
     callUpdateSubscriber,
-} from '../../../../config/api';
-import Access from '../../../share/access';
-import { ALL_PERMISSIONS } from '../../../../config/permissions';
+} from '../../../config/api';
+import Access from '../../share/access';
+import { ALL_PERMISSIONS } from '../../../config/permissions';
 
 const SubscriptionEmail = () => {
     const user = useAppSelector((state) => state.account.user);

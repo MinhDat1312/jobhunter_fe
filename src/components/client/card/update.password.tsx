@@ -1,12 +1,12 @@
 import { Card, Col, Form, message, notification, Row } from 'antd';
-import Access from '../../../share/access';
-import { ALL_PERMISSIONS } from '../../../../config/permissions';
+import Access from '../../share/access';
+import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { useState } from 'react';
 import { ProForm, ProFormText } from '@ant-design/pro-components';
 import { CheckSquareOutlined, LoadingOutlined } from '@ant-design/icons';
-import { callUpdatePassword } from '../../../../config/api';
-import { useAppDispatch } from '../../../../hooks/hook';
-import { setUserLoginInfo } from '../../../../redux/slice/accountSlice';
+import { callUpdatePassword } from '../../../config/api';
+import { useAppDispatch } from '../../../hooks/hook';
+import { setUserLoginInfo } from '../../../redux/slice/accountSlice';
 import { Grid } from 'antd';
 
 const { useBreakpoint } = Grid;

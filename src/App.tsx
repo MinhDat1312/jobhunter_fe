@@ -21,10 +21,10 @@ import ViewUpsertJob from './components/admin/job/upsert.job';
 import ApplicationPage from './pages/admin/application';
 import RoleTab from './pages/admin/role/role.tab';
 import LayoutProfile from './components/layout.profile';
-import UpdateInfo from './components/client/modal/tab/update.info';
-import UpdatePassword from './components/client/modal/tab/update.password';
-import ApplicantApplication from './components/client/modal/tab/applicant.application';
-import SubscriptionEmail from './components/client/modal/tab/subscription.email';
+import UpdateInfo from './components/client/card/update.info';
+import UpdatePassword from './components/client/card/update.password';
+import SubscriptionEmail from './components/client/card/subscription.email';
+import MyJob from './components/client/card/my.job';
 
 const router = createBrowserRouter([
     {
@@ -130,7 +130,7 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <UpdateInfo /> },
             { path: 'setting', element: <UpdatePassword /> },
-            { path: 'my-jobs', element: <ApplicantApplication /> },
+            { path: 'my-jobs', element: <MyJob /> },
             { path: 'subscription', element: <SubscriptionEmail /> },
         ],
     },
