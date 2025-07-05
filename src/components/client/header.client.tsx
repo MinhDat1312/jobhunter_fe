@@ -1,24 +1,27 @@
 import styles from '../../styles/client.module.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Avatar, ConfigProvider, Drawer, Dropdown, Image, Menu, message, Space, type MenuProps } from 'antd';
+import { Avatar, ConfigProvider, Dropdown, Image, Menu, message, Space, type MenuProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    CloseOutlined,
     ContactsOutlined,
     FireOutlined,
     FundOutlined,
     HomeOutlined,
     LogoutOutlined,
+    MailOutlined,
     MenuUnfoldOutlined,
     ScheduleOutlined,
+    SettingOutlined,
+    UserOutlined,
 } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import logo from '../../assets/images/logo.png';
-import { Grid } from 'antd';
 import DrawerCustom from './drawer.client';
+import { Grid } from 'antd';
+import { ROLE_LIST } from '../../config/utils';
 const { useBreakpoint } = Grid;
 
 const Header = () => {
@@ -41,7 +44,7 @@ const Header = () => {
         setCurrent(location.pathname);
     }, [location.pathname]);
 
-    const items: MenuProps['items'] = [
+    const itemsLeft: MenuProps['items'] = [
         {
             label: <Link to={'/'}>Trang chủ</Link>,
             key: '/',
@@ -59,10 +62,50 @@ const Header = () => {
         },
     ];
 
-    const onClick: MenuProps['onClick'] = (e) => {
-        setCurrent(e.key);
-        setOpenMobileMenuLeft(false);
-    };
+    const itemsRight: MenuProps['items'] = [
+        {
+            label: <Link to="/profile">Hồ sơ</Link>,
+            key: '/profile',
+            icon: <UserOutlined />,
+        },
+        {
+            label: <Link to="/profile/setting">Cài đặt</Link>,
+            key: '/profile/setting',
+            icon: <SettingOutlined />,
+        },
+        ...(user?.role?.name !== ROLE_LIST[2].value
+            ? []
+            : [
+                  {
+                      label: <Link to="/profile/my-jobs">Việc làm của tôi</Link>,
+                      key: '/profile/my-jobs',
+                      icon: <ScheduleOutlined />,
+                  },
+                  {
+                      label: <Link to="/profile/subscription">Đăng ký nhận email</Link>,
+                      key: '/profile/subscription',
+                      icon: <MailOutlined />,
+                  },
+              ]),
+        ...(user.role?.permissions?.length && user.role?.active && user.role?.name !== 'APPLICANT'
+            ? [
+                  {
+                      label: <Link to={'/admin'}>Trang Quản Trị</Link>,
+                      key: '/admin',
+                      icon: <FireOutlined />,
+                  },
+              ]
+            : []),
+        {
+            label: (
+                <label style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
+                    Đăng xuất
+                </label>
+            ),
+            key: 'logout',
+            icon: <LogoutOutlined />,
+        },
+    ];
 
     const itemsDropdown = [
         {
@@ -118,9 +161,25 @@ const Header = () => {
                             <div className={styles['brand']} onClick={() => navigate('/')}>
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
-                            <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
-                                {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
-                            </Avatar>
+                            {isAuthenticated === false ? (
+                                <Link
+                                    to={'/login'}
+                                    style={{
+                                        cursor: 'pointer',
+                                        display: 'block',
+                                        color: '#00b452',
+                                        fontSize: '16px',
+                                        fontWeight: 'bold',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    Đăng nhập
+                                </Link>
+                            ) : (
+                                <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
+                                    {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
+                                </Avatar>
+                            )}
                         </div>
                     ) : (
                         <div style={{ height: 55, display: 'flex', gap: 30 }}>
@@ -137,7 +196,7 @@ const Header = () => {
                                         },
                                     }}
                                 >
-                                    <Menu selectedKeys={[current]} mode="horizontal" items={items} />
+                                    <Menu selectedKeys={[current]} mode="horizontal" items={itemsLeft} />
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
                                     {isAuthenticated === false ? (
@@ -163,9 +222,12 @@ const Header = () => {
                 placement="left"
                 open={openMobileMenuLeft}
                 onClose={() => setOpenMobileMenuLeft(false)}
-                onMenuClick={onClick}
+                onMenuClick={(e) => {
+                    setCurrent(e.key);
+                    setOpenMobileMenuLeft(false);
+                }}
                 selectedKey={current}
-                menuItems={items}
+                menuItems={itemsLeft}
                 titleText="Đóng"
             />
 
@@ -173,9 +235,12 @@ const Header = () => {
                 placement="right"
                 open={openMobileMenuRight}
                 onClose={() => setOpenMobileMenuRight(false)}
-                onMenuClick={onClick}
+                onMenuClick={(e) => {
+                    setCurrent(e.key);
+                    setOpenMobileMenuRight(false);
+                }}
                 selectedKey={current}
-                menuItems={itemsDropdown}
+                menuItems={itemsRight}
                 showUsername
                 username={user?.username}
             />

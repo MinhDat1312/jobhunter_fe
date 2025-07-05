@@ -10,11 +10,16 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { ROLE_LIST } from '../config/utils';
 import { Link } from 'react-router-dom';
 import NotPermitted from './share/protected-route/not-permitted';
-import { isMobile } from 'react-device-detect';
+import { Grid } from 'antd';
 
 const { Sider, Content } = Layout;
+const { useBreakpoint } = Grid;
 
 const LayoutProfile = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const user = useAppSelector((state) => state.account.user);
     const activeRole = user.role.active;
 
@@ -68,15 +73,20 @@ const LayoutProfile = () => {
                 }}
             >
                 {!isMobile && <div style={{ width: '100px' }}></div>}
-                <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
-                    <Menu
-                        mode="inline"
-                        className={styles['menu-app']}
-                        selectedKeys={[activeMenu]}
-                        items={menuItems}
-                        onClick={(e) => setActiveMenu(e.key)}
-                    />
-                </Sider>
+                {isMobile || isTablet ? (
+                    <></>
+                ) : (
+                    <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
+                        <Menu
+                            mode="inline"
+                            className={styles['menu-app']}
+                            selectedKeys={[activeMenu]}
+                            items={menuItems}
+                            onClick={(e) => setActiveMenu(e.key)}
+                        />
+                    </Sider>
+                )}
+
                 <Content>{activeRole ? <Outlet /> : <NotPermitted />}</Content>
             </Layout>
             <Footer />
