@@ -1,4 +1,4 @@
-import { Card, Col, Form, message, notification, Row } from 'antd';
+import { Card, Col, ConfigProvider, Form, message, notification, Row } from 'antd';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { useState } from 'react';

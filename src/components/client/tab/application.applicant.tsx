@@ -89,7 +89,7 @@ const ApplicationApplicant = () => {
             dataIndex: '',
             render(record) {
                 return (
-                    <a href={`${record?.resumeUrl}`} target="_blank">
+                    <a href={`${record?.resumeUrl}`} target="_blank" style={{ color: '#00b452' }}>
                         Chi tiết
                     </a>
                 );

@@ -1,4 +1,4 @@
-import { Button, Divider, Form, Input, message, notification } from 'antd';
+import { Button, ConfigProvider, Divider, Form, Input, message, notification } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { callLogin } from '../../config/api';
 import { useState, useEffect } from 'react';
@@ -50,38 +50,49 @@ const LoginPage = () => {
                             <h2 className={`${styles.text} ${styles['text-large']}`}>Đăng Nhập</h2>
                             <Divider />
                         </div>
-                        <Form name="basic" onFinish={onFinish} autoComplete="off">
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                label="Email"
-                                name="email"
-                                rules={[{ required: true, message: 'Email không được để trống!' }]}
-                            >
-                                <Input />
-                            </Form.Item>
+                        <ConfigProvider
+                            theme={{
+                                token: {
+                                    colorPrimary: '#00b452',
+                                },
+                            }}
+                        >
+                            <Form name="basic" onFinish={onFinish} autoComplete="off">
+                                <Form.Item
+                                    labelCol={{ span: 24 }}
+                                    label="Email"
+                                    name="email"
+                                    rules={[{ required: true, message: 'Email không được để trống!' }]}
+                                >
+                                    <Input />
+                                </Form.Item>
 
-                            <Form.Item
-                                labelCol={{ span: 24 }}
-                                label="Mật khẩu"
-                                name="password"
-                                rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
-                            >
-                                <Input.Password />
-                            </Form.Item>
+                                <Form.Item
+                                    labelCol={{ span: 24 }}
+                                    label="Mật khẩu"
+                                    name="password"
+                                    rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
+                                >
+                                    <Input.Password />
+                                </Form.Item>
 
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" loading={isSubmit}>
-                                    Đăng nhập
-                                </Button>
-                            </Form.Item>
-                            <Divider>Or</Divider>
-                            <p className="text text-normal">
-                                Chưa có tài khoản ?
-                                <span>
-                                    <Link to="/register"> Đăng Ký </Link>
-                                </span>
-                            </p>
-                        </Form>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" loading={isSubmit}>
+                                        Đăng nhập
+                                    </Button>
+                                </Form.Item>
+                                <Divider>Or</Divider>
+                                <p className="text text-normal">
+                                    Chưa có tài khoản ?
+                                    <span>
+                                        <Link to="/register" style={{ color: '#00b452' }}>
+                                            {' '}
+                                            Đăng Ký{' '}
+                                        </Link>
+                                    </span>
+                                </p>
+                            </Form>
+                        </ConfigProvider>
                     </section>
                 </div>
             </main>

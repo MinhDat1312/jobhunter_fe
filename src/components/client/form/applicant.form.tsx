@@ -1,6 +1,6 @@
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
-import { Col, DatePicker, Form, message, notification, Row, Upload, type FormInstance } from 'antd';
+import { Col, ConfigProvider, DatePicker, Form, message, notification, Row, Upload, type FormInstance } from 'antd';
 import { EDUCATION_LIST, fetchRoleList, LEVEL_LIST } from '../../../config/utils';
 import type { IFullUser, ISelect } from '../../../types/backend';
 import { v4 as uuidv4 } from 'uuid';
