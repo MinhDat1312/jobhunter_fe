@@ -83,15 +83,8 @@ const LayoutProfile = () => {
                         />
                     </Sider>
                 )}
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorPrimary: '#00b452',
-                        },
-                    }}
-                >
-                    <Content>{activeRole ? <Outlet /> : <NotPermitted />}</Content>
-                </ConfigProvider>
+
+                <Content>{activeRole ? <Outlet /> : <NotPermitted />}</Content>
             </Layout>
             <Footer />
         </div>

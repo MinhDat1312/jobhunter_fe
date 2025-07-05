@@ -50,151 +50,141 @@ const RegisterPage = () => {
                             <h2 className={`${styles.text} ${styles['text-large']}`}> Đăng Ký Tài Khoản </h2>
                             <Divider />
                         </div>
-                        <ConfigProvider
-                            theme={{
-                                token: {
-                                    colorPrimary: '#00b452',
-                                },
-                            }}
-                        >
-                            <Form name="basic" onFinish={onFinish} autoComplete="off">
-                                <Row gutter={16}>
-                                    <Col lg={12} md={12} sm={24} xs={24}>
-                                        <Form.Item
-                                            labelCol={{ span: 24 }}
-                                            label="Email"
-                                            name={['contact', 'email']}
-                                            rules={[{ required: true, message: 'Email không được để trống!' }]}
-                                        >
-                                            <Input type="email" />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col lg={12} md={12} sm={24} xs={24}>
-                                        <Form.Item
-                                            label="Tôi là"
-                                            name="type"
-                                            initialValue="applicant"
-                                            labelCol={{ span: 24 }}
-                                            rules={[{ required: true }]}
-                                        >
-                                            <Select onChange={handleChangeType}>
-                                                <Option value="applicant">Ứng viên</Option>
-                                                <Option value="recruiter">Nhà tuyển dụng</Option>
-                                            </Select>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row gutter={16}>
-                                    <Col lg={12} md={12} sm={24} xs={24}>
-                                        <Form.Item
-                                            labelCol={{ span: 24 }}
-                                            label="Mật khẩu"
-                                            name="password"
-                                            rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
-                                        >
-                                            <Input.Password />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col lg={12} md={12} sm={24} xs={24}>
-                                        <Form.Item
-                                            labelCol={{ span: 24 }}
-                                            label="Nhập lại mật khẩu"
-                                            name="re-password"
-                                            dependencies={['password']}
-                                            rules={[
-                                                { required: true, message: 'Nhập lại mật khẩu không được để trống!' },
-                                                ({ getFieldValue }) => ({
-                                                    validator(_, value) {
-                                                        if (!value || getFieldValue('password') === value) {
-                                                            return Promise.resolve();
-                                                        }
-                                                        return Promise.reject(
-                                                            new Error('Mật khẩu nhập lại không khớp!'),
-                                                        );
+                        <Form name="basic" onFinish={onFinish} autoComplete="off">
+                            <Row gutter={16}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
+                                    <Form.Item
+                                        labelCol={{ span: 24 }}
+                                        label="Email"
+                                        name={['contact', 'email']}
+                                        rules={[{ required: true, message: 'Email không được để trống!' }]}
+                                    >
+                                        <Input type="email" />
+                                    </Form.Item>
+                                </Col>
+                                <Col lg={12} md={12} sm={24} xs={24}>
+                                    <Form.Item
+                                        label="Tôi là"
+                                        name="type"
+                                        initialValue="applicant"
+                                        labelCol={{ span: 24 }}
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Select onChange={handleChangeType}>
+                                            <Option value="applicant">Ứng viên</Option>
+                                            <Option value="recruiter">Nhà tuyển dụng</Option>
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={16}>
+                                <Col lg={12} md={12} sm={24} xs={24}>
+                                    <Form.Item
+                                        labelCol={{ span: 24 }}
+                                        label="Mật khẩu"
+                                        name="password"
+                                        rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
+                                    >
+                                        <Input.Password />
+                                    </Form.Item>
+                                </Col>
+                                <Col lg={12} md={12} sm={24} xs={24}>
+                                    <Form.Item
+                                        labelCol={{ span: 24 }}
+                                        label="Nhập lại mật khẩu"
+                                        name="re-password"
+                                        dependencies={['password']}
+                                        rules={[
+                                            { required: true, message: 'Nhập lại mật khẩu không được để trống!' },
+                                            ({ getFieldValue }) => ({
+                                                validator(_, value) {
+                                                    if (!value || getFieldValue('password') === value) {
+                                                        return Promise.resolve();
+                                                    }
+                                                    return Promise.reject(new Error('Mật khẩu nhập lại không khớp!'));
+                                                },
+                                            }),
+                                        ]}
+                                    >
+                                        <Input.Password />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            {typeRegister !== 'applicant' && (
+                                <>
+                                    <Row gutter={16}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                label="Họ tên"
+                                                name="fullName"
+                                                rules={[{ required: true, message: 'Họ tên không được để trống!' }]}
+                                            >
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                label="Tên đăng nhập"
+                                                name="username"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: 'Tên đăng nhập không được để trống!',
                                                     },
-                                                }),
-                                            ]}
-                                        >
-                                            <Input.Password />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                {typeRegister !== 'applicant' && (
-                                    <>
-                                        <Row gutter={16}>
-                                            <Col lg={12} md={12} sm={24} xs={24}>
-                                                <Form.Item
-                                                    labelCol={{ span: 24 }}
-                                                    label="Họ tên"
-                                                    name="fullName"
-                                                    rules={[{ required: true, message: 'Họ tên không được để trống!' }]}
-                                                >
-                                                    <Input />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col lg={12} md={12} sm={24} xs={24}>
-                                                <Form.Item
-                                                    labelCol={{ span: 24 }}
-                                                    label="Tên đăng nhập"
-                                                    name="username"
-                                                    rules={[
-                                                        {
-                                                            required: true,
-                                                            message: 'Tên đăng nhập không được để trống!',
-                                                        },
-                                                    ]}
-                                                >
-                                                    <Input />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                        <Row gutter={16}>
-                                            <Col lg={12} md={12} sm={24} xs={24}>
-                                                <Form.Item
-                                                    labelCol={{ span: 24 }}
-                                                    label="Số điện thoại"
-                                                    name={['contact', 'phone']}
-                                                    rules={[
-                                                        {
-                                                            required: true,
-                                                            message: 'Số điện thoại không được để trống!',
-                                                        },
-                                                    ]}
-                                                >
-                                                    <Input type="tel" />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col lg={12} md={12} sm={24} xs={24}>
-                                                <Form.Item
-                                                    name="address"
-                                                    label="Địa chỉ"
-                                                    labelCol={{ span: 24 }}
-                                                    rules={[{ required: true, message: 'Không được để trống!' }]}
-                                                >
-                                                    <Input />
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
-                                    </>
-                                )}
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" loading={isSubmit}>
-                                        Đăng ký
-                                    </Button>
-                                </Form.Item>
-                                <Divider> Or </Divider>
-                                <p className="text text-normal">
-                                    {' '}
-                                    Đã có tài khoản ?
-                                    <span>
-                                        <Link to="/login" style={{ color: '#00b452' }}>
-                                            {' '}
-                                            Đăng Nhập{' '}
-                                        </Link>
-                                    </span>
-                                </p>
-                            </Form>
-                        </ConfigProvider>
+                                                ]}
+                                            >
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={16}>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
+                                            <Form.Item
+                                                labelCol={{ span: 24 }}
+                                                label="Số điện thoại"
+                                                name={['contact', 'phone']}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: 'Số điện thoại không được để trống!',
+                                                    },
+                                                ]}
+                                            >
+                                                <Input type="tel" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col lg={12} md={12} sm={24} xs={24}>
+                                            <Form.Item
+                                                name="address"
+                                                label="Địa chỉ"
+                                                labelCol={{ span: 24 }}
+                                                rules={[{ required: true, message: 'Không được để trống!' }]}
+                                            >
+                                                <Input />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </>
+                            )}
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" loading={isSubmit}>
+                                    Đăng ký
+                                </Button>
+                            </Form.Item>
+                            <Divider> Or </Divider>
+                            <p className="text text-normal">
+                                {' '}
+                                Đã có tài khoản ?
+                                <span>
+                                    <Link to="/login" style={{ color: '#00b452' }}>
+                                        {' '}
+                                        Đăng Nhập{' '}
+                                    </Link>
+                                </span>
+                            </p>
+                        </Form>
                     </section>
                 </div>
             </main>

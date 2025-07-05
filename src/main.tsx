@@ -17,6 +17,7 @@ createRoot(document.getElementById('root') as HTMLElement).render(
             theme={{
                 token: {
                     fontFamily: 'Inter, sans-serif',
+                    colorPrimary: '#00b452',
                 },
             }}
         >
