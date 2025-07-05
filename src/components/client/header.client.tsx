@@ -18,6 +18,7 @@ import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import logo from '../../assets/images/logo.png';
 import { Grid } from 'antd';
+import DrawerCustom from './drawer.client';
 const { useBreakpoint } = Grid;
 
 const Header = () => {
@@ -33,7 +34,8 @@ const Header = () => {
     const user = useAppSelector((state) => state.account.user);
 
     const [current, setCurrent] = useState(location.pathname);
-    const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
+    const [openMobileMenuLeft, setOpenMobileMenuLeft] = useState<boolean>(false);
+    const [openMobileMenuRight, setOpenMobileMenuRight] = useState<boolean>(false);
 
     useEffect(() => {
         setCurrent(location.pathname);
@@ -59,7 +61,7 @@ const Header = () => {
 
     const onClick: MenuProps['onClick'] = (e) => {
         setCurrent(e.key);
-        setOpenMobileMenu(false);
+        setOpenMobileMenuLeft(false);
     };
 
     const itemsDropdown = [
@@ -94,8 +96,6 @@ const Header = () => {
         },
     ];
 
-    const itemsMobiles = [...items, ...itemsDropdown];
-
     const handleLogout = async () => {
         const res = await callLogout();
         if (res && res && +res.statusCode === 200) {
@@ -113,12 +113,12 @@ const Header = () => {
                         <div className={styles['header-mobile']}>
                             <MenuUnfoldOutlined
                                 style={{ fontSize: '24px', color: '#00b452' }}
-                                onClick={() => setOpenMobileMenu(true)}
+                                onClick={() => setOpenMobileMenuLeft(true)}
                             />
                             <div className={styles['brand']} onClick={() => navigate('/')}>
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
-                            <Avatar src={`${user.avatar}`}>
+                            <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
                                 {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
                             </Avatar>
                         </div>
@@ -159,28 +159,26 @@ const Header = () => {
                 </div>
             </div>
 
-            <Drawer
-                title={
-                    <div
-                        style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
-                        onClick={() => setOpenMobileMenu(false)}
-                    >
-                        <span style={{ marginLeft: 'auto', marginRight: '12px' }}>Đóng</span>
-                    </div>
-                }
-                closeIcon={false}
-                extra={
-                    <CloseOutlined
-                        onClick={() => setOpenMobileMenu(false)}
-                        style={{ fontSize: 20, cursor: 'pointer', color: '#00b452' }}
-                    />
-                }
+            <DrawerCustom
                 placement="left"
-                onClose={() => setOpenMobileMenu(false)}
-                open={openMobileMenu}
-            >
-                <Menu onClick={onClick} selectedKeys={[current]} mode="vertical" items={itemsMobiles} />
-            </Drawer>
+                open={openMobileMenuLeft}
+                onClose={() => setOpenMobileMenuLeft(false)}
+                onMenuClick={onClick}
+                selectedKey={current}
+                menuItems={items}
+                titleText="Đóng"
+            />
+
+            <DrawerCustom
+                placement="right"
+                open={openMobileMenuRight}
+                onClose={() => setOpenMobileMenuRight(false)}
+                onMenuClick={onClick}
+                selectedKey={current}
+                menuItems={itemsDropdown}
+                showUsername
+                username={user?.username}
+            />
         </>
     );
 };

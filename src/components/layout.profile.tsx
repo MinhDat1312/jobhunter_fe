@@ -60,9 +60,15 @@ const LayoutProfile = () => {
     return (
         <div>
             <Header />
-            <Layout style={{ minHeight: '100vh' }}>
-                <div style={{ width: '100px' }}></div>
-                <Sider width={280} className={styles['sider-app']}>
+            <Layout
+                style={{
+                    minHeight: '100vh',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                }}
+            >
+                {!isMobile && <div style={{ width: '100px' }}></div>}
+                <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
                     <Menu
                         mode="inline"
                         className={styles['menu-app']}
