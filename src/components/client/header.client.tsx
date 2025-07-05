@@ -121,7 +121,7 @@ const Header = () => {
         ...(user.role?.permissions?.length && user.role?.active && user.role?.name !== 'APPLICANT'
             ? [
                   {
-                      label: <Link to={'/admin'}>Trang Quản Trị</Link>,
+                      label: <Link to={'/admin'}>Trang quản trị</Link>,
                       key: '/admin',
                       icon: <FireOutlined />,
                   },

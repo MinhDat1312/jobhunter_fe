@@ -7,7 +7,7 @@ import {
     ScheduleOutlined,
     UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Layout, Menu, Space, Grid, type MenuProps, Image, Dropdown, message } from 'antd';
+import { Avatar, Layout, Menu, Space, Grid, type MenuProps, Image, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { ALL_PERMISSIONS } from '../../config/permissions';
@@ -16,6 +16,8 @@ import logo from '../../assets/images/logo.png';
 import { callLogout } from '../../config/api';
 import { setLogoutAction } from '../../redux/slice/accountSlice';
 import DrawerCustom from '../client/drawer.client';
+import styles from '../../styles/app.module.scss';
+import stylesAdmin from '../../styles/admin.module.scss';
 
 const { Content, Sider } = Layout;
 const { useBreakpoint } = Grid;
@@ -151,6 +153,7 @@ const LayoutAdmin = () => {
                             <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                         </div>
                         <Menu
+                            className={styles['menu-app']}
                             selectedKeys={[activeMenu]}
                             mode="inline"
                             items={menuItems}
@@ -161,29 +164,30 @@ const LayoutAdmin = () => {
                     <div
                         style={{
                             backgroundColor: '#ffffff',
-                            height: '40px',
+                            height: '55px',
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'center',
+                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
                         }}
                     >
                         <MenuUnfoldOutlined
                             style={{ fontSize: '24px', color: '#00b452', marginLeft: '16px' }}
                             onClick={() => setOpenMobileMenuLeft(true)}
                         />
-                        <div
-                            style={{
-                                height: 32,
-                                marginRight: 16,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                cursor: 'pointer',
-                            }}
-                            onClick={() => navigate('/')}
-                        >
-                            <Image width={75} src={logo} alt="Job Hunter" preview={false} />
+                        <div className={stylesAdmin['brand']} onClick={() => navigate('/')}>
+                            <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                         </div>
+                        <Space
+                            style={{
+                                marginRight: 16,
+                                color: '#37434f',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {user?.fullName.toUpperCase()}
+                        </Space>
                     </div>
                 )}
                 <Layout>
@@ -192,7 +196,13 @@ const LayoutAdmin = () => {
                             className="admin-header"
                             style={{ display: 'flex', justifyContent: 'flex-end', margin: 20 }}
                         >
-                            <Space>
+                            <Space
+                                style={{
+                                    color: '#37434f',
+                                    fontSize: '16px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 Welcome {user?.fullName}
                                 <Avatar> {user?.fullName?.substring(0, 2)?.toUpperCase()} </Avatar>
                             </Space>

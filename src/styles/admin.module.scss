@@ -20,6 +20,24 @@
     }
 }
 
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
 @keyframes slideFadeIn {
     0% {
         opacity: 0;

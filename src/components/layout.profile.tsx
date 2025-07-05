@@ -1,5 +1,5 @@
 import { MailOutlined, ScheduleOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { ConfigProvider, Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 import Header from './client/header.client';
 import Footer from './client/footer.client';
 import styles from '../styles/app.module.scss';
