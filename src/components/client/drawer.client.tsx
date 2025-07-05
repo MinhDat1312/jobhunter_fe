@@ -7,7 +7,7 @@ interface IProps {
     onClose: () => void;
     onMenuClick: (e: any) => void;
     selectedKey: string;
-    menuItems: any[];
+    menuItems: any[] | undefined;
     titleText?: string;
     showUsername?: boolean;
     username?: string;
