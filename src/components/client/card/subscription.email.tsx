@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, message, notification, Row, Select } from 'antd';
+import { Button, Card, Col, Form, message, notification, Row, Select, Grid } from 'antd';
 import { useAppSelector } from '../../../hooks/hook';
 import { useEffect, useState } from 'react';
 import { MonitorOutlined } from '@ant-design/icons';
@@ -12,7 +12,13 @@ import {
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 
+const { useBreakpoint } = Grid;
+
 const SubscriptionEmail = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const user = useAppSelector((state) => state.account.user);
     const [optionsSkills, setOptionsSkills] = useState<
         {
@@ -103,7 +109,14 @@ const SubscriptionEmail = () => {
 
     return (
         <Access permission={ALL_PERMISSIONS.SKILLS.GET_PAGINATE}>
-            <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+            <Card
+                style={{
+                    minHeight: 180,
+                    marginBlock: '32px',
+                    marginRight: isMobile || isTablet ? '0px' : '100px',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
+            >
                 <Form onFinish={onFinish} form={form}>
                     <Row gutter={[20, 20]}>
                         <Col span={24}>
