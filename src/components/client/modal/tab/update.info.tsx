@@ -12,10 +12,16 @@ import '../../../../styles/reset.scss';
 import ApplicantForm from '../../form/applicant.form';
 import RecruiterForm from '../../form/recruiter.form';
 import useUploadFile from '../../../../hooks/useUploadFile';
+import { Grid } from 'antd';
 
 dayjs.locale('vi');
+const { useBreakpoint } = Grid;
 
 const UpdateInfo = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const [user, setUser] = useState<IFullUser | null>(null);
     const typeUser = user?.role?.name;
     const [form] = Form.useForm();
@@ -66,7 +72,13 @@ const UpdateInfo = () => {
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
             <ConfigProvider locale={viVN}>
-                <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+                <Card
+                    style={{
+                        marginBlock: '32px',
+                        marginRight: isMobile || isTablet ? '0px' : '100px',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
                     {typeUser === ROLE_LIST[2].value ? (
                         <ApplicantForm
                             form={form}

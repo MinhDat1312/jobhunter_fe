@@ -67,15 +67,12 @@ const LayoutProfile = () => {
             <Header />
             <Layout
                 style={{
-                    minHeight: '100vh',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                 }}
             >
-                {!isMobile && <div style={{ width: '100px' }}></div>}
-                {isMobile || isTablet ? (
-                    <></>
-                ) : (
+                {!isMobile && !isTablet && <div style={{ width: '100px' }}></div>}
+                {isMobile || isTablet ? null : (
                     <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
                         <Menu
                             mode="inline"
@@ -86,7 +83,6 @@ const LayoutProfile = () => {
                         />
                     </Sider>
                 )}
-
                 <Content>{activeRole ? <Outlet /> : <NotPermitted />}</Content>
             </Layout>
             <Footer />

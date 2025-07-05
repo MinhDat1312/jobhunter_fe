@@ -7,8 +7,15 @@ import { CheckSquareOutlined, LoadingOutlined } from '@ant-design/icons';
 import { callUpdatePassword } from '../../../../config/api';
 import { useAppDispatch } from '../../../../hooks/hook';
 import { setUserLoginInfo } from '../../../../redux/slice/accountSlice';
+import { Grid } from 'antd';
+
+const { useBreakpoint } = Grid;
 
 const UpdatePassword = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const [form] = Form.useForm();
     const [isSubmit, setIsSubmit] = useState(false);
 
@@ -40,7 +47,13 @@ const UpdatePassword = () => {
 
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
-            <Card style={{ marginBlock: '32px', marginRight: '100px', boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' }}>
+            <Card
+                style={{
+                    marginBlock: '32px',
+                    marginRight: isMobile || isTablet ? '0px' : '100px',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
+            >
                 <ProForm
                     form={form}
                     onFinish={onFinish}
