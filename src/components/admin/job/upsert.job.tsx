@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import type { ICareer, IJob, ISelect, ISkill } from '../../../types/backend';
 import viVN from 'antd/lib/locale/vi_VN';
 import {
-    FooterToolbar,
     ProForm,
     ProFormDatePicker,
     ProFormDigit,

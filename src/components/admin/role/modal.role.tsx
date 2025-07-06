@@ -1,7 +1,6 @@
 import { Col, Form, message, notification, Row } from 'antd';
 import type { IPermission, IRole } from '../../../types/backend';
 import {
-    FooterToolbar,
     ModalForm,
     ProCard,
     ProFormSwitch,

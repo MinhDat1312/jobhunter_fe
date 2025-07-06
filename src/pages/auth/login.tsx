@@ -1,4 +1,4 @@
-import { Button, ConfigProvider, Divider, Form, Input, message, notification } from 'antd';
+import { Button, Divider, Form, Input, message, notification } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { callLogin } from '../../config/api';
 import { useState, useEffect } from 'react';

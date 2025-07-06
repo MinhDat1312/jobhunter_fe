@@ -2,7 +2,6 @@ import { Col, Form, message, notification, Row, Upload, type FormInstance } from
 import type { IFullUser, ISelect } from '../../../types/backend';
 import { ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { v4 as uuidv4 } from 'uuid';
 import { DebounceSelect } from '../../admin/debounce.select';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
