@@ -92,7 +92,7 @@ const SkillPage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.SKILLS.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa kỹ năng'}
                             description={'Bạn có chắc chắn muốn xóa kỹ năng này ?'}
                             onConfirm={() => handleDeleteSkill(entity.skillId)}
@@ -187,6 +187,7 @@ const SkillPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>

@@ -5,7 +5,7 @@ import { ALL_PERMISSIONS } from '../../../config/permissions';
 import type { IJob } from '../../../types/backend';
 import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro-components';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hook';
-import { Button, message, notification, Popconfirm, Space, Tag } from 'antd';
+import { Button, message, notification, Popconfirm, Space, Tag, Grid } from 'antd';
 import dayjs from 'dayjs';
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,12 @@ import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { ADMIN } from '../../../config/utils';
 
+const { useBreakpoint } = Grid;
+
 const JobPage = () => {
+    const screens = useBreakpoint();
+    const isTablet = screens.md && !screens.lg;
+
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.job.isFetching);
     const meta = useAppSelector((state) => state.job.meta);
@@ -133,7 +138,7 @@ const JobPage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.JOBS.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa tin'}
                             description={'Bạn có chắc chắn muốn xóa tin này ?'}
                             onConfirm={() => handleDeleteJob(entity.jobId)}
@@ -238,6 +243,7 @@ const JobPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>
@@ -246,6 +252,9 @@ const JobPage = () => {
                                 </div>
                             );
                         },
+                    }}
+                    search={{
+                        span: isTablet ? 12 : 0,
                     }}
                     rowSelection={false}
                     toolBarRender={(_action, _rows): any => {

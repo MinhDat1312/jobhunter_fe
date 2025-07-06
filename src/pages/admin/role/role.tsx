@@ -112,7 +112,7 @@ const RolePage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.ROLES.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa vai trò'}
                             description={'Bạn có chắc chắn muốn xóa vai trò này ?'}
                             onConfirm={() => handleDeleteRole(entity.roleId)}
@@ -207,6 +207,7 @@ const RolePage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>

@@ -92,7 +92,7 @@ const CareerPage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.CAREERS.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa ngành nghề'}
                             description={'Bạn có chắc chắn muốn xóa ngành nghề này ?'}
                             onConfirm={() => handleDeleteCareer(entity.careerId)}
@@ -187,6 +187,7 @@ const CareerPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>

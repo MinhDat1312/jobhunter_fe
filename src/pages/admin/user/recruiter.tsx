@@ -95,7 +95,7 @@ const RecruiterPage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.RECRUITERS.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa nhà tuyển dụng'}
                             description={'Bạn có chắc chắn muốn xóa nhà tuyển dụng này ?'}
                             onConfirm={() => handleDeleteRecruiter(entity.userId)}
@@ -198,6 +198,7 @@ const RecruiterPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>

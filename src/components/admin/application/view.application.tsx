@@ -13,10 +13,11 @@ interface IProps {
     setDataInit: (v: any) => void;
     reloadTable: () => void;
     isAdmin: boolean;
+    isMobile: boolean;
 }
 
 const ViewDetailApplication = (props: IProps) => {
-    const { onClose, open, dataInit, setDataInit, reloadTable, isAdmin } = props;
+    const { onClose, open, dataInit, setDataInit, reloadTable, isAdmin, isMobile } = props;
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [form] = Form.useForm();
 
@@ -50,7 +51,7 @@ const ViewDetailApplication = (props: IProps) => {
                     setDataInit(null);
                 }}
                 open={open}
-                width={'40vw'}
+                width={isMobile ? '100vw' : '50vw'}
                 maskClosable={false}
                 extra={
                     isAdmin ? (

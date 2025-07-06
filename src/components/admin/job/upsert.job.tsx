@@ -268,7 +268,11 @@ const ViewUpsertJob = () => {
                                 title: <Link to="/admin/job">Tin tuyển dụng</Link>,
                             },
                             {
-                                title: `${dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}`,
+                                title: (
+                                    <span style={{ color: '#00b452' }}>
+                                        {dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}
+                                    </span>
+                                ),
                             },
                         ]}
                     />
@@ -284,7 +288,9 @@ const ViewUpsertJob = () => {
                                     submitText: <>{dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}</>,
                                 },
                                 onReset: () => navigate('/admin/job'),
-                                render: (_: any, dom: any) => <FooterToolbar>{dom}</FooterToolbar>,
+                                render: (_: any, dom: any) => (
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
+                                ),
                                 submitButtonProps: {
                                     icon: <CheckSquareOutlined />,
                                 },
@@ -314,7 +320,7 @@ const ViewUpsertJob = () => {
                                     <Col span={24} md={6}>
                                         <ProForm.Item
                                             name="recruiter"
-                                            label="Thuộc nhà tuyển dụng"
+                                            label="Nhà tuyển dụng"
                                             rules={[{ required: true, message: 'Vui lòng chọn nhà tuyển dụng!' }]}
                                         >
                                             <DebounceSelect
@@ -389,7 +395,7 @@ const ViewUpsertJob = () => {
                                         mode="multiple"
                                         fieldProps={{
                                             suffixIcon: null,
-                                            maxTagCount: 2,
+                                            maxTagCount: 1,
                                             maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
                                         }}
                                     />

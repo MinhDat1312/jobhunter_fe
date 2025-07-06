@@ -6,7 +6,7 @@ import type { IApplication } from '../../types/backend';
 import { ProFormSelect, type ActionType, type ProColumns } from '@ant-design/pro-components';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import dayjs from 'dayjs';
-import { Space } from 'antd';
+import { Space, Grid } from 'antd';
 import { EditOutlined, FolderViewOutlined } from '@ant-design/icons';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
@@ -14,7 +14,13 @@ import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice
 import ViewDetailApplication from '../../components/admin/application/view.application';
 import { ADMIN, colorStatus } from '../../config/utils';
 
+const { useBreakpoint } = Grid;
+
 const ApplicationPage = () => {
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+    const isTablet = screens.md && !screens.lg;
+
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.application.isFetching);
     const meta = useAppSelector((state) => state.application.meta);
@@ -33,6 +39,7 @@ const ApplicationPage = () => {
             render: (_text, record, _index, _action) => {
                 return (
                     <a
+                        style={{ color: '#00b452' }}
                         href="#"
                         onClick={() => {
                             setOpenViewDetail(true);
@@ -201,6 +208,7 @@ const ApplicationPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>
@@ -214,6 +222,7 @@ const ApplicationPage = () => {
                     toolBarRender={(_action, _rows): any => {
                         return <></>;
                     }}
+                    search={{ span: isTablet ? 12 : 0 }}
                 />
             </Access>
             <ViewDetailApplication
@@ -223,6 +232,7 @@ const ApplicationPage = () => {
                 setDataInit={setDataInit}
                 reloadTable={reloadTable}
                 isAdmin={user.role.name === ADMIN ? true : false}
+                isMobile={isMobile}
             />
         </div>
     );

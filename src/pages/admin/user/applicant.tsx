@@ -34,12 +34,14 @@ const ApplicantPage = () => {
                 return <>{index + 1 + (meta.page - 1) * meta.pageSize}</>;
             },
             hideInSearch: true,
+            responsive: ['sm', 'md', 'lg'],
         },
         {
             title: 'Ứng viên',
             dataIndex: 'fullName',
             sorter: true,
             search: true,
+            responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
             title: 'Email',
@@ -47,12 +49,14 @@ const ApplicantPage = () => {
             sorter: true,
             search: true,
             valueType: 'text',
+            responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
             title: 'Vai trò',
             dataIndex: ['role', 'name'],
             sorter: true,
             hideInSearch: true,
+            responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
             title: 'Ngày tạo',
@@ -63,6 +67,7 @@ const ApplicantPage = () => {
                 return <>{record.createdAt ? dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss') : ''}</>;
             },
             hideInSearch: true,
+            responsive: ['lg'],
         },
         {
             title: 'Ngày cập nhật',
@@ -73,11 +78,13 @@ const ApplicantPage = () => {
                 return <>{record.updatedAt ? dayjs(record.updatedAt).format('DD-MM-YYYY HH:mm:ss') : ''}</>;
             },
             hideInSearch: true,
+            responsive: ['lg'],
         },
         {
             title: 'Hành động',
             hideInSearch: true,
             width: 100,
+            responsive: ['xs', 'sm', 'md', 'lg'],
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access permission={ALL_PERMISSIONS.APPLICANTS.UPDATE} hideChildren>
@@ -95,7 +102,7 @@ const ApplicantPage = () => {
                     </Access>
                     <Access permission={ALL_PERMISSIONS.APPLICANTS.DELETE} hideChildren>
                         <Popconfirm
-                            placement="leftTop"
+                            placement="bottom"
                             title={'Xác nhận xóa ứng viên'}
                             description={'Bạn có chắc chắn muốn xóa ứng viên này ?'}
                             onConfirm={() => handleDeleteApplicant(entity.userId)}
@@ -198,6 +205,7 @@ const ApplicantPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>

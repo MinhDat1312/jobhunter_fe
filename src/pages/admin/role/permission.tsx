@@ -10,8 +10,14 @@ import DataTable from '../../../components/data.table';
 import queryString from 'query-string';
 import { fetchPermission } from '../../../redux/slice/permissionSlice';
 import ViewDetailPermission from '../../../components/admin/permission/view.permission';
+import { Grid } from 'antd';
+
+const { useBreakpoint } = Grid;
 
 const PermissionPage = () => {
+    const screens = useBreakpoint();
+    const isTablet = screens.md && !screens.lg;
+
     const isFetching = useAppSelector((state) => state.permission.isFetching);
     const meta = useAppSelector((state) => state.permission.meta);
     const permissions = useAppSelector((state) => state.permission.result);
@@ -161,6 +167,7 @@ const PermissionPage = () => {
                         pageSize: meta.pageSize,
                         showSizeChanger: true,
                         total: meta.total,
+                        showLessItems: true,
                         showTotal: (total, range) => {
                             return (
                                 <div>
@@ -173,6 +180,9 @@ const PermissionPage = () => {
                     rowSelection={false}
                     toolBarRender={(_action, _rows): any => {
                         return <></>;
+                    }}
+                    search={{
+                        span: isTablet ? 12 : 0,
                     }}
                 />
             </Access>
