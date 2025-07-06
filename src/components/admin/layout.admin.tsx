@@ -18,11 +18,13 @@ import { setLogoutAction } from '../../redux/slice/accountSlice';
 import DrawerCustom from '../client/drawer.client';
 import styles from '../../styles/app.module.scss';
 import stylesAdmin from '../../styles/admin.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const { Content, Sider } = Layout;
 const { useBreakpoint } = Grid;
 
 const LayoutAdmin = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -73,14 +75,14 @@ const LayoutAdmin = () => {
 
             const full = [
                 {
-                    label: <Link to="/admin">Tổng quan</Link>,
+                    label: <Link to="/admin">{t('dashboard')}</Link>,
                     key: '/admin',
                     icon: <AppstoreOutlined />,
                 },
                 ...(viewUser || ACL_ENABLE === 'false'
                     ? [
                           {
-                              label: <Link to="/admin/user">Người dùng</Link>,
+                              label: <Link to="/admin/user">{t('user')}</Link>,
                               key: '/admin/user',
                               icon: <UserOutlined />,
                           },
@@ -89,7 +91,7 @@ const LayoutAdmin = () => {
                 ...(viewJob || ACL_ENABLE === 'false'
                     ? [
                           {
-                              label: <Link to="/admin/job">Việc làm</Link>,
+                              label: <Link to="/admin/job">{t('job')}</Link>,
                               key: '/admin/job',
                               icon: <ScheduleOutlined />,
                           },
@@ -99,7 +101,7 @@ const LayoutAdmin = () => {
                 ...(viewApplication || ACL_ENABLE === 'false'
                     ? [
                           {
-                              label: <Link to="/admin/application">Hồ sơ</Link>,
+                              label: <Link to="/admin/application">{t('application')}</Link>,
                               key: '/admin/application',
                               icon: <AliwangwangOutlined />,
                           },
@@ -108,14 +110,14 @@ const LayoutAdmin = () => {
                 ...(viewRole || ACL_ENABLE === 'false'
                     ? [
                           {
-                              label: <Link to="/admin/role">Vai trò</Link>,
+                              label: <Link to="/admin/role">{t('role')}</Link>,
                               key: '/admin/role',
                               icon: <ExceptionOutlined />,
                           },
                       ]
                     : []),
                 {
-                    label: <span onClick={handleLogout}>Đăng xuất</span>,
+                    label: <span onClick={handleLogout}>{t('logout')}</span>,
                     key: '/logout',
                     icon: <LoginOutlined />,
                 },
@@ -223,7 +225,7 @@ const LayoutAdmin = () => {
                     }}
                     selectedKey={activeMenu}
                     menuItems={menuItems}
-                    titleText="Đóng"
+                    titleText={t('button.close')}
                 />
             </Layout>
         </>

@@ -22,9 +22,12 @@ import logo from '../../assets/images/logo.png';
 import DrawerCustom from './drawer.client';
 import { Grid } from 'antd';
 import { ROLE_LIST } from '../../config/utils';
+import { useTranslation } from 'react-i18next';
 const { useBreakpoint } = Grid;
 
 const Header = () => {
+    const { t } = useTranslation();
+
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -46,17 +49,17 @@ const Header = () => {
 
     const itemsLeft: MenuProps['items'] = [
         {
-            label: <Link to={'/'}>Trang chủ</Link>,
+            label: <Link to={'/'}>{t('home')}</Link>,
             key: '/',
             icon: <HomeOutlined />,
         },
         {
-            label: <Link to={'/job'}>Việc làm</Link>,
+            label: <Link to={'/job'}>{t('job')}</Link>,
             key: '/job',
             icon: <ScheduleOutlined />,
         },
         {
-            label: <Link to={'/recruiter'}>Top công ty</Link>,
+            label: <Link to={'/recruiter'}>{t('top_recruiter')}</Link>,
             key: '/recruiter',
             icon: <FundOutlined />,
         },
@@ -111,7 +114,7 @@ const Header = () => {
         {
             label: (
                 <label style={{ cursor: 'pointer' }} onClick={() => navigate('/profile')}>
-                    Quản lý tài khoản
+                    {t('manage_account')}
                 </label>
             ),
             key: '/profile',
@@ -121,7 +124,7 @@ const Header = () => {
         ...(user.role?.permissions?.length && user.role?.active && user.role?.name !== 'APPLICANT'
             ? [
                   {
-                      label: <Link to={'/admin'}>Trang quản trị</Link>,
+                      label: <Link to={'/admin'}> {t('manage_admin')}</Link>,
                       key: '/admin',
                       icon: <FireOutlined />,
                   },
@@ -131,7 +134,7 @@ const Header = () => {
         {
             label: (
                 <label style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
-                    Đăng xuất
+                    {t('logout')}
                 </label>
             ),
             key: 'logout',
@@ -173,7 +176,7 @@ const Header = () => {
                                         textDecoration: 'none',
                                     }}
                                 >
-                                    Đăng nhập
+                                    {t('sign_in')}
                                 </Link>
                             ) : (
                                 <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
@@ -182,7 +185,13 @@ const Header = () => {
                             )}
                         </div>
                     ) : (
-                        <div style={{ height: 55, display: 'flex', gap: 30 }}>
+                        <div
+                            style={{
+                                height: 55,
+                                display: 'flex',
+                                gap: 30,
+                            }}
+                        >
                             <div className={styles['brand']} onClick={() => navigate('/')}>
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
@@ -200,11 +209,13 @@ const Header = () => {
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
                                     {isAuthenticated === false ? (
-                                        <Link to={'/login'}>Đăng nhập</Link>
+                                        <Link to={'/login'}>{t('sign_in')}</Link>
                                     ) : (
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['hover']}>
                                             <Space style={{ cursor: 'pointer' }}>
-                                                <span>Welcome {user?.username}</span>
+                                                <span>
+                                                    {t('welcome')} {user?.username}
+                                                </span>
                                                 <Avatar src={`${user.avatar}`}>
                                                     {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
                                                 </Avatar>

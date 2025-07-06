@@ -4,13 +4,14 @@ import { groupBy, map } from 'lodash';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { callFetchRole } from './api';
+import type { TFunction } from 'i18next';
 
 export const ADMIN = 'SUPER_ADMIN';
 
 export const ROLE_LIST = [
     { label: 'Admin', value: 'SUPER_ADMIN' },
     { label: 'HR', value: 'HR' },
-    { label: 'Applicant', value: 'APPLICANT' },
+    { label: 'Ứng viên', value: 'APPLICANT' },
 ];
 
 export const LOCATION_LIST = [
@@ -135,16 +136,19 @@ export function colorMethod(method: 'POST' | 'PUT' | 'GET' | 'DELETE' | string) 
     }
 }
 
-export function colorStatus(status: 'ACCEPTED' | 'PENDING' | 'REJECTED' | string) {
+export function colorStatus(
+    status: 'ACCEPTED' | 'PENDING' | 'REJECTED' | string,
+    t?: TFunction<'translation', undefined>,
+) {
     switch (status) {
         case 'ACCEPTED':
-            return { color: green[6], label: 'Chấp nhận' };
+            return { color: green[6], label: t ? t('status_application.accepted') : 'Accepted' };
         case 'PENDING':
-            return { color: orange[6], label: 'Đang xét' };
+            return { color: orange[6], label: t ? t('status_application.pending') : 'Pending' };
         case 'REJECTED':
-            return { color: red[6], label: 'Từ chối' };
+            return { color: red[6], label: t ? t('status_application.rejected') : 'Rejected' };
         default:
-            return { color: grey[6], label: 'Có lỗi' };
+            return { color: grey[6], label: t ? t('status_application.error') : 'Error' };
     }
 }
 
@@ -153,6 +157,12 @@ export const groupByPermission = (data: any[]): { module: string; permissions: I
     return map(groupedData, (value, key) => {
         return { module: key, permissions: value as IPermission[] };
     });
+};
+
+export const getRoleName = (value?: string) => {
+    const roleFilter = ROLE_LIST.filter((x) => x.value === value);
+    if (roleFilter.length) return roleFilter[0].label;
+    return 'unknown';
 };
 
 export async function fetchRoleList(name: string): Promise<ISelect[]> {
@@ -170,7 +180,7 @@ export async function fetchRoleList(name: string): Promise<ISelect[]> {
         const list = res.data.result;
         const temp = list.map((item) => {
             return {
-                label: item.name as string,
+                label: getRoleName(item.name),
                 value: item.roleId as string,
             };
         });

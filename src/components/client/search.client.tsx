@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { callFetchAllSkill } from '../../config/api';
 import { LOCATION_LIST } from '../../config/utils';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SearchClient = () => {
+    const { t } = useTranslation();
+
     const navigate = useNavigate();
     const [searchParams, _setSearchParams] = useSearchParams();
     const queryLocation = searchParams.get('location');
@@ -41,7 +44,7 @@ const SearchClient = () => {
                     res?.data?.result?.map((item) => {
                         return {
                             label: item.name as string,
-                            value: item.name ? item.name.toUpperCase() : '' as string,
+                            value: item.name ? item.name.toUpperCase() : ('' as string),
                         };
                     }) ?? [];
                 setOptionsSkills(arr);
@@ -83,9 +86,9 @@ const SearchClient = () => {
         >
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <h2>Việc Làm Cho Vất Vả "Chất"</h2>
+                    <h2> {t('title')}</h2>
                 </Col>
-                <Col span={24} md={13}>
+                <Col span={24} xs={24} md={13}>
                     <ProForm.Item name="skills">
                         <Select
                             mode="multiple"
@@ -94,17 +97,17 @@ const SearchClient = () => {
                             style={{ width: '100%' }}
                             placeholder={
                                 <>
-                                    <MonitorOutlined /> Tìm theo kỹ năng...
+                                    <MonitorOutlined /> {t('search_skill')}
                                 </>
                             }
                             maxTagCount={7}
-                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length} kỹ năng`}
+                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
                             optionLabelProp="label"
                             options={optionsSkills}
                         />
                     </ProForm.Item>
                 </Col>
-                <Col span={12} md={7}>
+                <Col span={12} xs={12} md={7}>
                     <ProForm.Item name="location">
                         <Select
                             mode="multiple"
@@ -113,19 +116,19 @@ const SearchClient = () => {
                             style={{ width: '100%' }}
                             placeholder={
                                 <>
-                                    <EnvironmentOutlined /> Địa điểm...
+                                    <EnvironmentOutlined /> {t(' search_location')}
                                 </>
                             }
                             maxTagCount={2}
-                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length} địa điểm`}
+                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
                             optionLabelProp="label"
                             options={optionsLocations}
                         />
                     </ProForm.Item>
                 </Col>
-                <Col span={12} md={4}>
+                <Col span={12} xs={12} md={4} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type="primary" onClick={() => form.submit()}>
-                        Tìm kiếm
+                        {t('search')}
                     </Button>
                 </Col>
             </Row>

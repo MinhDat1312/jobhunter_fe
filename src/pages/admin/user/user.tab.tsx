@@ -1,17 +1,20 @@
 import { Tabs, type TabsProps } from 'antd';
 import RecruiterPage from './recruiter';
 import ApplicantPage from './applicant';
+import { useTranslation } from 'react-i18next';
 
 const UserTab = () => {
+    const { t } = useTranslation();
+
     const items: TabsProps['items'] = [
         {
             key: '1',
-            label: 'Nhà tuyển dụng',
+            label: t('recruiter'),
             children: <RecruiterPage />,
         },
         {
             key: '2',
-            label: 'Ứng viên',
+            label: t('applicant'),
             children: <ApplicantPage />,
         },
     ];

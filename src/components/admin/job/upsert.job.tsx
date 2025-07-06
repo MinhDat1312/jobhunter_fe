@@ -29,8 +29,10 @@ import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
+import { useTranslation } from 'react-i18next';
 
 const ViewUpsertJob = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     let location = useLocation();
     let params = new URLSearchParams(location.search);
@@ -264,12 +266,12 @@ const ViewUpsertJob = () => {
                         separator=">"
                         items={[
                             {
-                                title: <Link to="/admin/job">Tin tuyển dụng</Link>,
+                                title: <Link to="/admin/job">{t('job')}</Link>,
                             },
                             {
                                 title: (
                                     <span style={{ color: '#00b452' }}>
-                                        {dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}
+                                        {dataUpdate?.jobId ? t('button.update') : t('button.create')}
                                     </span>
                                 ),
                             },
@@ -283,8 +285,8 @@ const ViewUpsertJob = () => {
                             onFinish={onFinish}
                             submitter={{
                                 searchConfig: {
-                                    resetText: 'Hủy',
-                                    submitText: <>{dataUpdate?.jobId ? 'Cập nhật tin' : 'Tạo mới tin'}</>,
+                                    resetText: t('button.cancel'),
+                                    submitText: <>{dataUpdate?.jobId ? t('button.update') : t('button.create')}</>,
                                 },
                                 onReset: () => navigate('/admin/job'),
                                 render: (_: any, dom: any) => (
@@ -298,10 +300,10 @@ const ViewUpsertJob = () => {
                             <Row gutter={[20, 20]}>
                                 <Col span={24} md={6}>
                                     <ProFormSwitch
-                                        label="Trạng thái"
+                                        label={t('status')}
                                         name="active"
-                                        checkedChildren="BẬT"
-                                        unCheckedChildren="TẮT"
+                                        checkedChildren={t('active').toUpperCase()}
+                                        unCheckedChildren={t('inactive').toUpperCase()}
                                         initialValue={dataUpdate?.active}
                                     />
                                 </Col>
@@ -309,24 +311,24 @@ const ViewUpsertJob = () => {
                             <Row gutter={[20, 20]}>
                                 <Col span={24} md={12}>
                                     <ProFormText
-                                        label="Tiêu đề"
+                                        label={t('table.job_table.title')}
                                         name="title"
                                         rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                        placeholder="Nhập tên tiêu đề"
+                                        placeholder={t('placeholder')}
                                     />
                                 </Col>
                                 {(dataUpdate?.jobId || !jobId) && (
                                     <Col span={24} md={6}>
                                         <ProForm.Item
                                             name="recruiter"
-                                            label="Nhà tuyển dụng"
+                                            label={t('recruiter')}
                                             rules={[{ required: true, message: 'Vui lòng chọn nhà tuyển dụng!' }]}
                                         >
                                             <DebounceSelect
                                                 allowClear
                                                 showSearch
                                                 value={recruiters}
-                                                placeholder="Chọn nhà tuyển dụng"
+                                                placeholder={t('choose')}
                                                 fetchOptions={fetchRecruiterList}
                                                 onChange={(newValue: any) => {
                                                     setRecruiters(newValue as ISelect[]);
@@ -340,9 +342,9 @@ const ViewUpsertJob = () => {
                                     <ProFormSelect
                                         showSearch
                                         name="location"
-                                        label="Địa điểm"
+                                        label={t('address')}
                                         options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
-                                        placeholder="Chọn địa điểm"
+                                        placeholder={t('choose')}
                                         rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
                                     />
                                 </Col>
@@ -350,10 +352,10 @@ const ViewUpsertJob = () => {
                             <Row gutter={[20, 20]}>
                                 <Col span={24} md={6}>
                                     <ProFormDigit
-                                        label="Mức lương"
+                                        label={t('table.job_table.salary')}
                                         name="salary"
                                         rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                        placeholder="Nhập mức lương"
+                                        placeholder={t('placeholder')}
                                         fieldProps={{
                                             addonAfter: ' đ',
                                             formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
@@ -363,19 +365,19 @@ const ViewUpsertJob = () => {
                                 </Col>
                                 <Col span={24} md={6}>
                                     <ProFormDigit
-                                        label="Số lượng"
+                                        label={t('table.job_table.quantity')}
                                         name="quantity"
                                         rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                                        placeholder="Nhập số lượng"
+                                        placeholder={t('placeholder')}
                                     />
                                 </Col>
                                 <Col span={24} md={6}>
                                     <ProFormSelect
                                         showSearch
                                         name="career"
-                                        label="Ngành nghề"
+                                        label={t('career')}
                                         options={careers}
-                                        placeholder="Chọn ngành nghề"
+                                        placeholder={t('choose')}
                                         rules={[{ required: true, message: 'Vui lòng chọn ngành nghề!' }]}
                                         allowClear
                                         fieldProps={{
@@ -386,9 +388,9 @@ const ViewUpsertJob = () => {
                                 <Col span={24} md={6}>
                                     <ProFormSelect
                                         name="skills"
-                                        label="Kỹ năng yêu cầu"
+                                        label={t('skill')}
                                         options={skills}
-                                        placeholder="Chọn ít nhất 1 kỹ năng"
+                                        placeholder={t('choose')}
                                         rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
                                         allowClear
                                         mode="multiple"
@@ -403,7 +405,7 @@ const ViewUpsertJob = () => {
                             <Row gutter={[20, 20]}>
                                 <Col span={24} md={6}>
                                     <ProFormDatePicker
-                                        label="Ngày bắt đầu"
+                                        label={t('table.job_table.dateStart')}
                                         name="startDate"
                                         normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
                                         fieldProps={{
@@ -429,7 +431,7 @@ const ViewUpsertJob = () => {
                                 </Col>
                                 <Col span={24} md={6}>
                                     <ProFormDatePicker
-                                        label="Ngày kết thúc"
+                                        label={t('table.job_table.dateEnd')}
                                         name="endDate"
                                         normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
                                         fieldProps={{
@@ -456,7 +458,7 @@ const ViewUpsertJob = () => {
                                 <Col span={24} md={6}>
                                     <ProFormSelect
                                         name="level"
-                                        label="Trình độ"
+                                        label={t('level')}
                                         valueEnum={{
                                             FRESHER: 'Fresher',
                                             JUNIOR: 'Junior',
@@ -464,21 +466,21 @@ const ViewUpsertJob = () => {
                                             INTERN: 'Intern',
                                             MIDDLE: 'Middle',
                                         }}
-                                        placeholder="Chọn trình độ"
+                                        placeholder={t('choose')}
                                         rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
                                     />
                                 </Col>
                                 <Col span={24} md={6}>
                                     <ProFormSelect
                                         name="workingType"
-                                        label="Hình thức"
+                                        label={t('table.job_table.type')}
                                         valueEnum={{
                                             FULLTIME: 'Full time',
                                             PARTTIME: 'Part time',
                                             ONLINE: 'Online',
                                             OFFLINE: 'Offline',
                                         }}
-                                        placeholder="Chọn hình thức"
+                                        placeholder={t('choose')}
                                         rules={[{ required: true, message: 'Vui lòng chọn hình thức!' }]}
                                     />
                                 </Col>
@@ -487,7 +489,7 @@ const ViewUpsertJob = () => {
                                 <Col span={24}>
                                     <ProForm.Item
                                         name="description"
-                                        label="Mô tả tin"
+                                        label={t('description')}
                                         rules={[{ required: true, message: 'Vui lòng nhập mô tả tin!' }]}
                                     >
                                         <ReactQuill theme="snow" value={description} onChange={setDescription} />

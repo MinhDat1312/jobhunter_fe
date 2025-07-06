@@ -13,8 +13,10 @@ import { fetchSkill } from '../../../redux/slice/skillSlice';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import ModalSkill from '../../../components/admin/skill/modal.skill';
+import { useTranslation } from 'react-i18next';
 
 const SkillPage = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.skill.isFetching);
     const meta = useAppSelector((state) => state.skill.meta);
@@ -26,7 +28,7 @@ const SkillPage = () => {
 
     const columns: ProColumns<ISkill>[] = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -36,23 +38,23 @@ const SkillPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Kỹ năng',
+            title: t('skill'),
             dataIndex: 'name',
             sorter: true,
         },
         {
-            title: 'Created By',
+            title: t('table.createdBy'),
             dataIndex: 'createdBy',
             hideInSearch: true,
         },
 
         {
-            title: 'Updated By',
+            title: t('table.updatedBy'),
             dataIndex: 'updatedBy',
             hideInSearch: true,
         },
         {
-            title: 'Created At',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -62,7 +64,7 @@ const SkillPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Updated At',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -72,9 +74,9 @@ const SkillPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Actions',
+            title: t('table.action'),
             hideInSearch: true,
-            width: 50,
+            width: 100,
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access permission={ALL_PERMISSIONS.SKILLS.UPDATE} hideChildren>
@@ -96,8 +98,8 @@ const SkillPage = () => {
                             title={'Xác nhận xóa kỹ năng'}
                             description={'Bạn có chắc chắn muốn xóa kỹ năng này ?'}
                             onConfirm={() => handleDeleteSkill(entity.skillId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -172,7 +174,7 @@ const SkillPage = () => {
             <Access permission={ALL_PERMISSIONS.SKILLS.GET_PAGINATE}>
                 <DataTable<ISkill>
                     actionRef={tableRef}
-                    headerTitle="Danh sách kỹ năng"
+                    headerTitle={t('table.header.skill')}
                     rowKey="skillId"
                     loading={isFetching}
                     columns={columns}
@@ -202,7 +204,7 @@ const SkillPage = () => {
                         return (
                             <Access permission={ALL_PERMISSIONS.SKILLS.CREATE} hideChildren>
                                 <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                    Thêm mới
+                                    {t('button.create')}
                                 </Button>
                             </Access>
                         );

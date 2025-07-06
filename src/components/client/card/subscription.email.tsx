@@ -11,10 +11,12 @@ import {
 } from '../../../config/api';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const SubscriptionEmail = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -121,7 +123,7 @@ const SubscriptionEmail = () => {
                     <Row gutter={[20, 20]}>
                         <Col span={24}>
                             <Form.Item
-                                label={'Kỹ năng'}
+                                label={t('skill')}
                                 name={'skills'}
                                 rules={[{ required: true, message: 'Vui lòng chọn ít nhất 1 skill!' }]}
                             >
@@ -132,7 +134,7 @@ const SubscriptionEmail = () => {
                                     style={{ width: '100%' }}
                                     placeholder={
                                         <>
-                                            <MonitorOutlined /> Tìm theo kỹ năng...
+                                            <MonitorOutlined /> {t('search_skill')}
                                         </>
                                     }
                                     maxTagCount={5}
@@ -143,7 +145,7 @@ const SubscriptionEmail = () => {
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Button onClick={() => form.submit()}>Cập nhật</Button>
+                            <Button onClick={() => form.submit()}>{t('button.update')}</Button>
                         </Col>
                     </Row>
                 </Form>

@@ -1,4 +1,4 @@
-import { ConfigProvider, Form, Modal, type UploadFile } from 'antd';
+import { Form, Modal, type UploadFile } from 'antd';
 import '../../../styles/reset.scss';
 import { isMobile } from 'react-device-detect';
 import 'react-quill/dist/quill.snow.css';
@@ -6,13 +6,9 @@ import { useEffect, useState } from 'react';
 import { callUploadSingleFile } from '../../../config/api';
 import type { IRecruiter } from '../../../types/backend';
 import useUploadFile from '../../../hooks/useUploadFile';
-import viVN from 'antd/es/locale/vi_VN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/vi';
 import RecruiterForm from '../../client/form/recruiter.form';
 import styles from '../../../styles/admin.module.scss';
-
-dayjs.locale('vi');
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     openModal: boolean;
@@ -23,6 +19,7 @@ interface IProps {
 }
 
 const ModalRecruiter = (props: IProps) => {
+    const { t } = useTranslation();
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;
     const [form] = Form.useForm();
     const [animation, setAnimation] = useState<string>('open');
@@ -37,6 +34,7 @@ const ModalRecruiter = (props: IProps) => {
         setVisibleUpload,
         setFileList,
         setPreviewOpen,
+        setLoadingUpload,
         handleRemoveFile,
         handlePreview,
         beforeUpload,
@@ -70,7 +68,7 @@ const ModalRecruiter = (props: IProps) => {
     return (
         <>
             {openModal && (
-                <ConfigProvider locale={viVN}>
+                <>
                     <Modal
                         open={openModal}
                         onCancel={() => handleReset()}
@@ -81,7 +79,13 @@ const ModalRecruiter = (props: IProps) => {
                         keyboard={false}
                         maskClosable={false}
                         className={`${styles.modalUser} ${styles[animation]}`}
-                        title={<>{dataInit?.userId ? 'Cập nhật nhà tuyển dụng' : 'Tạo mới nhà tuyển dụng'}</>}
+                        title={
+                            <>
+                                {dataInit?.userId
+                                    ? t('button.update') + ' ' + t('recruiter').toLowerCase()
+                                    : t('button.create') + ' ' + t('recruiter').toLowerCase()}
+                            </>
+                        }
                     >
                         <RecruiterForm
                             form={form}
@@ -98,6 +102,7 @@ const ModalRecruiter = (props: IProps) => {
                             fileList={fileList}
                             setFileList={setFileList}
                             setVisibleUpload={setVisibleUpload}
+                            setLoadingUpload={setLoadingUpload}
                             onRole={true}
                             reloadTable={reloadTable}
                         />
@@ -111,7 +116,7 @@ const ModalRecruiter = (props: IProps) => {
                     >
                         <img alt="example" style={{ width: '100%' }} src={previewImage} />
                     </Modal>
-                </ConfigProvider>
+                </>
             )}
         </>
     );

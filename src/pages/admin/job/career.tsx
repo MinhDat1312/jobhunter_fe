@@ -13,8 +13,10 @@ import { callDeleteCareer } from '../../../config/api';
 import DataTable from '../../../components/data.table';
 import { fetchCareer } from '../../../redux/slice/careerSlice';
 import ModalCareer from '../../../components/admin/career/modal.career';
+import { useTranslation } from 'react-i18next';
 
 const CareerPage = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.career.isFetching);
     const meta = useAppSelector((state) => state.career.meta);
@@ -26,7 +28,7 @@ const CareerPage = () => {
 
     const columns: ProColumns<ICareer>[] = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -36,23 +38,23 @@ const CareerPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngành nghề',
+            title: t('career'),
             dataIndex: 'name',
             sorter: true,
         },
         {
-            title: 'Created By',
+            title: t('table.createdBy'),
             dataIndex: 'createdBy',
             hideInSearch: true,
         },
 
         {
-            title: 'Updated By',
+            title: t('table.updatedBy'),
             dataIndex: 'updatedBy',
             hideInSearch: true,
         },
         {
-            title: 'Created At',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -62,7 +64,7 @@ const CareerPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Updated At',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -72,9 +74,9 @@ const CareerPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Actions',
+            title: t('table.action'),
             hideInSearch: true,
-            width: 50,
+            width: 100,
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access permission={ALL_PERMISSIONS.CAREERS.UPDATE} hideChildren>
@@ -96,8 +98,8 @@ const CareerPage = () => {
                             title={'Xác nhận xóa ngành nghề'}
                             description={'Bạn có chắc chắn muốn xóa ngành nghề này ?'}
                             onConfirm={() => handleDeleteCareer(entity.careerId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -172,7 +174,7 @@ const CareerPage = () => {
             <Access permission={ALL_PERMISSIONS.CAREERS.GET_PAGINATE}>
                 <DataTable<ICareer>
                     actionRef={tableRef}
-                    headerTitle="Danh sách ngành nghề"
+                    headerTitle={t('table.header.career')}
                     rowKey="careerId"
                     loading={isFetching}
                     columns={columns}
@@ -202,7 +204,7 @@ const CareerPage = () => {
                         return (
                             <Access permission={ALL_PERMISSIONS.CAREERS.CREATE} hideChildren>
                                 <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                    Thêm mới
+                                    {t('button.create')}
                                 </Button>
                             </Access>
                         );

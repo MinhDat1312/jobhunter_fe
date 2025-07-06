@@ -13,8 +13,11 @@ import queryString from 'query-string';
 import DataTable from '../../../components/data.table';
 import { fetchApplicant } from '../../../redux/slice/applicantSlice';
 import ModalApplicant from '../../../components/admin/applicant/modal.applicant';
+import { getRoleName } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
 
 const ApplicantPage = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const meta = useAppSelector((state) => state.applicant.meta);
     const isFetching = useAppSelector((state) => state.applicant.isFetching);
@@ -26,7 +29,7 @@ const ApplicantPage = () => {
 
     const columns: ProColumns<IApplicant>[] = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -37,14 +40,14 @@ const ApplicantPage = () => {
             responsive: ['sm', 'md', 'lg'],
         },
         {
-            title: 'Ứng viên',
+            title: t('applicant'),
             dataIndex: 'fullName',
             sorter: true,
             search: true,
             responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
-            title: 'Email',
+            title: t('email'),
             dataIndex: ['contact', 'email'],
             sorter: true,
             search: true,
@@ -52,14 +55,17 @@ const ApplicantPage = () => {
             responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
-            title: 'Vai trò',
+            title: t('role'),
             dataIndex: ['role', 'name'],
             sorter: true,
             hideInSearch: true,
             responsive: ['xs', 'sm', 'md', 'lg'],
+            render: (_text, record) => {
+                return <>{getRoleName(record?.role?.name)}</>;
+            },
         },
         {
-            title: 'Ngày tạo',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -70,7 +76,7 @@ const ApplicantPage = () => {
             responsive: ['lg'],
         },
         {
-            title: 'Ngày cập nhật',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -81,7 +87,7 @@ const ApplicantPage = () => {
             responsive: ['lg'],
         },
         {
-            title: 'Hành động',
+            title: t('table.action'),
             hideInSearch: true,
             width: 100,
             responsive: ['xs', 'sm', 'md', 'lg'],
@@ -106,8 +112,8 @@ const ApplicantPage = () => {
                             title={'Xác nhận xóa ứng viên'}
                             description={'Bạn có chắc chắn muốn xóa ứng viên này ?'}
                             onConfirm={() => handleDeleteApplicant(entity.userId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -191,7 +197,7 @@ const ApplicantPage = () => {
                 <DataTable<IApplicant>
                     columns={columns}
                     actionRef={tableRef}
-                    headerTitle="Danh sách ứng viên"
+                    headerTitle={t('table.header.applicant')}
                     rowKey="userId"
                     loading={isFetching}
                     dataSource={applicants}
@@ -220,7 +226,7 @@ const ApplicantPage = () => {
                         return (
                             <Access permission={ALL_PERMISSIONS.APPLICANTS.CREATE} hideChildren>
                                 <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                    Thêm mới
+                                    {t('button.create')}
                                 </Button>
                             </Access>
                         );

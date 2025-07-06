@@ -14,7 +14,6 @@ import RecruiterForm from '../form/recruiter.form';
 import useUploadFile from '../../../hooks/useUploadFile';
 import { Grid } from 'antd';
 
-dayjs.locale('vi');
 const { useBreakpoint } = Grid;
 
 const UpdateInfo = () => {

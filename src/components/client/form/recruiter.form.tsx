@@ -6,7 +6,9 @@ import { DebounceSelect } from '../../admin/debounce.select';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { callCreateRecruiter, callUpdateRecruiter } from '../../../config/api';
-import { fetchRoleList } from '../../../config/utils';
+import { fetchRoleList, getRoleName } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 
 interface IProps {
     form: FormInstance<any>;
@@ -23,6 +25,7 @@ interface IProps {
     loadingUpload?: boolean;
     fileList: any;
     setFileList?: (v: any) => void;
+    setLoadingUpload?: (v: any) => void;
     onRole: boolean;
     reloadTable?: () => void;
 }
@@ -43,18 +46,24 @@ const RecruiterForm = (props: IProps) => {
         loadingUpload,
         fileList,
         setFileList,
+        setLoadingUpload,
         onRole,
         reloadTable,
     } = props;
     const [roles, setRoles] = useState<ISelect[]>([]);
     const [description, setDescription] = useState<string>('');
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        dayjs.locale(i18n.language);
+    }, [i18n.language]);
 
     useEffect(() => {
         if (dataInit?.userId) {
             if (dataInit.role) {
                 setRoles([
                     {
-                        label: dataInit.role?.name,
+                        label: getRoleName(dataInit.role?.name),
                         value: dataInit.role?.roleId,
                         key: dataInit.role?.roleId,
                     },
@@ -140,6 +149,7 @@ const RecruiterForm = (props: IProps) => {
         }
         if (setVisibleUpload) setVisibleUpload(true);
         if (setFileList) setFileList([]);
+        if (setLoadingUpload) setLoadingUpload(false);
     };
 
     return (
@@ -148,8 +158,8 @@ const RecruiterForm = (props: IProps) => {
             onFinish={onFinish}
             submitter={{
                 searchConfig: {
-                    resetText: 'Hủy',
-                    submitText: <>{dataInit?.userId ? 'Cập nhật' : 'Tạo mới'}</>,
+                    resetText: t('button.cancel'),
+                    submitText: <>{dataInit?.userId ? t('button.update') : t('button.create')}</>,
                 },
                 resetButtonProps: {
                     preventDefault: true,
@@ -175,20 +185,20 @@ const RecruiterForm = (props: IProps) => {
                     <Row gutter={16}>
                         <Col lg={12} md={12} sm={24} xs={24}>
                             <ProFormText
-                                label="Tên nhà tuyển dụng"
+                                label={t('name_recruiter')}
                                 name="fullName"
-                                placeholder="Nhập tên nhà tuyển dụng"
+                                placeholder={t('placeholder')}
                                 rules={[{ required: true, message: 'Vui lòng nhập tên nhà tuyển dụng' }]}
                             />
                         </Col>
                         <Col lg={12} md={12} sm={24} xs={24}>
-                            <ProForm.Item name="role" label="Vai trò">
+                            <ProForm.Item name="role" label={t('role')}>
                                 <DebounceSelect
                                     disabled={onRole ? false : true}
                                     allowClear
                                     showSearch
                                     value={roles}
-                                    placeholder="Chọn vai trò"
+                                    placeholder={t('choose')}
                                     fetchOptions={fetchRoleList}
                                     onChange={(newValue: any) => {
                                         setRoles(newValue as ISelect[]);
@@ -202,9 +212,9 @@ const RecruiterForm = (props: IProps) => {
                         {!onRole ? (
                             <Col lg={12} md={12} sm={24} xs={24}>
                                 <ProFormText
-                                    label="Tên hiển thị"
+                                    label={t('username')}
                                     name="username"
-                                    placeholder="Nhập tên đăng nhập"
+                                    placeholder={t('placeholder')}
                                     rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
                                 />
                             </Col>
@@ -212,16 +222,16 @@ const RecruiterForm = (props: IProps) => {
                             <>
                                 <Col lg={6} md={6} sm={24} xs={24}>
                                     <ProFormText
-                                        label="Tên hiển thị"
+                                        label={t('username')}
                                         name="username"
-                                        placeholder="Nhập tên đăng nhập"
+                                        placeholder={t('placeholder')}
                                         rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
                                     />
                                 </Col>
                                 <Col lg={6} md={6} sm={24} xs={24}>
                                     <ProFormText
                                         disabled={dataInit?.userId ? true : false}
-                                        label="Mật khẩu"
+                                        label={t('password')}
                                         name="password"
                                         rules={[
                                             () => ({
@@ -233,20 +243,20 @@ const RecruiterForm = (props: IProps) => {
                                                 },
                                             }),
                                         ]}
-                                        placeholder="Nhập mật khẩu"
+                                        placeholder={t('placeholder')}
                                     />
                                 </Col>
                             </>
                         )}
                         <Col lg={12} md={12} sm={24} xs={24}>
                             <ProFormText
-                                label="Email"
+                                label={t('email')}
                                 name={['contact', 'email']}
                                 rules={[
                                     { required: true, message: 'Vui lòng nhập email' },
                                     { type: 'email', message: 'Email không hợp lệ' },
                                 ]}
-                                placeholder="Nhập email"
+                                placeholder={t('placeholder')}
                             />
                         </Col>
                     </Row>
@@ -254,7 +264,7 @@ const RecruiterForm = (props: IProps) => {
                 <Col lg={4} md={4} sm={24} xs={24}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        label={<span style={{ textAlign: 'center' }}>Ảnh đại diện</span>}
+                        label={<span style={{ textAlign: 'center' }}>{t('avatar')}</span>}
                         name="avatar"
                     >
                         <Upload
@@ -273,7 +283,7 @@ const RecruiterForm = (props: IProps) => {
                             {visibleUpload && fileList.length < 1 && (
                                 <div>
                                     {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
-                                    <div style={{ marginTop: 8 }}>Tải lên</div>
+                                    <div style={{ marginTop: 8 }}>{t('upload')}</div>
                                 </div>
                             )}
                         </Upload>
@@ -283,23 +293,23 @@ const RecruiterForm = (props: IProps) => {
             <Row gutter={16}>
                 <Col md={10} xs={24}>
                     <ProFormText
-                        label="Số điện thoại"
+                        label={t('tel')}
                         name={['contact', 'phone']}
-                        placeholder="Nhập số điện thoại"
+                        placeholder={t('placeholder')}
                         rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
                     />
                 </Col>
                 <Col md={10} xs={24}>
                     <ProFormText
-                        label="Địa chỉ"
+                        label={t('address')}
                         name="address"
-                        placeholder="Nhập địa chỉ"
+                        placeholder={t('placeholder')}
                         rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                     />
                 </Col>
             </Row>
             <ProCard
-                title="Mô tả"
+                title={t('description')}
                 headStyle={{ color: '#d81921' }}
                 style={{ marginBottom: 20 }}
                 headerBordered

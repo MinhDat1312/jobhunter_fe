@@ -11,9 +11,12 @@ import parse from 'html-react-parser';
 import ApplyModal from '../../components/client/modal/apply.modal';
 import Access from '../../components/share/access';
 import { ALL_PERMISSIONS } from '../../config/permissions';
+import { useTranslation } from 'react-i18next';
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = () => {
+    const { t, i18n } = useTranslation();
+
     const [jobDetail, setJobDetail] = useState<IJob | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -21,6 +24,10 @@ const ClientJobDetailPage = () => {
     let location = useLocation();
     let params = new URLSearchParams(location.search);
     const id = params?.get('id');
+
+    useEffect(() => {
+        dayjs.locale(i18n.language);
+    }, [i18n.language]);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -49,7 +56,7 @@ const ClientJobDetailPage = () => {
                                 <div className={styles['header']}>{jobDetail.title}</div>
                                 <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
                                     <button onClick={() => setIsModalOpen(true)} className={styles['btn-apply']}>
-                                        Apply Now
+                                        {t('button.apply')}
                                     </button>
                                 </Access>
                                 <Divider />
@@ -69,14 +76,14 @@ const ClientJobDetailPage = () => {
                                     </span>
                                 </div>
                                 <div className={styles['location']}>
-                                    <EnvironmentOutlined style={{ color: '#58aaab' }} />
+                                    <EnvironmentOutlined style={{ color: '#00b452' }} />
                                     &nbsp;{jobDetail.location}
                                 </div>
                                 <div>
                                     <HistoryOutlined />{' '}
                                     {jobDetail.updatedAt
-                                        ? dayjs(jobDetail.updatedAt).locale('en').fromNow()
-                                        : dayjs(jobDetail.createdAt).locale('en').fromNow()}
+                                        ? dayjs(jobDetail.updatedAt).fromNow()
+                                        : dayjs(jobDetail.createdAt).fromNow()}
                                 </div>
                                 <Divider />
                                 {parse(jobDetail.description)}

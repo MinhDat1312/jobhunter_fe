@@ -20,6 +20,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { eventBus } from '../../../config/eventBus';
 import { useAppSelector } from '../../../hooks/hook';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     isModalOpen: boolean;
@@ -28,6 +29,8 @@ interface IProps {
 }
 
 const ApplyModal = (props: IProps) => {
+    const { t } = useTranslation();
+
     const { isModalOpen, setIsModalOpen, jobDetail } = props;
 
     const navigate = useNavigate();
@@ -92,17 +95,22 @@ const ApplyModal = (props: IProps) => {
                 message.error(info?.file?.error?.event?.message ?? 'Đã có lỗi xảy ra khi upload file.');
             }
         },
+        onRemove(file) {
+            setUrlCV('');
+            message.info(`${file.name} đã được xoá`);
+            return true;
+        },
     };
 
     return (
         <>
             <Modal
-                title="Ứng Tuyển Công Việc"
+                title={t('title_apply')}
                 open={isModalOpen}
                 onOk={() => handleOkButton()}
                 onCancel={() => setIsModalOpen(false)}
                 maskClosable={false}
-                okText={!isAuthenticated ? 'Đăng nhập' : role.active ? 'Ứng tuyển' : 'Trang chủ'}
+                okText={!isAuthenticated ? t('sign_in') : role.active ? t('button.apply') : t('home')}
                 cancelButtonProps={{ style: { display: 'none' } }}
             >
                 <Divider />
@@ -118,8 +126,8 @@ const ApplyModal = (props: IProps) => {
                                     <Row gutter={[10, 10]}>
                                         <Col span={24}>
                                             <div>
-                                                Bạn đang ứng tuyển công việc <b>{jobDetail?.title} </b>tại{' '}
-                                                <b>{jobDetail?.recruiter?.fullName}</b>
+                                                {t('body_apply')} <b>{jobDetail?.title} </b>
+                                                {t('at')} <b>{jobDetail?.recruiter?.fullName}</b>
                                             </div>
                                         </Col>
                                         <Col span={24}>
@@ -136,12 +144,13 @@ const ApplyModal = (props: IProps) => {
                                         </Col>
                                         <Col span={24}>
                                             <ProForm.Item
-                                                label={'Upload file CV'}
+                                                label={t('cv_for')}
                                                 rules={[{ required: true, message: 'Vui lòng upload file!' }]}
+                                                style={{ width: '100%' }}
                                             >
-                                                <Upload {...propsUpload}>
-                                                    <Button icon={<UploadOutlined />}>
-                                                        Tải lên CV của bạn ( Hỗ trợ *.doc, *.docx, *.pdf, and &lt; 5MB )
+                                                <Upload {...propsUpload} style={{ width: '100%' }}>
+                                                    <Button icon={<UploadOutlined />} style={{ width: '100%' }}>
+                                                        {t('upload')} CV (.doc, .docx, .pdf, and &lt; 5MB)
                                                     </Button>
                                                 </Upload>
                                             </ProForm.Item>
@@ -158,7 +167,7 @@ const ApplyModal = (props: IProps) => {
                         )}
                     </div>
                 ) : (
-                    <div>Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể "Ứng tuyển" nhé.</div>
+                    <div>{t('signin_apply')}</div>
                 )}
                 <Divider />
             </Modal>

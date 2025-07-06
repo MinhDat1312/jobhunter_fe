@@ -22,28 +22,26 @@ const DataTable = <T extends Record<string, any>, U extends ParamsType = ParamsT
     dateFormatter = 'string',
 }: ProTableProps<T, U, ValueType>) => {
     return (
-        <ConfigProvider locale={vi_VN}>
-            <ProTable<T, U, ValueType>
-                columns={columns}
-                actionRef={actionRef}
-                headerTitle={headerTitle}
-                rowKey={rowKey}
-                loading={loading}
-                dataSource={dataSource}
-                request={request}
-                scroll={scroll}
-                pagination={pagination}
-                rowSelection={rowSelection}
-                toolBarRender={toolBarRender}
-                defaultData={defaultData}
-                postData={postData}
-                bordered
-                params={params}
-                polling={polling}
-                dateFormatter={dateFormatter}
-                search={search}
-            />
-        </ConfigProvider>
+        <ProTable<T, U, ValueType>
+            columns={columns}
+            actionRef={actionRef}
+            headerTitle={headerTitle}
+            rowKey={rowKey}
+            loading={loading}
+            dataSource={dataSource}
+            request={request}
+            scroll={scroll}
+            pagination={pagination}
+            rowSelection={rowSelection}
+            toolBarRender={toolBarRender}
+            defaultData={defaultData}
+            postData={postData}
+            bordered
+            params={params}
+            polling={polling}
+            dateFormatter={dateFormatter}
+            search={search}
+        />
     );
 };
 export default DataTable;

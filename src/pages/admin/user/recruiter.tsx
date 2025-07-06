@@ -13,8 +13,11 @@ import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchRecruiter } from '../../../redux/slice/recruiterSlice';
 import ModalRecruiter from '../../../components/admin/recruiter/modal.recruiter';
+import { getRoleName } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
 
 const RecruiterPage = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const meta = useAppSelector((state) => state.recruiter.meta);
     const isFetching = useAppSelector((state) => state.recruiter.isFetching);
@@ -26,7 +29,7 @@ const RecruiterPage = () => {
 
     const columns: ProColumns<IRecruiter>[] = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -36,26 +39,29 @@ const RecruiterPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Nhà tuyển dụng',
+            title: t('recruiter'),
             dataIndex: 'fullName',
             sorter: true,
             search: true,
         },
         {
-            title: 'Địa chỉ',
+            title: t('address'),
             dataIndex: 'address',
             sorter: true,
             search: true,
             valueType: 'text',
         },
         {
-            title: 'Vai trò',
+            title: t('role'),
             dataIndex: ['role', 'name'],
             sorter: true,
             hideInSearch: true,
+            render: (_text, record) => {
+                return <>{getRoleName(record?.role?.name)}</>;
+            },
         },
         {
-            title: 'Ngày tạo',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -65,7 +71,7 @@ const RecruiterPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngày cập nhật',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -75,7 +81,7 @@ const RecruiterPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Hành động',
+            title: t('table.action'),
             hideInSearch: true,
             width: 100,
             render: (_value, entity, _index, _action) => (
@@ -99,8 +105,8 @@ const RecruiterPage = () => {
                             title={'Xác nhận xóa nhà tuyển dụng'}
                             description={'Bạn có chắc chắn muốn xóa nhà tuyển dụng này ?'}
                             onConfirm={() => handleDeleteRecruiter(entity.userId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -184,7 +190,7 @@ const RecruiterPage = () => {
                 <DataTable<IRecruiter>
                     columns={columns}
                     actionRef={tableRef}
-                    headerTitle="Danh sách nhà tuyển dụng"
+                    headerTitle={t('table.header.recruiter')}
                     rowKey="userId"
                     loading={isFetching}
                     dataSource={recruiters}
@@ -203,7 +209,7 @@ const RecruiterPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} hàng
+                                    {range[0]}-{range[1]} trên {total} {t('row')}
                                 </div>
                             );
                         },
@@ -213,7 +219,7 @@ const RecruiterPage = () => {
                         return (
                             <Access permission={ALL_PERMISSIONS.RECRUITERS.CREATE} hideChildren>
                                 <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                    Thêm mới
+                                    {t('button.create')}
                                 </Button>
                             </Access>
                         );

@@ -97,7 +97,7 @@ const ApplicationPage = () => {
         },
 
         {
-            title: 'Created At',
+            title: 'Ngày tạo',
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -107,7 +107,7 @@ const ApplicationPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'UpdatedAt',
+            title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -118,7 +118,7 @@ const ApplicationPage = () => {
         },
 
         {
-            title: 'Actions',
+            title: 'Hành động',
             hideInSearch: true,
             width: 100,
             render: (_value, entity, _index, _action) => (

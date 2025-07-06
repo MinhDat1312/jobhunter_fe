@@ -2,22 +2,24 @@ import { Tabs, type TabsProps } from 'antd';
 import JobPage from './job';
 import SkillPage from './skill';
 import CareerPage from './career';
+import { useTranslation } from 'react-i18next';
 
 const JobTab = () => {
+    const { t } = useTranslation();
     const items: TabsProps['items'] = [
         {
             key: '1',
-            label: 'Tin tuyển dụng',
+            label: t('job'),
             children: <JobPage />,
         },
         {
             key: '2',
-            label: 'Kỹ năng',
+            label: t('skill'),
             children: <SkillPage />,
         },
         {
             key: '3',
-            label: 'Ngành nghề',
+            label: t('career'),
             children: <CareerPage />,
         },
     ];

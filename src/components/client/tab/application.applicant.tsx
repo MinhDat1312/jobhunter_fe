@@ -8,10 +8,13 @@ import dayjs from 'dayjs';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { Card, Grid, Table } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const ApplicationApplicant = () => {
+    const { t } = useTranslation();
+
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -38,7 +41,7 @@ const ApplicationApplicant = () => {
 
     const columns: ColumnsType<IApplication> = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -48,20 +51,20 @@ const ApplicationApplicant = () => {
             responsive: ['md', 'lg'],
         },
         {
-            title: 'Nhà tuyển dụng',
+            title: t('table.applied_table.recruiter'),
             dataIndex: 'recruiterName',
             responsive: ['xs', 'sm'],
         },
         {
-            title: 'Tiêu đề',
+            title: t('table.applied_table.title'),
             dataIndex: ['job', 'title'],
             responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
-            title: 'Trạng thái',
+            title: t('table.applied_table.status'),
             dataIndex: 'status',
             render: (_text, record) => {
-                const { color, label } = colorStatus(record.status);
+                const { color, label } = colorStatus(record.status, t);
                 return (
                     <p
                         style={{
@@ -77,7 +80,7 @@ const ApplicationApplicant = () => {
             responsive: ['xs', 'md', 'lg'],
         },
         {
-            title: 'Ngày nộp',
+            title: t('table.applied_table.applied_at'),
             dataIndex: 'createdAt',
             render(_value, record, _index) {
                 return <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>;
@@ -85,12 +88,12 @@ const ApplicationApplicant = () => {
             responsive: ['lg'],
         },
         {
-            title: 'Xem CV',
+            title: t('table.applied_table.view_cv'),
             dataIndex: '',
             render(record) {
                 return (
                     <a href={`${record?.resumeUrl}`} target="_blank" style={{ color: '#00b452' }}>
-                        Chi tiết
+                        {t('detail')}
                     </a>
                 );
             },

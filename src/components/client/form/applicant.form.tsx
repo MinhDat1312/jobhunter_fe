@@ -1,12 +1,13 @@
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { ProForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
 import { Col, DatePicker, Form, message, notification, Row, Upload, type FormInstance } from 'antd';
-import { EDUCATION_LIST, fetchRoleList, LEVEL_LIST } from '../../../config/utils';
+import { EDUCATION_LIST, fetchRoleList, getRoleName, LEVEL_LIST } from '../../../config/utils';
 import type { IFullUser, ISelect } from '../../../types/backend';
 import { DebounceSelect } from '../../admin/debounce.select';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { callCreateApplicant, callUpdateApplicant } from '../../../config/api';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     form: FormInstance<any>;
@@ -23,6 +24,7 @@ interface IProps {
     loadingUpload?: boolean;
     fileList: any;
     setFileList?: (v: any) => void;
+    setLoadingUpload?: (v: any) => void;
     onRole: boolean;
     reloadTable?: () => void;
 }
@@ -43,17 +45,24 @@ const ApplicantForm = (props: IProps) => {
         loadingUpload,
         fileList,
         setFileList,
+        setLoadingUpload,
         onRole,
         reloadTable,
     } = props;
     const [roles, setRoles] = useState<ISelect[]>([]);
+
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        dayjs.locale(i18n.language);
+    }, [i18n.language]);
 
     useEffect(() => {
         if (dataInit?.userId) {
             if (dataInit.role) {
                 setRoles([
                     {
-                        label: dataInit.role?.name,
+                        label: getRoleName(dataInit.role?.name),
                         value: dataInit.role?.roleId,
                         key: dataInit.role?.roleId,
                     },
@@ -148,6 +157,7 @@ const ApplicantForm = (props: IProps) => {
         }
         if (setVisibleUpload) setVisibleUpload(true);
         if (setFileList) setFileList([]);
+        if (setLoadingUpload) setLoadingUpload(false);
     };
 
     return (
@@ -156,8 +166,8 @@ const ApplicantForm = (props: IProps) => {
             onFinish={onFinish}
             submitter={{
                 searchConfig: {
-                    resetText: 'Hủy',
-                    submitText: <>{dataInit?.userId ? 'Cập nhật' : 'Tạo mới'}</>,
+                    resetText: t('button.cancel'),
+                    submitText: <>{dataInit?.userId ? t('button.update') : t('button.create')}</>,
                 },
                 resetButtonProps: {
                     preventDefault: true,
@@ -182,25 +192,25 @@ const ApplicantForm = (props: IProps) => {
                 <Col lg={20} md={20} sm={24} xs={24}>
                     <Row gutter={16}>
                         <Col lg={12} md={12} sm={24} xs={24}>
-                            <ProFormText label="Tên ứng viên" name="fullName" placeholder="Nhập tên ứng viên" />
+                            <ProFormText label={t('name_applicant')} name="fullName" placeholder={t('placeholder')} />
                         </Col>
                         <Col lg={6} md={6} sm={24} xs={24}>
                             <ProFormSwitch
-                                label="Trạng thái"
+                                label={t('status')}
                                 name="availableStatus"
-                                checkedChildren="BẬT"
-                                unCheckedChildren="TẮT"
+                                checkedChildren={t('button.active').toUpperCase()}
+                                unCheckedChildren={t('button.inactive').toUpperCase()}
                                 initialValue={false}
                             />
                         </Col>
                         <Col lg={6} md={6} sm={24} xs={24}>
-                            <ProForm.Item name="role" label="Vai trò">
+                            <ProForm.Item name="role" label={t('role')}>
                                 <DebounceSelect
                                     disabled={onRole ? false : true}
                                     allowClear
                                     showSearch
                                     value={roles}
-                                    placeholder="Chọn vai trò"
+                                    placeholder={t('choose')}
                                     fetchOptions={fetchRoleList}
                                     onChange={(newValue: any) => {
                                         setRoles(newValue as ISelect[]);
@@ -213,21 +223,17 @@ const ApplicantForm = (props: IProps) => {
                     <Row gutter={16}>
                         {!onRole ? (
                             <Col lg={12} md={12} sm={24} xs={24}>
-                                <ProFormText label="Tên hiển thị" name="username" placeholder="Nhập tên đăng nhập" />
+                                <ProFormText label={t('username')} name="username" placeholder={t('placeholder')} />
                             </Col>
                         ) : (
                             <>
                                 <Col lg={6} md={6} sm={24} xs={24}>
-                                    <ProFormText
-                                        label="Tên hiển thị"
-                                        name="username"
-                                        placeholder="Nhập tên đăng nhập"
-                                    />
+                                    <ProFormText label={t('username')} name="username" placeholder={t('placeholder')} />
                                 </Col>
                                 <Col lg={6} md={6} sm={24} xs={24}>
                                     <ProFormText
                                         disabled={dataInit?.userId ? true : false}
-                                        label="Mật khẩu"
+                                        label={t('password')}
                                         name="password"
                                         rules={[
                                             () => ({
@@ -239,7 +245,7 @@ const ApplicantForm = (props: IProps) => {
                                                 },
                                             }),
                                         ]}
-                                        placeholder="Nhập mật khẩu"
+                                        placeholder={t('placeholder')}
                                     />
                                 </Col>
                             </>
@@ -247,17 +253,17 @@ const ApplicantForm = (props: IProps) => {
                         <Col lg={6} md={6} sm={24} xs={24}>
                             <ProFormSelect
                                 name="education"
-                                label="Học vấn"
+                                label={t('education')}
                                 options={EDUCATION_LIST}
-                                placeholder="Chọn học vấn"
+                                placeholder={t('choose')}
                             />
                         </Col>
                         <Col lg={6} md={6} sm={24} xs={24}>
                             <ProFormSelect
                                 name="level"
-                                label="Trình độ"
+                                label={t('level')}
                                 options={LEVEL_LIST}
-                                placeholder="Chọn trình độ"
+                                placeholder={t('placeholder')}
                             />
                         </Col>
                     </Row>
@@ -265,7 +271,7 @@ const ApplicantForm = (props: IProps) => {
                 <Col lg={4} md={4} sm={24} xs={24}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        label={<span style={{ textAlign: 'center' }}>Ảnh đại diện</span>}
+                        label={<span style={{ textAlign: 'center' }}>{t('avatar')}</span>}
                         name="avatar"
                     >
                         <Upload
@@ -284,7 +290,7 @@ const ApplicantForm = (props: IProps) => {
                             {visibleUpload && fileList.length < 1 && (
                                 <div>
                                     {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
-                                    <div style={{ marginTop: 8 }}>Tải lên</div>
+                                    <div style={{ marginTop: 8 }}>{t('upload')}</div>
                                 </div>
                             )}
                         </Upload>
@@ -294,40 +300,40 @@ const ApplicantForm = (props: IProps) => {
             <Row gutter={16}>
                 <Col md={10} xs={24}>
                     <ProFormText
-                        label="Email"
+                        label={t('email')}
                         name={['contact', 'email']}
                         rules={[
                             { required: true, message: 'Vui lòng nhập email' },
                             { type: 'email', message: 'Email không hợp lệ' },
                         ]}
-                        placeholder="Nhập email"
+                        placeholder={t('placeholder')}
                     />
                 </Col>
                 <Col md={10} xs={24}>
-                    <ProFormText label="Số điện thoại" name={['contact', 'phone']} placeholder="Nhập số điện thoại" />
+                    <ProFormText label={t('tel')} name={['contact', 'phone']} placeholder={t('placeholder')} />
                 </Col>
             </Row>
             <Row gutter={16}>
                 <Col md={10} xs={24}>
-                    <ProFormText label="Địa chỉ" name="address" placeholder="Nhập địa chỉ" />
+                    <ProFormText label={t('address')} name="address" placeholder={t('placeholder')} />
                 </Col>
                 <Col lg={5} md={5} sm={24} xs={24}>
                     <ProFormSelect
                         name="gender"
-                        label="Giới tính"
+                        label={t('gender')}
                         valueEnum={{
                             MALE: 'Nam',
                             FEMALE: 'Nữ',
                             OTHER: 'Khác',
                         }}
-                        placeholder="Chọn giới tính"
+                        placeholder={t('choose')}
                         rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
                     />
                 </Col>
                 <Col lg={5} md={5} sm={24} xs={24}>
                     <Form.Item
                         labelCol={{ span: 24 }}
-                        label="Ngày sinh"
+                        label={t('dob')}
                         name="dob"
                         rules={[{ required: true, message: 'Vui lòng chọn ngày sinh!' }]}
                     >

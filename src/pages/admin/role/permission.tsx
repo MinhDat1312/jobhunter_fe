@@ -40,6 +40,7 @@ const PermissionPage = () => {
                             setOpenViewDetail(true);
                             setDataInit(record);
                         }}
+                        style={{ color: '#00b452' }}
                     >
                         {record.permissionId}
                     </a>
@@ -83,7 +84,7 @@ const PermissionPage = () => {
             sorter: true,
         },
         {
-            title: 'CreatedAt',
+            title: 'Ngày tạo',
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -93,7 +94,7 @@ const PermissionPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'UpdatedAt',
+            title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,

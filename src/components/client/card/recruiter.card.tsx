@@ -1,17 +1,24 @@
-import { Card, Col, Divider, Empty, Pagination, Row, Spin } from 'antd';
+import { Card, Col, Divider, Empty, Pagination, Row, Spin, Grid } from 'antd';
 import styles from '../../../styles/client.module.scss';
 import { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import { Link, useNavigate } from 'react-router-dom';
 import type { IRecruiter } from '../../../types/backend';
 import { callFetchRecruiter } from '../../../config/api';
 import { convertSlug } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
+
+const { useBreakpoint } = Grid;
 
 interface IProps {
     showPagination?: boolean;
 }
 
 const RecruiterCard = (props: IProps) => {
+    const { t } = useTranslation();
+
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+
     const { showPagination = false } = props;
 
     const navigate = useNavigate();
@@ -71,14 +78,18 @@ const RecruiterCard = (props: IProps) => {
                     <Row gutter={[20, 20]}>
                         <Col span={24}>
                             <div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
-                                <span className={styles['title']}>Nhà Tuyển Dụng Hàng Đầu</span>
-                                {!showPagination && <Link to="recruiter">Xem tất cả</Link>}
+                                <span className={styles['title']}> {t('featured_employers')}</span>
+                                {!showPagination && (
+                                    <Link to="recruiter" style={{ color: '#00b452' }}>
+                                         {t('view_all')}
+                                    </Link>
+                                )}
                             </div>
                         </Col>
 
                         {displayRecruiter?.map((item) => {
                             return (
-                                <Col span={24} md={6} key={item.userId}>
+                                <Col span={24} md={12} xs={24} lg={6} key={item.userId}>
                                     <Card
                                         onClick={() => handleViewDetailRecruiter(item)}
                                         style={{ height: 350 }}
@@ -115,6 +126,7 @@ const RecruiterCard = (props: IProps) => {
                                     total={total}
                                     pageSize={pageSize}
                                     responsive
+                                    showLessItems
                                     onChange={(p: number, s: number) => handleOnchangePage({ current: p, pageSize: s })}
                                 />
                             </Row>

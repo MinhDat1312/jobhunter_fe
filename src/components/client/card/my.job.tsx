@@ -2,10 +2,12 @@ import { Card, Grid, Tabs, type TabsProps } from 'antd';
 import ApplicationApplicant from '../tab/application.applicant';
 import SaveJob from '../tab/save.job';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const MyJob = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -15,12 +17,12 @@ const MyJob = () => {
     const items: TabsProps['items'] = [
         {
             key: 'application-applicant',
-            label: `Đã ứng tuyển`,
+            label: t('applied'),
             children: <ApplicationApplicant />,
         },
         {
             key: 'saved-job',
-            label: `Đã lưu`,
+            label: t('saved'),
             children: <SaveJob />,
         },
     ];

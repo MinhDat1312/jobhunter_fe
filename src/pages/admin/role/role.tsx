@@ -12,7 +12,7 @@ import { callDeleteRole, callFetchPermission } from '../../../config/api';
 import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchRole } from '../../../redux/slice/roleSlice';
-import { groupByPermission } from '../../../config/utils';
+import { getRoleName, groupByPermission } from '../../../config/utils';
 import ModalRole from '../../../components/admin/role/modal.role';
 
 const RolePage = () => {
@@ -48,7 +48,6 @@ const RolePage = () => {
         {
             title: 'Id',
             dataIndex: 'roleId',
-            width: 250,
             render: (_text, record, _index, _action) => {
                 return <span>{record.roleId}</span>;
             },
@@ -58,6 +57,9 @@ const RolePage = () => {
             title: 'Vai trò',
             dataIndex: 'name',
             sorter: true,
+            render(_dom, entity, _index, _action, _schema) {
+                return <>{getRoleName(entity.name)}</>;
+            },
         },
         {
             title: 'Trạng thái',
@@ -65,14 +67,16 @@ const RolePage = () => {
             render(_dom, entity, _index, _action, _schema) {
                 return (
                     <>
-                        <Tag color={entity.active ? 'lime' : 'red'}>{entity.active ? 'ACTIVE' : 'INACTIVE'}</Tag>
+                        <Tag color={entity.active ? 'lime' : 'red'} style={{ fontSize: '14px' }}>
+                            {entity.active ? 'Hoạt động' : 'Không hoạt động'}
+                        </Tag>
                     </>
                 );
             },
             hideInSearch: true,
         },
         {
-            title: 'CreatedAt',
+            title: 'Ngày tạo',
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -82,7 +86,7 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'UpdatedAt',
+            title: 'Ngày cập nhật',
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -92,9 +96,9 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Actions',
+            title: 'Hành động',
             hideInSearch: true,
-            width: 50,
+            width: 100,
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access permission={ALL_PERMISSIONS.ROLES.UPDATE} hideChildren>

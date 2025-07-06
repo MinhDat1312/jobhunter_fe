@@ -3,6 +3,7 @@ import type { ISkill } from '../../../types/backend';
 import { callCreateSkill, callUpdateSkill } from '../../../config/api';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import { isMobile } from 'react-device-detect';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     openModal: boolean;
@@ -13,6 +14,7 @@ interface IProps {
 }
 
 const ModalSkill = (props: IProps) => {
+    const { t } = useTranslation();
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;
     const [form] = Form.useForm();
 
@@ -54,7 +56,13 @@ const ModalSkill = (props: IProps) => {
     return (
         <>
             <ModalForm
-                title={<>{dataInit?.skillId ? 'Cập nhật kỹ năng' : 'Tạo mới kỹ năng'}</>}
+                title={
+                    <>
+                        {dataInit?.skillId
+                            ? t('button.update') + ' ' + t('skill').toLowerCase()
+                            : t('button.create') + ' ' + t('skill').toLowerCase()}
+                    </>
+                }
                 open={openModal}
                 modalProps={{
                     onCancel: () => {
@@ -65,8 +73,8 @@ const ModalSkill = (props: IProps) => {
                     width: isMobile ? '100%' : 600,
                     keyboard: false,
                     maskClosable: false,
-                    okText: <>{dataInit?.skillId ? 'Cập nhật' : 'Tạo mới'}</>,
-                    cancelText: 'Hủy',
+                    okText: <>{dataInit?.skillId ? t('button.update') : t('button.create')}</>,
+                    cancelText: t('button.cancel'),
                 }}
                 scrollToFirstError={true}
                 preserve={false}
@@ -77,10 +85,10 @@ const ModalSkill = (props: IProps) => {
                 <Row gutter={16}>
                     <Col span={24}>
                         <ProFormText
-                            label="Tên kỹ năng"
+                            label={t('name_skill')}
                             name="name"
                             rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                            placeholder="Nhập tên kỹ năng"
+                            placeholder={t('placeholder')}
                         />
                     </Col>
                 </Row>

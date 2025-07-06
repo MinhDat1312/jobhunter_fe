@@ -14,10 +14,12 @@ import { fetchJob } from '../../../redux/slice/jobSlice';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { ADMIN } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const JobPage = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isTablet = screens.md && !screens.lg;
 
@@ -32,7 +34,7 @@ const JobPage = () => {
 
     const columns: ProColumns<IJob>[] = [
         {
-            title: 'STT',
+            title: t('table.no_1'),
             key: 'index',
             width: 50,
             align: 'center',
@@ -42,18 +44,18 @@ const JobPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Tiêu đề',
+            title: t('table.job_table.title'),
             dataIndex: 'title',
             sorter: true,
         },
         {
-            title: 'Công ty',
+            title: t('recruiter'),
             dataIndex: ['recruiter', 'fullName'],
             sorter: true,
             hideInSearch: true,
         },
         {
-            title: 'Mức lương',
+            title: t('table.job_table.salary'),
             dataIndex: 'salary',
             sorter: true,
             render(_dom, entity, _index, _action, _schema) {
@@ -62,7 +64,7 @@ const JobPage = () => {
             },
         },
         {
-            title: 'Level',
+            title: t('level'),
             dataIndex: 'level',
             renderFormItem: (_item, _props, _form) => (
                 <ProFormSelect
@@ -76,7 +78,7 @@ const JobPage = () => {
                         INTERN: 'Intern',
                         MIDDLE: 'Middle',
                     }}
-                    placeholder="Chọn level"
+                    placeholder={t('choose')}
                     fieldProps={{
                         suffixIcon: null,
                         maxTagCount: 2,
@@ -86,12 +88,14 @@ const JobPage = () => {
             ),
         },
         {
-            title: 'Trạng thái',
+            title: t('status'),
             dataIndex: 'active',
             render(_dom, entity, _index, _action, _schema) {
                 return (
                     <>
-                        <Tag color={entity.active ? 'lime' : 'red'}>{entity.active ? 'ACTIVE' : 'INACTIVE'}</Tag>
+                        <Tag color={entity.active ? 'lime' : 'red'} style={{ fontSize: '14px' }}>
+                            {entity.active ? t('button.active_tag') : t('button.inactive_tag')}
+                        </Tag>
                     </>
                 );
             },
@@ -99,7 +103,7 @@ const JobPage = () => {
         },
 
         {
-            title: 'CreatedAt',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -109,7 +113,7 @@ const JobPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'UpdatedAt',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -119,9 +123,9 @@ const JobPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Actions',
+            title: t('table.action'),
             hideInSearch: true,
-            width: 50,
+            width: 100,
             render: (_value, entity, _index, _action) => (
                 <Space>
                     <Access permission={ALL_PERMISSIONS.JOBS.UPDATE} hideChildren>
@@ -142,8 +146,8 @@ const JobPage = () => {
                             title={'Xác nhận xóa tin'}
                             description={'Bạn có chắc chắn muốn xóa tin này ?'}
                             onConfirm={() => handleDeleteJob(entity.jobId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -228,7 +232,7 @@ const JobPage = () => {
             <Access permission={ALL_PERMISSIONS.JOBS.GET_PAGINATE}>
                 <DataTable<IJob>
                     actionRef={tableRef}
-                    headerTitle="Danh sách tin tuyển dụng"
+                    headerTitle={t('table.header.job')}
                     rowKey="jobId"
                     loading={isFetching}
                     columns={columns}
@@ -261,7 +265,7 @@ const JobPage = () => {
                         return (
                             <Access permission={ALL_PERMISSIONS.JOBS.CREATE} hideChildren>
                                 <Button icon={<PlusOutlined />} type="primary" onClick={() => navigate('upsert')}>
-                                    Thêm mới
+                                    {t('button.create')}
                                 </Button>
                             </Access>
                         );

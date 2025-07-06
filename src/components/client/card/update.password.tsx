@@ -8,10 +8,12 @@ import { callUpdatePassword } from '../../../config/api';
 import { useAppDispatch } from '../../../hooks/hook';
 import { setUserLoginInfo } from '../../../redux/slice/accountSlice';
 import { Grid } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const UpdatePassword = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -60,8 +62,8 @@ const UpdatePassword = () => {
                     onReset={onReset}
                     submitter={{
                         searchConfig: {
-                            resetText: 'Hủy',
-                            submitText: 'Cập nhật',
+                            resetText: t('button.cancel'),
+                            submitText: t('button.update'),
                         },
                         render: (_: any, dom: any) => (
                             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
@@ -81,7 +83,7 @@ const UpdatePassword = () => {
                     <Row gutter={16}>
                         <Col span={24}>
                             <ProFormText.Password
-                                label="Mật khẩu hiện tại"
+                                label={t('current_password')}
                                 name="currentPassword"
                                 rules={[
                                     {
@@ -90,12 +92,12 @@ const UpdatePassword = () => {
                                     },
                                     { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' },
                                 ]}
-                                placeholder="Nhập mật khẩu hiện tại"
+                                placeholder={t('placeholder')}
                             />
                         </Col>
                         <Col span={24}>
                             <ProFormText.Password
-                                label="Mật khẩu mới"
+                                label={t('new_password')}
                                 name="newPassword"
                                 rules={[
                                     {
@@ -104,12 +106,12 @@ const UpdatePassword = () => {
                                     },
                                     { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' },
                                 ]}
-                                placeholder="Nhập mật khẩu mới"
+                                placeholder={t('placeholder')}
                             />
                         </Col>
                         <Col span={24}>
                             <ProFormText.Password
-                                label="Xác nhận mật khẩu"
+                                label={t('re_password')}
                                 name="rePassword"
                                 dependencies={['newPassword']}
                                 rules={[
@@ -126,7 +128,7 @@ const UpdatePassword = () => {
                                         },
                                     }),
                                 ]}
-                                placeholder="Xác nhận lại mật khẩu"
+                                placeholder={t('placeholder')}
                             />
                         </Col>
                     </Row>

@@ -35,33 +35,32 @@ const ClientRecruiterDetailPage = () => {
             {isLoading ? (
                 <Skeleton />
             ) : (
-                <Row gutter={[20, 20]}>
-                    {recruiterDetail && recruiterDetail.userId && (
-                        <>
-                            <Col span={24} md={16}>
+                recruiterDetail &&
+                recruiterDetail.userId && (
+                    <>
+                        <Row gutter={[20, 20]}>
+                            <Col span={12}>
                                 <div className={styles['header']}>{recruiterDetail.fullName}</div>
-
                                 <div className={styles['location']}>
-                                    <EnvironmentOutlined style={{ color: '#58aaab' }} />
+                                    <EnvironmentOutlined style={{ color: '#00b452' }} />
                                     &nbsp;
                                     {recruiterDetail.address ? recruiterDetail.address : ''}
                                 </div>
-
-                                <Divider />
-                                {parse(recruiterDetail?.description ?? '')}
                             </Col>
-
-                            <Col span={24} md={8}>
-                                <div className={styles['recruiter']}>
-                                    <div>
-                                        <img width={200} alt="example" src={`${recruiterDetail?.avatar}`} />
+                            <Col span={12}>
+                                    <div className={styles['recruiter']}>
+                                        <div>
+                                            <img width={200} alt="example" src={`${recruiterDetail?.avatar}`} />
+                                        </div>
                                     </div>
-                                    <div>{recruiterDetail?.fullName}</div>
-                                </div>
-                            </Col>
-                        </>
-                    )}
-                </Row>
+                                </Col>
+                        </Row>
+                        <Divider />
+                        <Row gutter={[20, 20]}>
+                            <Col span={24}>{parse(recruiterDetail?.description ?? '')}</Col>
+                        </Row>
+                    </>
+                )
             )}
         </div>
     );

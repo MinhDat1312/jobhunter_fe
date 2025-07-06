@@ -1,16 +1,13 @@
 import type { IApplicant } from '../../../types/backend';
-import { ConfigProvider, Form, Modal, type UploadFile } from 'antd';
+import { Form, Modal, type UploadFile } from 'antd';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { callUploadSingleFile } from '../../../config/api';
-import viVN from 'antd/es/locale/vi_VN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/vi';
 import ApplicantForm from '../../client/form/applicant.form';
 import useUploadFile from '../../../hooks/useUploadFile';
 import styles from '../../../styles/admin.module.scss';
-
-dayjs.locale('vi');
+import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
 
 interface IProps {
     openModal: boolean;
@@ -21,6 +18,7 @@ interface IProps {
 }
 
 const ModalApplicant = (props: IProps) => {
+    const { t, i18n } = useTranslation();
     const { openModal, setOpenModal, dataInit, setDataInit, reloadTable } = props;
     const [form] = Form.useForm();
     const [animation, setAnimation] = useState<string>('open');
@@ -35,12 +33,17 @@ const ModalApplicant = (props: IProps) => {
         setVisibleUpload,
         setFileList,
         setPreviewOpen,
+        setLoadingUpload,
         handleRemoveFile,
         handlePreview,
         beforeUpload,
         handleChange,
         handleUploadFile,
     } = useUploadFile((file) => callUploadSingleFile(file, 'applicants'));
+
+    useEffect(() => {
+        dayjs.locale(i18n.language);
+    }, [i18n.language]);
 
     useEffect(() => {
         if (dataInit?.avatar) {
@@ -68,7 +71,7 @@ const ModalApplicant = (props: IProps) => {
     return (
         <>
             {openModal && (
-                <ConfigProvider locale={viVN}>
+                <>
                     <Modal
                         open={openModal}
                         onCancel={() => handleReset()}
@@ -79,7 +82,13 @@ const ModalApplicant = (props: IProps) => {
                         keyboard={false}
                         maskClosable={false}
                         className={`${styles.modalUser} ${styles[animation]}`}
-                        title={<>{dataInit?.userId ? 'Cập nhật ứng viên' : 'Tạo mới ứng viên'}</>}
+                        title={
+                            <>
+                                {dataInit?.userId
+                                    ? t('button.update') + ' ' + t('applicant').toLowerCase()
+                                    : t('button.create') + ' ' + t('applicant').toLowerCase()}
+                            </>
+                        }
                     >
                         <ApplicantForm
                             form={form}
@@ -95,6 +104,7 @@ const ModalApplicant = (props: IProps) => {
                             loadingUpload={loadingUpload}
                             fileList={fileList}
                             setFileList={setFileList}
+                            setLoadingUpload={setLoadingUpload}
                             onRole={true}
                             reloadTable={reloadTable}
                             setVisibleUpload={setVisibleUpload}
@@ -109,7 +119,7 @@ const ModalApplicant = (props: IProps) => {
                     >
                         <img alt="example" style={{ width: '100%' }} src={previewImage} />
                     </Modal>
-                </ConfigProvider>
+                </>
             )}
         </>
     );

@@ -1,7 +1,6 @@
-import { Card, Col, Empty, Pagination, Row, Spin } from 'antd';
+import { Card, Col, Empty, Pagination, Row, Spin, Grid } from 'antd';
 import styles from '../../../styles/client.module.scss';
 import { useEffect, useState } from 'react';
-import { isMobile } from 'react-device-detect';
 import type { IJob } from '../../../types/backend';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { sfIn } from 'spring-filter-query-builder';
@@ -11,6 +10,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { callFetchJob } from '../../../config/api';
 import { EnvironmentOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { convertSlug, getLocationName } from '../../../config/utils';
+import { useTranslation } from 'react-i18next';
+
+const { useBreakpoint } = Grid;
 dayjs.extend(relativeTime);
 
 interface IProps {
@@ -18,6 +20,11 @@ interface IProps {
 }
 
 const JobCard = (props: IProps) => {
+    const { t, i18n } = useTranslation();
+
+    const screens = useBreakpoint();
+    const isMobile = !screens.md;
+
     const { showPagination = false } = props;
 
     const navigate = useNavigate();
@@ -31,6 +38,10 @@ const JobCard = (props: IProps) => {
     const [total, setTotal] = useState(0);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
+
+    useEffect(() => {
+        dayjs.locale(i18n.language);
+    }, [i18n.language]);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -93,8 +104,12 @@ const JobCard = (props: IProps) => {
                     <Row gutter={[20, 20]}>
                         <Col span={24}>
                             <div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
-                                <span className={styles['title']}>Công Việc Mới Nhất</span>
-                                {!showPagination && <Link to="job">Xem tất cả</Link>}
+                                <span className={styles['title']}> {t('latest_jobs')}</span>
+                                {!showPagination && (
+                                    <Link to="job" style={{ color: '#00b452' }}>
+                                        {t('view_all')}
+                                    </Link>
+                                )}
                             </div>
                         </Col>
 
@@ -115,7 +130,7 @@ const JobCard = (props: IProps) => {
                                                 <div className={styles['card-job-right']}>
                                                     <div className={styles['job-title']}>{item.title}</div>
                                                     <div className={styles['job-location']}>
-                                                        <EnvironmentOutlined style={{ color: '#58aaab' }} />
+                                                        <EnvironmentOutlined style={{ color: '#00b452' }} />
                                                         &nbsp;{item.location}
                                                     </div>
                                                     <div>
@@ -125,8 +140,8 @@ const JobCard = (props: IProps) => {
                                                     </div>
                                                     <div className={styles['job-updatedAt']}>
                                                         {item.updatedAt
-                                                            ? dayjs(item.updatedAt).locale('en').fromNow()
-                                                            : dayjs(item.createdAt).locale('en').fromNow()}
+                                                            ? dayjs(item.updatedAt).fromNow()
+                                                            : dayjs(item.createdAt).fromNow()}
                                                     </div>
                                                 </div>
                                             </div>

@@ -11,11 +11,14 @@ import { ROLE_LIST } from '../config/utils';
 import { Link } from 'react-router-dom';
 import NotPermitted from './share/protected-route/not-permitted';
 import { Grid } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const LayoutProfile = () => {
+    const { t } = useTranslation();
+
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -34,12 +37,12 @@ const LayoutProfile = () => {
     useEffect(() => {
         const fullItems = [
             {
-                label: <Link to="/profile">Hồ sơ</Link>,
+                label: <Link to="/profile">{t('profile')}</Link>,
                 key: '/profile',
                 icon: <UserOutlined />,
             },
             {
-                label: <Link to="/profile/setting">Cài đặt</Link>,
+                label: <Link to="/profile/setting">{t('setting')}</Link>,
                 key: '/profile/setting',
                 icon: <SettingOutlined />,
             },
@@ -47,12 +50,12 @@ const LayoutProfile = () => {
                 ? []
                 : [
                       {
-                          label: <Link to="/profile/my-jobs">Việc làm của tôi</Link>,
+                          label: <Link to="/profile/my-jobs">{t('my_job')}</Link>,
                           key: '/profile/my-jobs',
                           icon: <ScheduleOutlined />,
                       },
                       {
-                          label: <Link to="/profile/subscription">Đăng ký nhận email</Link>,
+                          label: <Link to="/profile/subscription">{t('subscription_email')}</Link>,
                           key: '/profile/subscription',
                           icon: <MailOutlined />,
                       },

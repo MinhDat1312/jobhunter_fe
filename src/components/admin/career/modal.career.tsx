@@ -3,6 +3,7 @@ import type { ICareer } from '../../../types/backend';
 import { callCreateCareer, callUpdateCareer } from '../../../config/api';
 import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import { isMobile } from 'react-device-detect';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     openModal: boolean;
@@ -13,6 +14,7 @@ interface IProps {
 }
 
 const ModalCareer = (props: IProps) => {
+    const { t } = useTranslation();
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;
     const [form] = Form.useForm();
 
@@ -54,7 +56,13 @@ const ModalCareer = (props: IProps) => {
     return (
         <>
             <ModalForm
-                title={<>{dataInit?.careerId ? 'Cập nhật ngành nghề' : 'Tạo mới ngành nghề'}</>}
+                title={
+                    <>
+                        {dataInit?.careerId
+                            ? t('button.update') + ' ' + t('career').toLowerCase()
+                            : t('button.create') + ' ' + t('career').toLowerCase()}
+                    </>
+                }
                 open={openModal}
                 modalProps={{
                     onCancel: () => {
@@ -65,8 +73,8 @@ const ModalCareer = (props: IProps) => {
                     width: isMobile ? '100%' : 600,
                     keyboard: false,
                     maskClosable: false,
-                    okText: <>{dataInit?.careerId ? 'Cập nhật' : 'Tạo mới'}</>,
-                    cancelText: 'Hủy',
+                    okText: <>{dataInit?.careerId ? t('button.update') : t('button.create')}</>,
+                    cancelText: t('button.cancel'),
                 }}
                 scrollToFirstError={true}
                 preserve={false}
@@ -77,10 +85,10 @@ const ModalCareer = (props: IProps) => {
                 <Row gutter={16}>
                     <Col span={24}>
                         <ProFormText
-                            label="Tên ngành nghề"
+                            label={t('name_career')}
                             name="name"
                             rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                            placeholder="Nhập tên ngành nghề"
+                            placeholder={t('placeholder')}
                         />
                     </Col>
                 </Row>
