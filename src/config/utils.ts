@@ -165,6 +165,10 @@ export const getRoleName = (value?: string) => {
     return 'unknown';
 };
 
+export const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export async function fetchRoleList(name: string): Promise<ISelect[]> {
     const q: any = {
         page: 1,

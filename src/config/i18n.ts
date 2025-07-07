@@ -179,6 +179,17 @@ const resources = {
                 hr: 'HR',
                 applicant: 'Applicant',
             },
+            statistics: {
+                user: {
+                    title: 'Users',
+                },
+                job: {
+                    title: 'Jobs',
+                },
+                application: {
+                    title: 'Applications',
+                },
+            },
         },
     },
     vi: {
@@ -356,6 +367,17 @@ const resources = {
                 admin: 'Admin',
                 hr: 'HR',
                 applicant: 'Ứng viên',
+            },
+            statistics: {
+                user: {
+                    title: 'Người dùng',
+                },
+                job: {
+                    title: 'Việc làm',
+                },
+                application: {
+                    title: 'Hồ sơ',
+                },
             },
         },
     },

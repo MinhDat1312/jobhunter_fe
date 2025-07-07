@@ -410,6 +410,21 @@ export const callGetSubscriberSkills = () => {
 };
 
 /***
+Module Dashboard
+***/
+export const callStatisticsUser = () => {
+    return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/users');
+};
+
+export const callStatisticsJob = () => {
+    return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/jobs');
+};
+
+export const callStatisticsApplication = () => {
+    return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/applications');
+};
+
+/***
 Upload single file
 ***/
 export const callUploadSingleFile = (file: any, folderType: string) => {
