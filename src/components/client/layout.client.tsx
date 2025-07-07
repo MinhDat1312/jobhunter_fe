@@ -11,14 +11,18 @@ const LayoutClient = () => {
 
     useEffect(() => {
         if (rootRef && rootRef.current) {
-            rootRef.current.scrollIntoView({ behavior: 'smooth' });
+            const offsetTop = rootRef.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: offsetTop - 80,
+                behavior: 'smooth',
+            });
         }
     }, [location]);
 
     return (
-        <div className="layout-app" ref={rootRef}>
+        <div className="layout-app">
             <Header />
-            <div className={styles['content-app']}>
+            <div className={styles['content-app']} ref={rootRef}>
                 <Outlet context={[searchTerm, setSearchTerm]} />
             </div>
             <Footer />

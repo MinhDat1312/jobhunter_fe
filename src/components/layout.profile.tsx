@@ -3,7 +3,7 @@ import { Layout, Menu } from 'antd';
 import Header from './client/header.client';
 import Footer from './client/footer.client';
 import styles from '../styles/app.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { MenuProps } from 'antd/lib';
 import { useAppSelector } from '../hooks/hook';
 import { Outlet, useLocation } from 'react-router-dom';
@@ -27,8 +27,19 @@ const LayoutProfile = () => {
     const activeRole = user.role.active;
 
     const location = useLocation();
+    const rootRef = useRef<HTMLDivElement>(null);
     const [activeMenu, setActiveMenu] = useState(location.pathname);
     const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
+
+    useEffect(() => {
+        if (rootRef && rootRef.current) {
+            const offsetTop = rootRef.current.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: offsetTop - 55,
+                behavior: 'smooth',
+            });
+        }
+    }, [location]);
 
     useEffect(() => {
         setActiveMenu(location.pathname);
@@ -69,7 +80,9 @@ const LayoutProfile = () => {
         <div>
             <Header />
             <Layout
+                ref={rootRef}
                 style={{
+                    marginTop: '55px',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                 }}

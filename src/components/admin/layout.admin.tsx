@@ -19,12 +19,13 @@ import DrawerCustom from '../client/drawer.client';
 import styles from '../../styles/app.module.scss';
 import stylesAdmin from '../../styles/admin.module.scss';
 import { useTranslation } from 'react-i18next';
+import LanguageButton from '../language.button';
 
 const { Content, Sider } = Layout;
 const { useBreakpoint } = Grid;
 
 const LayoutAdmin = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -125,7 +126,7 @@ const LayoutAdmin = () => {
 
             setMenuItems(full);
         }
-    }, [permissions]);
+    }, [permissions, i18n.language]);
 
     const handleLogout = async () => {
         const res = await callLogout();
@@ -180,24 +181,34 @@ const LayoutAdmin = () => {
                         <div className={stylesAdmin['brand']} onClick={() => navigate('/')}>
                             <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                         </div>
-                        <Space
-                            style={{
-                                marginRight: 16,
-                                color: '#37434f',
-                                fontSize: '16px',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            {user?.fullName.toUpperCase()}
-                        </Space>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                            <LanguageButton />
+                            <Space
+                                style={{
+                                    marginRight: 16,
+                                    color: '#37434f',
+                                    fontSize: '16px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {user?.fullName.toUpperCase()}
+                            </Space>
+                        </div>
                     </div>
                 )}
                 <Layout>
                     {isDesktop && (
                         <div
                             className="admin-header"
-                            style={{ display: 'flex', justifyContent: 'flex-end', margin: 20 }}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                alignItems: 'center',
+                                gap: '8px',
+                                margin: 20,
+                            }}
                         >
+                            <LanguageButton />
                             <Space
                                 style={{
                                     color: '#37434f',

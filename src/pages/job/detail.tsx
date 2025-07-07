@@ -1,6 +1,8 @@
 import { Col, Divider, Row, Skeleton, Tag } from 'antd';
 import styles from '../../styles/client.module.scss';
 import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useEffect, useState } from 'react';
 import type { IJob } from '../../types/backend';
@@ -12,6 +14,7 @@ import ApplyModal from '../../components/client/modal/apply.modal';
 import Access from '../../components/share/access';
 import { ALL_PERMISSIONS } from '../../config/permissions';
 import { useTranslation } from 'react-i18next';
+
 dayjs.extend(relativeTime);
 
 const ClientJobDetailPage = () => {
@@ -24,10 +27,6 @@ const ClientJobDetailPage = () => {
     let location = useLocation();
     let params = new URLSearchParams(location.search);
     const id = params?.get('id');
-
-    useEffect(() => {
-        dayjs.locale(i18n.language);
-    }, [i18n.language]);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -82,8 +81,8 @@ const ClientJobDetailPage = () => {
                                 <div>
                                     <HistoryOutlined />{' '}
                                     {jobDetail.updatedAt
-                                        ? dayjs(jobDetail.updatedAt).fromNow()
-                                        : dayjs(jobDetail.createdAt).fromNow()}
+                                        ? dayjs(jobDetail.updatedAt).locale(i18n.language).fromNow()
+                                        : dayjs(jobDetail.createdAt).locale(i18n.language).fromNow()}
                                 </div>
                                 <Divider />
                                 {parse(jobDetail.description)}

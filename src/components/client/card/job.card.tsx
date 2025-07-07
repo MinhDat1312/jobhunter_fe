@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import type { IJob } from '../../../types/backend';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { sfIn } from 'spring-filter-query-builder';
-
 import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
+import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { callFetchJob } from '../../../config/api';
 import { EnvironmentOutlined, ThunderboltOutlined } from '@ant-design/icons';
@@ -38,10 +39,6 @@ const JobCard = (props: IProps) => {
     const [total, setTotal] = useState(0);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
-
-    useEffect(() => {
-        dayjs.locale(i18n.language);
-    }, [i18n.language]);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -140,8 +137,8 @@ const JobCard = (props: IProps) => {
                                                     </div>
                                                     <div className={styles['job-updatedAt']}>
                                                         {item.updatedAt
-                                                            ? dayjs(item.updatedAt).fromNow()
-                                                            : dayjs(item.createdAt).fromNow()}
+                                                            ? dayjs(item.updatedAt).locale(i18n.language).fromNow()
+                                                            : dayjs(item.createdAt).locale(i18n.language).fromNow()}
                                                     </div>
                                                 </div>
                                             </div>

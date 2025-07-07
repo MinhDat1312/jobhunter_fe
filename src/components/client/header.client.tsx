@@ -23,6 +23,7 @@ import DrawerCustom from './drawer.client';
 import { Grid } from 'antd';
 import { ROLE_LIST } from '../../config/utils';
 import { useTranslation } from 'react-i18next';
+import LanguageButton from '../language.button';
 const { useBreakpoint } = Grid;
 
 const Header = () => {
@@ -164,25 +165,30 @@ const Header = () => {
                             <div className={styles['brand']} onClick={() => navigate('/')}>
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
-                            {isAuthenticated === false ? (
-                                <Link
-                                    to={'/login'}
-                                    style={{
-                                        cursor: 'pointer',
-                                        display: 'block',
-                                        color: '#00b452',
-                                        fontSize: '16px',
-                                        fontWeight: 'bold',
-                                        textDecoration: 'none',
-                                    }}
-                                >
-                                    {t('sign_in')}
-                                </Link>
-                            ) : (
-                                <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
-                                    {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
-                                </Avatar>
-                            )}
+                            <div
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                            >
+                                <LanguageButton />
+                                {isAuthenticated === false ? (
+                                    <Link
+                                        to={'/login'}
+                                        style={{
+                                            cursor: 'pointer',
+                                            display: 'block',
+                                            color: '#00b452',
+                                            fontSize: '16px',
+                                            fontWeight: 'bold',
+                                            textDecoration: 'none',
+                                        }}
+                                    >
+                                        {t('sign_in')}
+                                    </Link>
+                                ) : (
+                                    <Avatar src={`${user.avatar}`} onClick={() => setOpenMobileMenuRight(true)}>
+                                        {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
+                                    </Avatar>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         <div
@@ -208,6 +214,7 @@ const Header = () => {
                                     <Menu selectedKeys={[current]} mode="horizontal" items={itemsLeft} />
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
+                                    <LanguageButton />
                                     {isAuthenticated === false ? (
                                         <Link to={'/login'}>{t('sign_in')}</Link>
                                     ) : (
