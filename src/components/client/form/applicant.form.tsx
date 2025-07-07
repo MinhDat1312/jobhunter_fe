@@ -120,12 +120,12 @@ const ApplicantForm = (props: IProps) => {
                 fileList.length > 0 ? fileList[0].url : '',
             );
             if (res.data) {
-                message.success('Cập nhật ứng viên thành công');
+                message.success(t('notify.success_update_applicant'));
                 if (onClose) onClose(false);
                 if (reloadTable) reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -145,12 +145,12 @@ const ApplicantForm = (props: IProps) => {
                 fileList.length > 0 ? fileList[0].url : '',
             );
             if (res.data) {
-                message.success('Thêm mới ứng viên thành công');
+                message.success(t('notify.success_create_applicant'));
                 if (onClose) onClose(false);
                 if (reloadTable) reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -239,7 +239,7 @@ const ApplicantForm = (props: IProps) => {
                                             () => ({
                                                 validator(_, value) {
                                                     if (!dataInit?.userId && !value) {
-                                                        return Promise.reject('Vui lòng nhập mật khẩu');
+                                                        return Promise.reject(t('notify.required'));
                                                     }
                                                     return Promise.resolve();
                                                 },
@@ -303,8 +303,8 @@ const ApplicantForm = (props: IProps) => {
                         label={t('email')}
                         name={['contact', 'email']}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập email' },
-                            { type: 'email', message: 'Email không hợp lệ' },
+                            { required: true, message: t('notify.required') },
+                            { type: 'email', message: t('notify.email_match') },
                         ]}
                         placeholder={t('placeholder')}
                     />
@@ -327,7 +327,7 @@ const ApplicantForm = (props: IProps) => {
                             OTHER: 'Khác',
                         }}
                         placeholder={t('choose')}
-                        rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}
+                        rules={[{ required: true, message: t('notify.required') }]}
                     />
                 </Col>
                 <Col lg={5} md={5} sm={24} xs={24}>
@@ -335,7 +335,7 @@ const ApplicantForm = (props: IProps) => {
                         labelCol={{ span: 24 }}
                         label={t('dob')}
                         name="dob"
-                        rules={[{ required: true, message: 'Vui lòng chọn ngày sinh!' }]}
+                        rules={[{ required: true, message: t('notify.required') }]}
                     >
                         <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
                     </Form.Item>

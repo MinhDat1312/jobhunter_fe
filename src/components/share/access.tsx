@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../../hooks/hook';
 import { Result } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 interface IPermission {
     method: string;
@@ -15,6 +16,7 @@ interface IProps {
 }
 
 const Access = (props: IProps) => {
+    const { t } = useTranslation();
     const { hideChildren = false, permission } = props;
     const [allow, setAllow] = useState<boolean>(true);
     const permissions = useAppSelector((state) => state.account.user.role.permissions);
@@ -44,8 +46,8 @@ const Access = (props: IProps) => {
                     {hideChildren === false ? (
                         <Result
                             status="403"
-                            title="Truy cập bị từ chối"
-                            subTitle="Xin lỗi, bạn không có quyền hạn truy cập thông tin này."
+                            title={t('page_error.result.title')}
+                            subTitle={t('page_error.result.subTitle')}
                         />
                     ) : (
                         <></>

@@ -1,4 +1,5 @@
 import { Button, Result } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 interface IProps {
@@ -8,12 +9,13 @@ interface IProps {
 const NotPermitted = (props: IProps) => {
     const { onClose } = props;
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <Result
             status="403"
-            title="403"
-            subTitle="Xin lỗi, bạn không có quyền hạn truy cập thông tin này."
+            title={t('page_error.result.title')}
+            subTitle={t('page_error.result.subTitle')}
             extra={
                 <Button
                     type="primary"
@@ -24,7 +26,7 @@ const NotPermitted = (props: IProps) => {
                         navigate('/');
                     }}
                 >
-                    Trang chủ
+                    {t('home')}
                 </Button>
             }
         />

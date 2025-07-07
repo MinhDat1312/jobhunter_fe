@@ -95,8 +95,8 @@ const SkillPage = () => {
                     <Access permission={ALL_PERMISSIONS.SKILLS.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa kỹ năng'}
-                            description={'Bạn có chắc chắn muốn xóa kỹ năng này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('skill').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('skill').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteSkill(entity.skillId)}
                             okText={t('button.confirm')}
                             cancelText={t('button.cancel')}
@@ -154,11 +154,11 @@ const SkillPage = () => {
         if (id) {
             const res = await callDeleteSkill(id);
             if (res && +res.statusCode === 200) {
-                message.success('Xóa kỹ năng thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -194,7 +194,7 @@ const SkillPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} rows
                                 </div>
                             );
                         },

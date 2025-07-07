@@ -81,7 +81,7 @@ const RecruiterCard = (props: IProps) => {
                                 <span className={styles['title']}> {t('featured_employers')}</span>
                                 {!showPagination && (
                                     <Link to="recruiter" style={{ color: '#00b452' }}>
-                                         {t('view_all')}
+                                        {t('view_all')}
                                     </Link>
                                 )}
                             </div>
@@ -113,7 +113,7 @@ const RecruiterCard = (props: IProps) => {
 
                         {(!displayRecruiter || (displayRecruiter && displayRecruiter.length === 0)) && !isLoading && (
                             <div className={styles['empty']}>
-                                <Empty description="Không có dữ liệu" />
+                                <Empty description={t('notify.empty')} />
                             </div>
                         )}
                     </Row>

@@ -13,10 +13,12 @@ import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
 import ViewDetailApplication from '../../components/admin/application/view.application';
 import { ADMIN, colorStatus } from '../../config/utils';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const ApplicationPage = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
@@ -53,11 +55,11 @@ const ApplicationPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Trạng Thái',
+            title: t('status'),
             dataIndex: 'status',
             sorter: true,
             render: (_text, record) => {
-                const { color, label } = colorStatus(record.status);
+                const { color, label } = colorStatus(record.status, t);
                 return (
                     <p
                         style={{
@@ -76,28 +78,28 @@ const ApplicationPage = () => {
                     mode="multiple"
                     allowClear
                     valueEnum={{
-                        PENDING: 'Đang xét',
-                        ACCEPTED: 'Chấp nhận',
-                        REJECTED: 'Từ chối',
+                        PENDING: t('status_application.pending'),
+                        ACCEPTED: t('status_application.accepted'),
+                        REJECTED: t('status_application.rejected'),
                     }}
-                    placeholder="Chọn trạng thái"
+                    placeholder={t('choose')}
                 />
             ),
         },
 
         {
-            title: 'Tin tuyển dụng',
+            title: t('job'),
             dataIndex: ['job', 'title'],
             hideInSearch: true,
         },
         {
-            title: 'Nhà tuyển dụng',
+            title: t('recruiter'),
             dataIndex: 'recruiterName',
             hideInSearch: true,
         },
 
         {
-            title: 'Ngày tạo',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -107,7 +109,7 @@ const ApplicationPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngày cập nhật',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -118,7 +120,7 @@ const ApplicationPage = () => {
         },
 
         {
-            title: 'Hành động',
+            title: t('table.action'),
             hideInSearch: true,
             width: 100,
             render: (_value, entity, _index, _action) => (
@@ -191,7 +193,7 @@ const ApplicationPage = () => {
             <Access permission={ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE}>
                 <DataTable<IApplication>
                     actionRef={tableRef}
-                    headerTitle="Danh sách hồ sơ ứng tuyển"
+                    headerTitle={t('table.header.application')}
                     rowKey="applicationId"
                     loading={isFetching}
                     columns={columns}
@@ -213,7 +215,7 @@ const ApplicationPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} {t('row')}
                                 </div>
                             );
                         },

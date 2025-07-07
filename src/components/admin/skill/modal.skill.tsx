@@ -23,24 +23,24 @@ const ModalSkill = (props: IProps) => {
         if (dataInit?.skillId) {
             const res = await callUpdateSkill(dataInit.skillId, name);
             if (res.data) {
-                message.success('Cập nhật kỹ năng thành công');
+                message.success(t('notify.success_update_skill'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
         } else {
             const res = await callCreateSkill(name);
             if (res.data) {
-                message.success('Thêm mới kỹ năng thành công');
+                message.success(t('notify.success_create_skill'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -87,7 +87,7 @@ const ModalSkill = (props: IProps) => {
                         <ProFormText
                             label={t('name_skill')}
                             name="name"
-                            rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                            rules={[{ required: true, message: t('notify.required') }]}
                             placeholder={t('placeholder')}
                         />
                     </Col>

@@ -11,10 +11,12 @@ import queryString from 'query-string';
 import { fetchPermission } from '../../../redux/slice/permissionSlice';
 import ViewDetailPermission from '../../../components/admin/permission/view.permission';
 import { Grid } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
 
 const PermissionPage = () => {
+    const { t } = useTranslation();
     const screens = useBreakpoint();
     const isTablet = screens.md && !screens.lg;
 
@@ -49,18 +51,18 @@ const PermissionPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Quyền hạn',
+            title: t('permission'),
             dataIndex: 'name',
             sorter: true,
         },
         {
-            title: 'API',
+            title: t('api'),
             dataIndex: 'apiPath',
             sorter: true,
             hideInSearch: true,
         },
         {
-            title: 'Method',
+            title: t('method'),
             dataIndex: 'method',
             sorter: true,
             render(_dom, entity, _index, _action, _schema) {
@@ -79,12 +81,12 @@ const PermissionPage = () => {
             },
         },
         {
-            title: 'Module',
+            title: t('module'),
             dataIndex: 'module',
             sorter: true,
         },
         {
-            title: 'Ngày tạo',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -94,7 +96,7 @@ const PermissionPage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngày cập nhật',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -153,7 +155,7 @@ const PermissionPage = () => {
             <Access permission={ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE}>
                 <DataTable<IPermission>
                     actionRef={tableRef}
-                    headerTitle="Danh sách quyền hạn"
+                    headerTitle={t('table.header.permission')}
                     rowKey="permissionId"
                     loading={isFetching}
                     columns={columns}
@@ -173,7 +175,7 @@ const PermissionPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} rows
                                 </div>
                             );
                         },
@@ -184,6 +186,7 @@ const PermissionPage = () => {
                     }}
                     search={{
                         span: isTablet ? 12 : 0,
+                        labelWidth: 'auto',
                     }}
                 />
             </Access>

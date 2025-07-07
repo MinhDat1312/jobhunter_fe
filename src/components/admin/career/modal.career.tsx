@@ -23,24 +23,24 @@ const ModalCareer = (props: IProps) => {
         if (dataInit?.careerId) {
             const res = await callUpdateCareer(dataInit.careerId, name);
             if (res.data) {
-                message.success('Cập nhật ngành nghề thành công');
+                message.success(t('notify.success_update_career'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
         } else {
             const res = await callCreateCareer(name);
             if (res.data) {
-                message.success('Thêm mới ngành nghề thành công');
+                message.success(t('notify.success_create_career'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }

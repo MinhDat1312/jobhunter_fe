@@ -157,11 +157,11 @@ const ViewUpsertJob = () => {
             };
             const res = await callUpdateJob(job, dataUpdate.jobId);
             if (res.data) {
-                message.success('Cập nhật tin thành công');
+                message.success(t('notify.success_update_job'));
                 navigate('/admin/job');
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -196,11 +196,11 @@ const ViewUpsertJob = () => {
             };
             const res = await callCreateJob(job);
             if (res.data) {
-                message.success('Tạo mới tin thành công');
+                message.success(t('notify.success_create_job'));
                 navigate('/admin/job');
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -302,8 +302,8 @@ const ViewUpsertJob = () => {
                                     <ProFormSwitch
                                         label={t('status')}
                                         name="active"
-                                        checkedChildren={t('active').toUpperCase()}
-                                        unCheckedChildren={t('inactive').toUpperCase()}
+                                        checkedChildren={t('button.active').toUpperCase()}
+                                        unCheckedChildren={t('button.inactive').toUpperCase()}
                                         initialValue={dataUpdate?.active}
                                     />
                                 </Col>
@@ -313,7 +313,7 @@ const ViewUpsertJob = () => {
                                     <ProFormText
                                         label={t('table.job_table.title')}
                                         name="title"
-                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                         placeholder={t('placeholder')}
                                     />
                                 </Col>
@@ -322,7 +322,7 @@ const ViewUpsertJob = () => {
                                         <ProForm.Item
                                             name="recruiter"
                                             label={t('recruiter')}
-                                            rules={[{ required: true, message: 'Vui lòng chọn nhà tuyển dụng!' }]}
+                                            rules={[{ required: true, message: t('notify.required') }]}
                                         >
                                             <DebounceSelect
                                                 allowClear
@@ -345,7 +345,7 @@ const ViewUpsertJob = () => {
                                         label={t('address')}
                                         options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
                                         placeholder={t('choose')}
-                                        rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                     />
                                 </Col>
                             </Row>
@@ -354,7 +354,7 @@ const ViewUpsertJob = () => {
                                     <ProFormDigit
                                         label={t('table.job_table.salary')}
                                         name="salary"
-                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                         placeholder={t('placeholder')}
                                         fieldProps={{
                                             addonAfter: ' đ',
@@ -367,7 +367,7 @@ const ViewUpsertJob = () => {
                                     <ProFormDigit
                                         label={t('table.job_table.quantity')}
                                         name="quantity"
-                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                         placeholder={t('placeholder')}
                                     />
                                 </Col>
@@ -378,7 +378,7 @@ const ViewUpsertJob = () => {
                                         label={t('career')}
                                         options={careers}
                                         placeholder={t('choose')}
-                                        rules={[{ required: true, message: 'Vui lòng chọn ngành nghề!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                         allowClear
                                         fieldProps={{
                                             suffixIcon: null,
@@ -391,7 +391,7 @@ const ViewUpsertJob = () => {
                                         label={t('skill')}
                                         options={skills}
                                         placeholder={t('choose')}
-                                        rules={[{ required: true, message: 'Vui lòng chọn kỹ năng!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                         allowClear
                                         mode="multiple"
                                         fieldProps={{
@@ -413,14 +413,12 @@ const ViewUpsertJob = () => {
                                             style: { width: '100%' },
                                         }}
                                         rules={[
-                                            { required: true, message: 'Vui lòng chọn ngày bắt đầu' },
+                                            { required: true, message: t('notify.required') },
                                             {
                                                 validator: async (_: any, value: any, _callback: any) => {
                                                     const endDate = form.getFieldValue('endDate');
                                                     if (endDate && value && !dayjs(value).isBefore(dayjs(endDate))) {
-                                                        return Promise.reject(
-                                                            new Error('Ngày bắt đầu phải trước ngày kết thúc'),
-                                                        );
+                                                        return Promise.reject(new Error(t('notify.date_start')));
                                                     }
                                                     return Promise.resolve();
                                                 },
@@ -439,14 +437,12 @@ const ViewUpsertJob = () => {
                                             style: { width: '100%' },
                                         }}
                                         rules={[
-                                            { required: true, message: 'Vui lòng chọn ngày kết thúc' },
+                                            { required: true, message: t('notify.required') },
                                             {
                                                 validator: async (_: any, value: any, _callback: any) => {
                                                     const startDate = form.getFieldValue('startDate');
                                                     if (startDate && value && !dayjs(value).isAfter(dayjs(startDate))) {
-                                                        return Promise.reject(
-                                                            new Error('Ngày kết thúc phải sau ngày bắt đầu'),
-                                                        );
+                                                        return Promise.reject(new Error(t('notify.date_end')));
                                                     }
                                                     return Promise.resolve();
                                                 },
@@ -467,7 +463,7 @@ const ViewUpsertJob = () => {
                                             MIDDLE: 'Middle',
                                         }}
                                         placeholder={t('choose')}
-                                        rules={[{ required: true, message: 'Vui lòng chọn trình độ!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                     />
                                 </Col>
                                 <Col span={24} md={6}>
@@ -481,7 +477,7 @@ const ViewUpsertJob = () => {
                                             OFFLINE: 'Offline',
                                         }}
                                         placeholder={t('choose')}
-                                        rules={[{ required: true, message: 'Vui lòng chọn hình thức!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                     />
                                 </Col>
                             </Row>
@@ -490,7 +486,7 @@ const ViewUpsertJob = () => {
                                     <ProForm.Item
                                         name="description"
                                         label={t('description')}
-                                        rules={[{ required: true, message: 'Vui lòng nhập mô tả tin!' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                     >
                                         <ReactQuill theme="snow" value={description} onChange={setDescription} />
                                     </ProForm.Item>

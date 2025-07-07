@@ -102,8 +102,8 @@ const RecruiterPage = () => {
                     <Access permission={ALL_PERMISSIONS.RECRUITERS.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa nhà tuyển dụng'}
-                            description={'Bạn có chắc chắn muốn xóa nhà tuyển dụng này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('recruiter').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('recruiter').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteRecruiter(entity.userId)}
                             okText={t('button.confirm')}
                             cancelText={t('button.cancel')}
@@ -127,11 +127,11 @@ const RecruiterPage = () => {
         if (userId) {
             const res = await callDeleteRecruiter(userId);
             if (res && +res.statusCode === 200) {
-                message.success('Xóa nhà tuyển dụng thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -209,7 +209,7 @@ const RecruiterPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} {t('row')}
+                                    {range[0]}-{range[1]} / {total} {t('row')}
                                 </div>
                             );
                         },

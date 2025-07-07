@@ -33,11 +33,11 @@ const UpdatePassword = () => {
             localStorage.setItem('access_token', res.data.access_token);
             dispatch(setUserLoginInfo(res.data.user));
 
-            message.success('Cập nhật mật khẩu thành công');
+            message.success(t('notify.success_update_password'));
             form.resetFields();
         } else {
             notification.error({
-                message: 'Có lỗi xảy ra',
+                message: t('notify.error'),
                 description: res.message,
             });
         }
@@ -88,9 +88,9 @@ const UpdatePassword = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Không được để trống!',
+                                        message: t('notify.required'),
                                     },
-                                    { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' },
+                                    { min: 6, message: t('notify.least_6') },
                                 ]}
                                 placeholder={t('placeholder')}
                             />
@@ -102,9 +102,9 @@ const UpdatePassword = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Không được để trống!',
+                                        message: t('notify.required'),
                                     },
-                                    { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' },
+                                    { min: 6, message: t('notify.least_6') },
                                 ]}
                                 placeholder={t('placeholder')}
                             />
@@ -117,14 +117,14 @@ const UpdatePassword = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Không được để trống!',
+                                        message: t('notify.required'),
                                     },
                                     ({ getFieldValue }) => ({
                                         validator(_, value) {
                                             if (!value || getFieldValue('newPassword') === value) {
                                                 return Promise.resolve();
                                             }
-                                            return Promise.reject(new Error('Mật khẩu nhập lại không khớp!'));
+                                            return Promise.reject(new Error(t('notify.re_password')));
                                         },
                                     }),
                                 ]}

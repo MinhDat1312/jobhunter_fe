@@ -95,8 +95,8 @@ const CareerPage = () => {
                     <Access permission={ALL_PERMISSIONS.CAREERS.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa ngành nghề'}
-                            description={'Bạn có chắc chắn muốn xóa ngành nghề này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('career').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('career').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteCareer(entity.careerId)}
                             okText={t('button.confirm')}
                             cancelText={t('button.cancel')}
@@ -154,11 +154,11 @@ const CareerPage = () => {
         if (id) {
             const res = await callDeleteCareer(id);
             if (res && +res.statusCode === 200) {
-                message.success('Xóa ngành nghề thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -194,7 +194,7 @@ const CareerPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} rows
                                 </div>
                             );
                         },

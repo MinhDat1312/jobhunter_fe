@@ -67,12 +67,12 @@ const Header = () => {
 
     const itemsRight: MenuProps['items'] = [
         {
-            label: <Link to="/profile">Hồ sơ</Link>,
+            label: <Link to="/profile">{t('profile')}</Link>,
             key: '/profile',
             icon: <UserOutlined />,
         },
         {
-            label: <Link to="/profile/setting">Cài đặt</Link>,
+            label: <Link to="/profile/setting">{t('setting')}</Link>,
             key: '/profile/setting',
             icon: <SettingOutlined />,
         },
@@ -80,12 +80,12 @@ const Header = () => {
             ? []
             : [
                   {
-                      label: <Link to="/profile/my-jobs">Việc làm của tôi</Link>,
+                      label: <Link to="/profile/my-jobs">{t('my_job')}</Link>,
                       key: '/profile/my-jobs',
                       icon: <ScheduleOutlined />,
                   },
                   {
-                      label: <Link to="/profile/subscription">Đăng ký nhận email</Link>,
+                      label: <Link to="/profile/subscription">{t('subscription_email')}</Link>,
                       key: '/profile/subscription',
                       icon: <MailOutlined />,
                   },
@@ -93,7 +93,7 @@ const Header = () => {
         ...(user.role?.permissions?.length && user.role?.active && user.role?.name !== 'APPLICANT'
             ? [
                   {
-                      label: <Link to={'/admin'}>Trang Quản Trị</Link>,
+                      label: <Link to={'/admin'}>{t('manage_admin')}</Link>,
                       key: '/admin',
                       icon: <FireOutlined />,
                   },
@@ -102,7 +102,7 @@ const Header = () => {
         {
             label: (
                 <label style={{ cursor: 'pointer' }} onClick={() => handleLogout()}>
-                    Đăng xuất
+                    {t('logout')}
                 </label>
             ),
             key: 'logout',
@@ -146,7 +146,7 @@ const Header = () => {
         const res = await callLogout();
         if (res && res && +res.statusCode === 200) {
             dispatch(setLogoutAction());
-            message.success('Đăng xuất thành công');
+            message.success(t('notify.logout'));
             navigate('/');
         }
     };
@@ -239,7 +239,7 @@ const Header = () => {
                 }}
                 selectedKey={current}
                 menuItems={itemsLeft}
-                titleText="Đóng"
+                titleText={t('button.close')}
             />
 
             <DrawerCustom

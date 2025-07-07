@@ -116,12 +116,12 @@ const RecruiterForm = (props: IProps) => {
                     : undefined,
             );
             if (res.data) {
-                message.success('Cập nhật nhà tuyển dụng thành công');
+                message.success(t('notify.success_update_recruiter'));
                 if (onClose) onClose(false);
                 if (reloadTable) reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -137,12 +137,12 @@ const RecruiterForm = (props: IProps) => {
                 { roleId: role.roleId, name: role.name },
             );
             if (res.data) {
-                message.success('Thêm mới nhà tuyển dụng thành công');
+                message.success(t('notify.success_create_recruiter'));
                 if (onClose) onClose(false);
                 if (reloadTable) reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -188,7 +188,7 @@ const RecruiterForm = (props: IProps) => {
                                 label={t('name_recruiter')}
                                 name="fullName"
                                 placeholder={t('placeholder')}
-                                rules={[{ required: true, message: 'Vui lòng nhập tên nhà tuyển dụng' }]}
+                                rules={[{ required: true, message: t('notify.required') }]}
                             />
                         </Col>
                         <Col lg={12} md={12} sm={24} xs={24}>
@@ -215,7 +215,7 @@ const RecruiterForm = (props: IProps) => {
                                     label={t('username')}
                                     name="username"
                                     placeholder={t('placeholder')}
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
+                                    rules={[{ required: true, message: t('notify.required') }]}
                                 />
                             </Col>
                         ) : (
@@ -225,7 +225,7 @@ const RecruiterForm = (props: IProps) => {
                                         label={t('username')}
                                         name="username"
                                         placeholder={t('placeholder')}
-                                        rules={[{ required: true, message: 'Vui lòng không bỏ trống tên đăng nhập' }]}
+                                        rules={[{ required: true, message: t('notify.required') }]}
                                     />
                                 </Col>
                                 <Col lg={6} md={6} sm={24} xs={24}>
@@ -237,7 +237,7 @@ const RecruiterForm = (props: IProps) => {
                                             () => ({
                                                 validator(_, value) {
                                                     if (!dataInit?.userId && !value) {
-                                                        return Promise.reject('Vui lòng nhập mật khẩu');
+                                                        return Promise.reject(t('notify.required'));
                                                     }
                                                     return Promise.resolve();
                                                 },
@@ -253,8 +253,8 @@ const RecruiterForm = (props: IProps) => {
                                 label={t('email')}
                                 name={['contact', 'email']}
                                 rules={[
-                                    { required: true, message: 'Vui lòng nhập email' },
-                                    { type: 'email', message: 'Email không hợp lệ' },
+                                    { required: true, message: t('notify.required') },
+                                    { type: 'email', message: t('notify.email_match') },
                                 ]}
                                 placeholder={t('placeholder')}
                             />
@@ -296,7 +296,7 @@ const RecruiterForm = (props: IProps) => {
                         label={t('tel')}
                         name={['contact', 'phone']}
                         placeholder={t('placeholder')}
-                        rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
+                        rules={[{ required: true, message: t('notify.required') }]}
                     />
                 </Col>
                 <Col md={10} xs={24}>
@@ -304,7 +304,7 @@ const RecruiterForm = (props: IProps) => {
                         label={t('address')}
                         name="address"
                         placeholder={t('placeholder')}
-                        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
+                        rules={[{ required: true, message: t('notify.required') }]}
                     />
                 </Col>
             </Row>

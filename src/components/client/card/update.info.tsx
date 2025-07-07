@@ -1,7 +1,4 @@
-import { Card, ConfigProvider, Form, Modal, type UploadFile } from 'antd';
-import viVN from 'antd/es/locale/vi_VN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/vi';
+import { Card, Form, Modal, type UploadFile } from 'antd';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { useEffect, useState } from 'react';
@@ -70,54 +67,52 @@ const UpdateInfo = () => {
 
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
-            <ConfigProvider locale={viVN}>
-                <Card
-                    style={{
-                        marginBlock: '32px',
-                        marginRight: isMobile || isTablet ? '0px' : '100px',
-                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                    }}
-                >
-                    {typeUser === ROLE_LIST[2].value ? (
-                        <ApplicantForm
-                            form={form}
-                            dataInit={user ?? null}
-                            uploadFileLogo={handleUploadFile}
-                            beforeUpload={beforeUpload}
-                            onChange={handleChange}
-                            removeFile={handleRemoveFile}
-                            onPreview={handlePreview}
-                            visibleUpload={visibleUpload}
-                            loadingUpload={loadingUpload}
-                            fileList={fileList}
-                            onRole={false}
-                        />
-                    ) : (
-                        <RecruiterForm
-                            form={form}
-                            dataInit={user ?? null}
-                            uploadFileLogo={handleUploadFile}
-                            beforeUpload={beforeUpload}
-                            onChange={handleChange}
-                            removeFile={handleRemoveFile}
-                            onPreview={handlePreview}
-                            visibleUpload={visibleUpload}
-                            loadingUpload={loadingUpload}
-                            fileList={fileList}
-                            onRole={false}
-                        />
-                    )}
-                </Card>
-                <Modal
-                    open={previewOpen}
-                    title={previewTitle}
-                    footer={null}
-                    onCancel={() => setPreviewOpen(false)}
-                    style={{ zIndex: 1500 }}
-                >
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                </Modal>
-            </ConfigProvider>
+            <Card
+                style={{
+                    marginBlock: '32px',
+                    marginRight: isMobile || isTablet ? '0px' : '100px',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
+            >
+                {typeUser === ROLE_LIST[2].value ? (
+                    <ApplicantForm
+                        form={form}
+                        dataInit={user ?? null}
+                        uploadFileLogo={handleUploadFile}
+                        beforeUpload={beforeUpload}
+                        onChange={handleChange}
+                        removeFile={handleRemoveFile}
+                        onPreview={handlePreview}
+                        visibleUpload={visibleUpload}
+                        loadingUpload={loadingUpload}
+                        fileList={fileList}
+                        onRole={false}
+                    />
+                ) : (
+                    <RecruiterForm
+                        form={form}
+                        dataInit={user ?? null}
+                        uploadFileLogo={handleUploadFile}
+                        beforeUpload={beforeUpload}
+                        onChange={handleChange}
+                        removeFile={handleRemoveFile}
+                        onPreview={handlePreview}
+                        visibleUpload={visibleUpload}
+                        loadingUpload={loadingUpload}
+                        fileList={fileList}
+                        onRole={false}
+                    />
+                )}
+            </Card>
+            <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={() => setPreviewOpen(false)}
+                style={{ zIndex: 1500 }}
+            >
+                <img alt="example" style={{ width: '100%' }} src={previewImage} />
+            </Modal>
         </Access>
     );
 };

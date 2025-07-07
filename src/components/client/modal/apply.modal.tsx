@@ -42,7 +42,7 @@ const ApplyModal = (props: IProps) => {
 
     const handleOkButton = async () => {
         if (!urlCV && isAuthenticated && role.active) {
-            message.error('Vui lòng upload CV!');
+            message.error(t('notify.upload_cv'));
             return;
         }
 
@@ -57,11 +57,11 @@ const ApplyModal = (props: IProps) => {
                 const res = await callCreateApplication(urlCV, user.email, jobDetail?.jobId, user.userId);
                 if (res.data) {
                     eventBus.emit('jobApplied');
-                    message.success('Ứng tuyển thành công!');
+                    message.success(t('notify.applied'));
                     setIsModalOpen(false);
                 } else {
                     notification.error({
-                        message: 'Ứng tuyển thất bại!',
+                        message: t('notify.applied_fail'),
                         description: res.message,
                     });
                 }
@@ -90,14 +90,13 @@ const ApplyModal = (props: IProps) => {
             if (info.file.status !== 'uploading') {
             }
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} upload thành công`);
+                message.success(`${info.file.name}` + ' ' + t('notify.success_upload').toLowerCase());
             } else if (info.file.status === 'error') {
-                message.error(info?.file?.error?.event?.message ?? 'Đã có lỗi xảy ra khi upload file.');
+                message.error(info?.file?.error?.event?.message ?? t('notify.error'));
             }
         },
-        onRemove(file) {
+        onRemove(_file) {
             setUrlCV('');
-            message.info(`${file.name} đã được xoá`);
             return true;
         },
     };
@@ -145,7 +144,7 @@ const ApplyModal = (props: IProps) => {
                                         <Col span={24}>
                                             <ProForm.Item
                                                 label={t('cv_for')}
-                                                rules={[{ required: true, message: 'Vui lòng upload file!' }]}
+                                                rules={[{ required: true, message: t('notify.upload_cv') }]}
                                                 style={{ width: '100%' }}
                                             >
                                                 <Upload {...propsUpload} style={{ width: '100%' }}>
@@ -161,8 +160,8 @@ const ApplyModal = (props: IProps) => {
                         ) : (
                             <Result
                                 status="403"
-                                title="Truy cập bị từ chối"
-                                subTitle="Xin lỗi, bạn không có quyền hạn truy cập thông tin này."
+                                title={t('page_error.result.title')}
+                                subTitle={t('page_error.result.subTitle')}
                             />
                         )}
                     </div>

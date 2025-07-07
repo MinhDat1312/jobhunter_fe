@@ -153,7 +153,7 @@ const JobCard = (props: IProps) => {
 
                         {(!displayJob || (displayJob && displayJob.length === 0)) && !isLoading && (
                             <div className={styles['empty']}>
-                                <Empty description="Không có dữ liệu" />
+                                <Empty description={t('notify.empty')} />
                             </div>
                         )}
                     </Row>

@@ -6,8 +6,10 @@ import { useDispatch } from 'react-redux';
 import { setUserLoginInfo } from '../../redux/slice/accountSlice';
 import styles from '../../styles/auth.module.scss';
 import { useAppSelector } from '../../hooks/hook';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [isSubmit, setIsSubmit] = useState(false);
     const dispatch = useDispatch();
@@ -29,12 +31,12 @@ const LoginPage = () => {
         setIsSubmit(false);
         if (res?.data) {
             localStorage.setItem('access_token', res.data.access_token);
-            message.success('Đăng nhập tài khoản thành công!');
+            message.success(t('notify.signin'));
             dispatch(setUserLoginInfo(res.data.user));
             navigate(`${callback ? callback : '/'}`);
         } else {
             notification.error({
-                message: 'Có lỗi xảy ra',
+                message: t('notify.error'),
                 description: res.message && Array.isArray(res.message) ? res.message[0] : res.message,
                 duration: 5,
             });
@@ -47,40 +49,40 @@ const LoginPage = () => {
                 <div className={styles.container}>
                     <section className={`${styles.wrapper} ${styles.wrapper_login}`}>
                         <div className={styles.heading}>
-                            <h2 className={`${styles.text} ${styles['text-large']}`}>Đăng Nhập</h2>
+                            <h2 className={`${styles.text} ${styles['text-large']}`}>{t('sign_in')}</h2>
                             <Divider />
                         </div>
                         <Form name="basic" onFinish={onFinish} autoComplete="off">
                             <Form.Item
                                 labelCol={{ span: 24 }}
-                                label="Email"
+                                label={t('email')}
                                 name="email"
-                                rules={[{ required: true, message: 'Email không được để trống!' }]}
+                                rules={[{ required: true, message: t('notify.required') }]}
                             >
                                 <Input />
                             </Form.Item>
 
                             <Form.Item
                                 labelCol={{ span: 24 }}
-                                label="Mật khẩu"
+                                label={t('password')}
                                 name="password"
-                                rules={[{ required: true, message: 'Mật khẩu không được để trống!' }]}
+                                rules={[{ required: true, message: t('notify.required') }]}
                             >
                                 <Input.Password />
                             </Form.Item>
 
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" loading={isSubmit}>
-                                    Đăng nhập
+                                    {t('sign_in')}
                                 </Button>
                             </Form.Item>
                             <Divider>Or</Divider>
                             <p className="text text-normal">
-                                Chưa có tài khoản ?
+                                {t('notify.not_account')}
                                 <span>
                                     <Link to="/register" style={{ color: '#00b452' }}>
                                         {' '}
-                                        Đăng Ký{' '}
+                                        {t('sign_up')}{' '}
                                     </Link>
                                 </span>
                             </p>

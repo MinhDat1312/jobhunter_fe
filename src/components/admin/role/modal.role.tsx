@@ -1,16 +1,11 @@
 import { Col, Form, message, notification, Row } from 'antd';
 import type { IPermission, IRole } from '../../../types/backend';
-import {
-    ModalForm,
-    ProCard,
-    ProFormSwitch,
-    ProFormText,
-    ProFormTextArea,
-} from '@ant-design/pro-components';
+import { ModalForm, ProCard, ProFormSwitch, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 import { isMobile } from 'react-device-detect';
 import { CheckSquareOutlined } from '@ant-design/icons';
 import ModuleApi from './module.api';
 import { callCreateRole, callUpdateRole } from '../../../config/api';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
     openModal: boolean;
@@ -25,6 +20,7 @@ interface IProps {
 }
 
 const ModalRole = (props: IProps) => {
+    const { t } = useTranslation();
     const { openModal, setOpenModal, reloadTable, listPermissions, singleRole, setSingleRole } = props;
     const [form] = Form.useForm();
 
@@ -49,12 +45,12 @@ const ModalRole = (props: IProps) => {
             };
             const res = await callUpdateRole(role, singleRole.roleId);
             if (res.data) {
-                message.success('Cập nhật vai trò thành công');
+                message.success(t('notify.success_update_role'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -67,12 +63,12 @@ const ModalRole = (props: IProps) => {
             };
             const res = await callCreateRole(role);
             if (res.data) {
-                message.success('Thêm mới vai trò thành công');
+                message.success(t('notify.success_create_role'));
                 handleReset();
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -88,7 +84,13 @@ const ModalRole = (props: IProps) => {
     return (
         <>
             <ModalForm
-                title={<>{singleRole?.roleId ? 'Cập nhật vai trò' : 'Tạo mới vai trò'}</>}
+                title={
+                    <>
+                        {singleRole?.roleId
+                            ? t('button.update') + ' ' + t('role').toLowerCase()
+                            : t('button.create') + ' ' + t('role').toLowerCase()}
+                    </>
+                }
                 open={openModal}
                 modalProps={{
                     onCancel: () => {
@@ -112,35 +114,35 @@ const ModalRole = (props: IProps) => {
                         icon: <CheckSquareOutlined />,
                     },
                     searchConfig: {
-                        resetText: 'Hủy',
-                        submitText: <>{singleRole?.roleId ? 'Cập nhật' : 'Tạo mới'}</>,
+                        resetText: t('button.cancel'),
+                        submitText: <>{singleRole?.roleId ? t('button.update') : t('button.create')}</>,
                     },
                 }}
             >
                 <Row gutter={16}>
                     <Col lg={12} md={12} sm={24} xs={24}>
                         <ProFormText
-                            label="Tên vai trò"
+                            label={t('name_role')}
                             name="name"
-                            rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                            placeholder="Nhập tên"
+                            rules={[{ required: true, message: t('notify.required') }]}
+                            placeholder={t('placeholder')}
                         />
                     </Col>
                     <Col lg={12} md={12} sm={24} xs={24}>
                         <ProFormSwitch
-                            label="Trạng thái"
+                            label={t('status')}
                             name="active"
-                            checkedChildren="BẬT"
-                            unCheckedChildren="TẮT"
+                            checkedChildren={t('button.active').toUpperCase()}
+                            unCheckedChildren={t('button.inactive').toUpperCase()}
                             initialValue={singleRole?.roleId ? true : false}
                         />
                     </Col>
                     <Col span={24}>
                         <ProFormTextArea
-                            label="Mô tả"
+                            label={t('description')}
                             name="description"
-                            rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
-                            placeholder="Nhập mô tả vai trò"
+                            rules={[{ required: true, message: t('notify.required') }]}
+                            placeholder={t('placeholder')}
                             fieldProps={{
                                 autoSize: { minRows: 2 },
                             }}
@@ -148,8 +150,8 @@ const ModalRole = (props: IProps) => {
                     </Col>
                     <Col span={24}>
                         <ProCard
-                            title="Quyền hạn"
-                            subTitle="Các quyền hạn được phép cho vai trò này"
+                            title={t('permission')}
+                            subTitle={t('title_permission')}
                             headStyle={{ color: '#d81921' }}
                             style={{ marginBottom: 20 }}
                             headerBordered

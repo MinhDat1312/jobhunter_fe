@@ -1,7 +1,10 @@
 import { message, type UploadFile } from 'antd';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useUploadFile = (uploadFile: (file: File) => Promise<any>) => {
+    const { t } = useTranslation();
+
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
     const [previewImage, setPreviewImage] = useState('');
@@ -57,7 +60,7 @@ const useUploadFile = (uploadFile: (file: File) => Promise<any>) => {
         }
         if (info.file.status === 'error') {
             setLoadingUpload(false);
-            message.error(info?.file?.error?.event?.message ?? 'Đã có lỗi xảy ra khi upload file.');
+            message.error(info?.file?.error?.event?.message ?? t('notify.error'));
         }
     };
 

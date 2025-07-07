@@ -68,8 +68,8 @@ const SearchClient = () => {
 
         if (!query) {
             notification.error({
-                message: 'Có lỗi xảy ra',
-                description: 'Vui lòng chọn tiêu chí để tìm kiếm',
+                message: t('notify.error'),
+                description: t('notify.empty'),
             });
             return;
         }
@@ -116,7 +116,7 @@ const SearchClient = () => {
                             style={{ width: '100%' }}
                             placeholder={
                                 <>
-                                    <EnvironmentOutlined /> {t(' search_location')}
+                                    <EnvironmentOutlined /> {t('search_location')}
                                 </>
                             }
                             maxTagCount={2}

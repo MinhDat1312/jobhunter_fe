@@ -14,8 +14,10 @@ import queryString from 'query-string';
 import { fetchRole } from '../../../redux/slice/roleSlice';
 import { getRoleName, groupByPermission } from '../../../config/utils';
 import ModalRole from '../../../components/admin/role/modal.role';
+import { useTranslation } from 'react-i18next';
 
 const RolePage = () => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const isFetching = useAppSelector((state) => state.role.isFetching);
     const meta = useAppSelector((state) => state.role.meta);
@@ -54,7 +56,7 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Vai trò',
+            title: t('role'),
             dataIndex: 'name',
             sorter: true,
             render(_dom, entity, _index, _action, _schema) {
@@ -62,13 +64,13 @@ const RolePage = () => {
             },
         },
         {
-            title: 'Trạng thái',
+            title: t('status'),
             dataIndex: 'active',
             render(_dom, entity, _index, _action, _schema) {
                 return (
                     <>
                         <Tag color={entity.active ? 'lime' : 'red'} style={{ fontSize: '14px' }}>
-                            {entity.active ? 'Hoạt động' : 'Không hoạt động'}
+                            {entity.active ? t('button.active_tag') : t('button.inactive_tag')}
                         </Tag>
                     </>
                 );
@@ -76,7 +78,7 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngày tạo',
+            title: t('table.createdAt'),
             dataIndex: 'createdAt',
             width: 200,
             sorter: true,
@@ -86,7 +88,7 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Ngày cập nhật',
+            title: t('table.updatedAt'),
             dataIndex: 'updatedAt',
             width: 200,
             sorter: true,
@@ -96,7 +98,7 @@ const RolePage = () => {
             hideInSearch: true,
         },
         {
-            title: 'Hành động',
+            title: t('table.action'),
             hideInSearch: true,
             width: 100,
             render: (_value, entity, _index, _action) => (
@@ -117,11 +119,11 @@ const RolePage = () => {
                     <Access permission={ALL_PERMISSIONS.ROLES.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa vai trò'}
-                            description={'Bạn có chắc chắn muốn xóa vai trò này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('role').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('role').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteRole(entity.roleId)}
-                            okText="Xác nhận"
-                            cancelText="Hủy"
+                            okText={t('button.confirm')}
+                            cancelText={t('button.cancel')}
                         >
                             <span style={{ cursor: 'pointer', margin: '0 10px' }}>
                                 <DeleteOutlined
@@ -142,11 +144,11 @@ const RolePage = () => {
         if (id) {
             const res = await callDeleteRole(id);
             if (res && res.statusCode === 200) {
-                message.success('Xóa vai trò thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -196,7 +198,7 @@ const RolePage = () => {
             <Access permission={ALL_PERMISSIONS.ROLES.GET_PAGINATE}>
                 <DataTable<IRole>
                     actionRef={tableRef}
-                    headerTitle="Danh sách vai trò"
+                    headerTitle={t('table.header.role')}
                     rowKey="roleId"
                     loading={isFetching}
                     columns={columns}
@@ -216,7 +218,7 @@ const RolePage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} rows
                                 </div>
                             );
                         },
@@ -225,7 +227,7 @@ const RolePage = () => {
                     toolBarRender={(_action, _rows): any => {
                         return (
                             <Button icon={<PlusOutlined />} type="primary" onClick={() => setOpenModal(true)}>
-                                Thêm mới
+                                {t('button.create')}
                             </Button>
                         );
                     }}

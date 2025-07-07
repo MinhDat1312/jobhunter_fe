@@ -109,8 +109,8 @@ const ApplicantPage = () => {
                     <Access permission={ALL_PERMISSIONS.APPLICANTS.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa ứng viên'}
-                            description={'Bạn có chắc chắn muốn xóa ứng viên này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('applicant').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('applicant').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteApplicant(entity.userId)}
                             okText={t('button.confirm')}
                             cancelText={t('button.cancel')}
@@ -134,11 +134,11 @@ const ApplicantPage = () => {
         if (userId) {
             const res = await callDeleteApplicant(userId);
             if (res && +res.statusCode === 200) {
-                message.success('Xóa ứng viên thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -216,7 +216,7 @@ const ApplicantPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} hàng
+                                    {range[0]}-{range[1]} / {total} hàng
                                 </div>
                             );
                         },

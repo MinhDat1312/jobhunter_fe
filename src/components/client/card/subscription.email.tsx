@@ -84,11 +84,11 @@ const SubscriptionEmail = () => {
 
             const res = await callCreateSubscriber(data);
             if (res.data) {
-                message.success('Cập nhật thông tin thành công');
+                message.success(t('notify.success_update'));
                 setSubscriber(res.data);
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -98,11 +98,11 @@ const SubscriptionEmail = () => {
                 skills: arr,
             });
             if (res.data) {
-                message.success('Cập nhật thông tin thành công');
+                message.success(t('notify.success_update'));
                 setSubscriber(res.data);
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -125,7 +125,7 @@ const SubscriptionEmail = () => {
                             <Form.Item
                                 label={t('skill')}
                                 name={'skills'}
-                                rules={[{ required: true, message: 'Vui lòng chọn ít nhất 1 skill!' }]}
+                                rules={[{ required: true, message: t('notify.required') }]}
                             >
                                 <Select
                                     mode="multiple"

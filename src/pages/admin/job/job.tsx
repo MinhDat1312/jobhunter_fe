@@ -143,8 +143,8 @@ const JobPage = () => {
                     <Access permission={ALL_PERMISSIONS.JOBS.DELETE} hideChildren>
                         <Popconfirm
                             placement="bottom"
-                            title={'Xác nhận xóa tin'}
-                            description={'Bạn có chắc chắn muốn xóa tin này ?'}
+                            title={t('notify.confirm_delete') + ' ' + t('job').toLowerCase()}
+                            description={t('notify.description_delete') + ' ' + t('job').toLowerCase() + '?'}
                             onConfirm={() => handleDeleteJob(entity.jobId)}
                             okText={t('button.confirm')}
                             cancelText={t('button.cancel')}
@@ -212,11 +212,11 @@ const JobPage = () => {
         if (id) {
             const res = await callDeleteJob(id);
             if (res && res.data) {
-                message.success('Xóa tin thành công');
+                message.success(t('notify.success_delete'));
                 reloadTable();
             } else {
                 notification.error({
-                    message: 'Có lỗi xảy ra',
+                    message: t('notify.error'),
                     description: res.message,
                 });
             }
@@ -252,7 +252,7 @@ const JobPage = () => {
                             return (
                                 <div>
                                     {' '}
-                                    {range[0]}-{range[1]} trên {total} rows
+                                    {range[0]}-{range[1]} / {total} rows
                                 </div>
                             );
                         },
