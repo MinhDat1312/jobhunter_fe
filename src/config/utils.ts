@@ -6,8 +6,6 @@ import queryString from 'query-string';
 import { callFetchRole } from './api';
 import type { TFunction } from 'i18next';
 
-export const ADMIN = 'SUPER_ADMIN';
-
 export const ROLE_LIST = [
     { label: 'Admin', value: 'SUPER_ADMIN' },
     { label: 'HR', value: 'HR' },

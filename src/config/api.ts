@@ -416,16 +416,18 @@ export const callStatisticsUser = () => {
     return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/users');
 };
 
-export const callStatisticsJob = () => {
-    return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/jobs');
+export const callStatisticsJob = (query: string) => {
+    return axios.get<IBackendRes<Record<string, number>>>(`/api/v1/dashboard/jobs?${query}`);
 };
 
-export const callStatisticsApplication = () => {
-    return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/applications');
+export const callStatisticsApplication = (query: string) => {
+    return axios.get<IBackendRes<Record<string, number>>>(`/api/v1/dashboard/applications?${query}`);
 };
 
-export const callStatisticsApplicationByYear = (year: number) => {
-    return axios.get<IBackendRes<Record<number, number>>>(`/api/v1/dashboard/applications-year?year=${year}`);
+export const callStatisticsApplicationByYear = (year: number, query: string) => {
+    return axios.get<IBackendRes<Record<number, number>>>(
+        `/api/v1/dashboard/applications-year?year=${year}&${query}`,
+    );
 };
 
 /***

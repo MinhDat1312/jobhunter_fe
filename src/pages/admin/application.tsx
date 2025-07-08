@@ -12,7 +12,7 @@ import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice/applicationSlice';
 import ViewDetailApplication from '../../components/admin/application/view.application';
-import { ADMIN, colorStatus } from '../../config/utils';
+import { colorStatus, ROLE_LIST } from '../../config/utils';
 import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
@@ -200,7 +200,7 @@ const ApplicationPage = () => {
                     dataSource={applications}
                     request={async (params, sort, filter): Promise<any> => {
                         const query = buildQuery(params, sort, filter);
-                        user.role.name === ADMIN
+                        user.role.name === ROLE_LIST[0].value
                             ? await dispatch(fetchApplication({ query }))
                             : await dispatch(fetchApplicationByRecruiter({ query }));
                     }}
@@ -233,7 +233,7 @@ const ApplicationPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
                 reloadTable={reloadTable}
-                isAdmin={user.role.name === ADMIN ? true : false}
+                isAdmin={user.role.name === ROLE_LIST[0].value ? true : false}
                 isMobile={isMobile}
             />
         </div>

@@ -13,7 +13,7 @@ import { callDeleteJob } from '../../../config/api';
 import { fetchJob } from '../../../redux/slice/jobSlice';
 import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
-import { ADMIN } from '../../../config/utils';
+import { ROLE_LIST } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
 
 const { useBreakpoint } = Grid;
@@ -167,7 +167,7 @@ const JobPage = () => {
     const buildQuery = (params: any, sort: any, _filter: any) => {
         const clone = { ...params };
         let parts = [];
-        if (user.role.name !== ADMIN) parts.push(`recruiter.fullName ~ '${user.fullName}'`);
+        if (user.role.name !== ROLE_LIST[0].value) parts.push(`recruiter.fullName ~ '${user.fullName}'`);
         if (clone.title) parts.push(`title ~ '${clone.title}'`);
         if (clone.salary) parts.push(`salary ~ '${clone.salary}'`);
         if (clone?.level?.length) {

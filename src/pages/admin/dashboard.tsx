@@ -9,9 +9,13 @@ import {
 import StatisticsCard from '../../components/statistics.card';
 import LineChartStatistics from '../../components/line.chart';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../hooks/hook';
+import { ROLE_LIST } from '../../config/utils';
+import queryString from 'query-string';
 
 const DashboardPage = () => {
     const { t, i18n } = useTranslation();
+    const user = useAppSelector((state) => state.account.user);
 
     const [countUser, setCountUser] = useState<Record<string, number>>({});
     const [countJob, setCountJob] = useState<Record<string, number>>({});
@@ -23,7 +27,7 @@ const DashboardPage = () => {
 
     useEffect(() => {
         const init = async () => {
-            const res = await callStatisticsApplicationByYear(year);
+            const res = await callStatisticsApplicationByYear(year, buildQuery('job.recruiter.fullName'));
 
             if (res?.data) {
                 setCountApplicationYear(res.data);
@@ -46,8 +50,8 @@ const DashboardPage = () => {
         const init = async () => {
             const [resUsers, resJobs, resApplications] = await Promise.all([
                 callStatisticsUser(),
-                callStatisticsJob(),
-                callStatisticsApplication(),
+                callStatisticsJob(buildQuery('recruiter.fullName')),
+                callStatisticsApplication(buildQuery('job.recruiter.fullName')),
             ]);
 
             if (resUsers?.data) setCountUser(resUsers.data);
@@ -74,6 +78,19 @@ const DashboardPage = () => {
             t('month.dec'),
         ]);
     }, [i18n.language]);
+
+    const buildQuery = (query: string) => {
+        const clone: Record<string, any> = {};
+        let parts = [];
+
+        if (user.role.name !== ROLE_LIST[0].value) parts.push(`${query} ~ '${user.fullName}'`);
+        clone.filter = parts.join(' and ');
+        if (!clone.filter) delete clone.filter;
+
+        let temp = queryString.stringify(clone);
+
+        return temp;
+    };
 
     return (
         <>
