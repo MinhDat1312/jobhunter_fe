@@ -208,7 +208,7 @@ const ViewUpsertJob = () => {
     };
 
     async function fetchSkillList(): Promise<ISelect[]> {
-        const res = await callFetchAllSkill(`page=1&size=100`);
+        const res = await callFetchAllSkill(`page=1&size=500`);
         if (res && res.data) {
             const list = res.data.result;
             const temp = list.map((item) => {
@@ -222,7 +222,7 @@ const ViewUpsertJob = () => {
     }
 
     async function fetchCareerList(): Promise<ISelect[]> {
-        const res = await callFetchAllCareer(`page=1&size=100`);
+        const res = await callFetchAllCareer(`page=1&size=500`);
         if (res && res.data) {
             const list = res.data.result;
             const temp = list.map((item) => {

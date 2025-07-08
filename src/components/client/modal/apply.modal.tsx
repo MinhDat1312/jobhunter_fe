@@ -149,7 +149,7 @@ const ApplyModal = (props: IProps) => {
                                             >
                                                 <Upload {...propsUpload} style={{ width: '100%' }}>
                                                     <Button icon={<UploadOutlined />} style={{ width: '100%' }}>
-                                                        {t('upload')} CV (.doc, .docx, .pdf, and &lt; 5MB)
+                                                        {t('upload')} CV (.doc, .docx, .pdf, and &lt; 2MB)
                                                     </Button>
                                                 </Upload>
                                             </ProForm.Item>

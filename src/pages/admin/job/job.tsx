@@ -57,6 +57,7 @@ const JobPage = () => {
         {
             title: t('table.job_table.salary'),
             dataIndex: 'salary',
+            width: 120,
             sorter: true,
             render(_dom, entity, _index, _action, _schema) {
                 const str = '' + entity.salary;

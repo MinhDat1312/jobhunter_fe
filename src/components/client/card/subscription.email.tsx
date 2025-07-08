@@ -53,7 +53,7 @@ const SubscriptionEmail = () => {
     }, []);
 
     const fetchSkill = async () => {
-        let query = `page=1&size=100&sort=createdAt,desc`;
+        let query = `page=1&size=500&sort=createdAt,desc`;
         const res = await callFetchAllSkill(query);
         if (res && res.data) {
             const arr =
