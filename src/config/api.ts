@@ -424,6 +424,10 @@ export const callStatisticsApplication = () => {
     return axios.get<IBackendRes<Record<string, number>>>('/api/v1/dashboard/applications');
 };
 
+export const callStatisticsApplicationByYear = (year: number) => {
+    return axios.get<IBackendRes<Record<number, number>>>(`/api/v1/dashboard/applications-year?year=${year}`);
+};
+
 /***
 Upload single file
 ***/
