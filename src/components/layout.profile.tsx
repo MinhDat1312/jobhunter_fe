@@ -57,20 +57,16 @@ const LayoutProfile = () => {
                 key: '/profile/setting',
                 icon: <SettingOutlined />,
             },
-            ...(user?.role?.name !== ROLE_LIST[2].value
-                ? []
-                : [
-                      {
-                          label: <Link to="/profile/my-jobs">{t('my_job')}</Link>,
-                          key: '/profile/my-jobs',
-                          icon: <ScheduleOutlined />,
-                      },
-                      {
-                          label: <Link to="/profile/subscription">{t('subscription_email')}</Link>,
-                          key: '/profile/subscription',
-                          icon: <MailOutlined />,
-                      },
-                  ]),
+            {
+                label: <Link to="/profile/my-jobs">{t('my_job')}</Link>,
+                key: '/profile/my-jobs',
+                icon: <ScheduleOutlined />,
+            },
+            {
+                label: <Link to="/profile/subscription">{t('subscription_email')}</Link>,
+                key: '/profile/subscription',
+                icon: <MailOutlined />,
+            },
         ];
 
         setMenuItems(fullItems);

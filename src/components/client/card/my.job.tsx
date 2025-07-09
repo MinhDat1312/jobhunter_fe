@@ -3,6 +3,8 @@ import ApplicationApplicant from '../tab/application.applicant';
 import SaveJob from '../tab/save.job';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../../hooks/hook';
+import { ROLE_LIST } from '../../../config/utils';
 
 const { useBreakpoint } = Grid;
 
@@ -12,14 +14,22 @@ const MyJob = () => {
     const isMobile = !screens.md;
     const isTablet = screens.md && !screens.lg;
 
-    const [activeKey, setActiveKey] = useState('application-applicant');
+    const user = useAppSelector((state) => state.account.user);
+    const [activeKey, setActiveKey] = useState(
+        `${user.role.name === ROLE_LIST[1].value ? 'saved-job' : 'application-applicant'}`,
+    );
 
     const items: TabsProps['items'] = [
-        {
-            key: 'application-applicant',
-            label: t('applied'),
-            children: <ApplicationApplicant />,
-        },
+        ...(user.role.name !== ROLE_LIST[1].value
+            ? [
+                  {
+                      key: 'application-applicant',
+                      label: t('applied'),
+                      children: <ApplicationApplicant />,
+                  },
+              ]
+            : []),
+
         {
             key: 'saved-job',
             label: t('saved'),

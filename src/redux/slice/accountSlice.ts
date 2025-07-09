@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { callFetchAccount } from '../../config/api';
+import type { IJob } from '../../types/backend';
 
 interface IState {
     isAuthenticated: boolean;
@@ -13,6 +14,7 @@ interface IState {
         username: string;
         avatar: string;
         type: string;
+        savedJobs?: { jobId: number }[];
         role: {
             roleId?: string;
             name?: string;
@@ -41,6 +43,7 @@ const initialState: IState = {
         username: '',
         avatar: '',
         type: '',
+        savedJobs: [],
         role: {
             roleId: '',
             name: '',
@@ -69,6 +72,9 @@ export const accountSlice = createSlice({
             state.user.avatar = action?.payload?.avatar;
             state.user.type = action?.payload?.type;
             state.user.role = action?.payload?.role;
+            state.user.savedJobs = action?.payload?.savedJobs.map((job: IJob) => {
+                return { jobId: job.jobId };
+            });
 
             if (!action?.payload?.user?.role) state.user.role = {};
             state.user.role.permissions = action?.payload?.role?.permissions ?? [];
@@ -86,6 +92,7 @@ export const accountSlice = createSlice({
                 username: '',
                 avatar: '',
                 type: '',
+                savedJobs: [],
                 role: {
                     roleId: '',
                     name: '',
@@ -98,6 +105,10 @@ export const accountSlice = createSlice({
         setRefreshTokenAction: (state, action) => {
             state.isRefreshToken = action.payload?.status ?? false;
             state.errorRefreshToken = action.payload?.message ?? '';
+        },
+
+        setSavedJobs: (state, action) => {
+            state.user.savedJobs = action?.payload ?? [];
         },
     },
     extraReducers: (builder) => {
@@ -119,6 +130,9 @@ export const accountSlice = createSlice({
                 state.user.avatar = action?.payload?.user?.avatar as string;
                 state.user.type = action?.payload?.user?.type as string;
                 state.user.role = action?.payload?.user?.role;
+                state.user.savedJobs = action?.payload?.user?.savedJobs.map((job) => {
+                    return { jobId: +(job.jobId ?? 0) };
+                });
 
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
@@ -141,6 +155,7 @@ export const fetchAccount = createAsyncThunk('account/fetchAccount', async () =>
     return response.data;
 });
 
-export const { setActiveMenu, setUserLoginInfo, setLogoutAction, setRefreshTokenAction } = accountSlice.actions;
+export const { setActiveMenu, setUserLoginInfo, setLogoutAction, setRefreshTokenAction, setSavedJobs } =
+    accountSlice.actions;
 
 export default accountSlice.reducer;

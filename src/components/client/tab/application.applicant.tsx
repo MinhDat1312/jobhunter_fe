@@ -82,6 +82,7 @@ const ApplicationApplicant = () => {
         {
             title: t('table.applied_table.applied_at'),
             dataIndex: 'createdAt',
+            width: 200,
             render(_value, record, _index) {
                 return <>{dayjs(record.createdAt).format('DD-MM-YYYY HH:mm:ss')}</>;
             },

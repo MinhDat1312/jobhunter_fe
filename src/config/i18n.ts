@@ -111,6 +111,8 @@ const resources = {
                 error: 'An error occurred!',
                 not_account: "Don't have an account?",
                 have_account: "You have an account, don't you?",
+                saved_job: 'Saved job successfully!',
+                signin_saved_job: 'You are not logged in. Please log in to save for the job!',
             },
             page_error: {
                 result: {
@@ -315,6 +317,8 @@ const resources = {
                 error: 'Có lỗi xảy ra!',
                 not_account: 'Chưa có tài khoản?',
                 have_account: 'Đã có tài khoản?',
+                saved_job: 'Lưu việc làm thành công!',
+                signin_saved_job: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể lưu nhé!',
             },
             page_error: {
                 result: {

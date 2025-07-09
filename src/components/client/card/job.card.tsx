@@ -1,4 +1,4 @@
-import { Card, Col, Empty, Pagination, Row, Spin, Grid } from 'antd';
+import { Card, Col, Empty, Pagination, Row, Spin, Grid, Button } from 'antd';
 import styles from '../../../styles/client.module.scss';
 import { useEffect, useState } from 'react';
 import type { IJob } from '../../../types/backend';
@@ -9,9 +9,10 @@ import 'dayjs/locale/vi';
 import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { callFetchJob } from '../../../config/api';
-import { EnvironmentOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { EnvironmentOutlined, HeartFilled, HeartOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import { convertSlug, getLocationName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
+import useSaveJob from '../../../hooks/useSaveJob';
 
 const { useBreakpoint } = Grid;
 dayjs.extend(relativeTime);
@@ -21,13 +22,13 @@ interface IProps {
 }
 
 const JobCard = (props: IProps) => {
-    const { t, i18n } = useTranslation();
+    const { showPagination = false } = props;
 
+    const { t, i18n } = useTranslation();
     const screens = useBreakpoint();
     const isMobile = !screens.md;
 
-    const { showPagination = false } = props;
-
+    const { saveJob, toggleSave } = useSaveJob();
     const navigate = useNavigate();
     const location = useLocation();
     const [searchParams, _setSearchParams] = useSearchParams();
@@ -114,18 +115,51 @@ const JobCard = (props: IProps) => {
                             return (
                                 item.active && (
                                     <Col span={24} md={12} key={item.jobId}>
-                                        <Card
-                                            size="small"
-                                            title={null}
-                                            hoverable
-                                            onClick={() => handleViewDetailJob(item)}
-                                        >
+                                        <Card size="small" title={null} hoverable>
                                             <div className={styles['card-job-content']}>
                                                 <div className={styles['card-job-left']}>
                                                     <img alt="example" src={`${item?.recruiter?.avatar}`} />
                                                 </div>
                                                 <div className={styles['card-job-right']}>
-                                                    <div className={styles['job-title']}>{item.title}</div>
+                                                    <div
+                                                        style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center',
+                                                        }}
+                                                    >
+                                                        <div
+                                                            className={styles['job-title']}
+                                                            onClick={() => handleViewDetailJob(item)}
+                                                        >
+                                                            {item.title}
+                                                        </div>
+                                                        <Button
+                                                            shape="circle"
+                                                            icon={
+                                                                item.jobId !== undefined &&
+                                                                saveJob[Number(item.jobId)] ? (
+                                                                    <HeartFilled
+                                                                        style={{
+                                                                            color: '#00b452',
+                                                                            fontSize: '1rem',
+                                                                            marginTop: 2,
+                                                                        }}
+                                                                    />
+                                                                ) : (
+                                                                    <HeartOutlined
+                                                                        style={{
+                                                                            color: '#00b452',
+                                                                            fontSize: '1rem',
+                                                                            marginTop: 2,
+                                                                        }}
+                                                                    />
+                                                                )
+                                                            }
+                                                            type="default"
+                                                            onClick={() => toggleSave(Number(item.jobId))}
+                                                        />
+                                                    </div>
                                                     <div className={styles['job-location']}>
                                                         <EnvironmentOutlined style={{ color: '#00b452' }} />
                                                         &nbsp;{item.location}

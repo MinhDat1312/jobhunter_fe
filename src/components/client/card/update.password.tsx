@@ -72,13 +72,6 @@ const UpdatePassword = () => {
                             icon: isSubmit ? <LoadingOutlined /> : <CheckSquareOutlined />,
                         },
                     }}
-                    style={{
-                        marginTop: 20,
-                        height: 300,
-                        overflowY: 'auto',
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
-                    }}
                 >
                     <Row gutter={16}>
                         <Col span={24}>

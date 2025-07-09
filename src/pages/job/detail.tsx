@@ -1,4 +1,4 @@
-import { Col, Divider, Row, Skeleton, Tag } from 'antd';
+import { Button, Col, Divider, Row, Skeleton, Tag } from 'antd';
 import styles from '../../styles/client.module.scss';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
@@ -8,12 +8,13 @@ import { useEffect, useState } from 'react';
 import type { IJob } from '../../types/backend';
 import { useLocation } from 'react-router-dom';
 import { callFetchJobById } from '../../config/api';
-import { DollarOutlined, EnvironmentOutlined, HistoryOutlined } from '@ant-design/icons';
+import { DollarOutlined, EnvironmentOutlined, HeartFilled, HeartOutlined, HistoryOutlined } from '@ant-design/icons';
 import parse from 'html-react-parser';
 import ApplyModal from '../../components/client/modal/apply.modal';
 import Access from '../../components/share/access';
 import { ALL_PERMISSIONS } from '../../config/permissions';
 import { useTranslation } from 'react-i18next';
+import useSaveJob from '../../hooks/useSaveJob';
 
 dayjs.extend(relativeTime);
 
@@ -23,6 +24,7 @@ const ClientJobDetailPage = () => {
     const [jobDetail, setJobDetail] = useState<IJob | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const { saveJob, toggleSave } = useSaveJob();
 
     let location = useLocation();
     let params = new URLSearchParams(location.search);
@@ -53,11 +55,39 @@ const ClientJobDetailPage = () => {
                         <>
                             <Col span={24} md={16}>
                                 <div className={styles['header']}>{jobDetail.title}</div>
-                                <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
-                                    <button onClick={() => setIsModalOpen(true)} className={styles['btn-apply']}>
-                                        {t('button.apply')}
-                                    </button>
-                                </Access>
+                                <div
+                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}
+                                >
+                                    <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
+                                        <button onClick={() => setIsModalOpen(true)} className={styles['btn-apply']}>
+                                            {t('button.apply')}
+                                        </button>
+                                    </Access>
+                                    <Button
+                                        shape="circle"
+                                        icon={
+                                            jobDetail.jobId !== undefined && saveJob[Number(jobDetail.jobId)] ? (
+                                                <HeartFilled
+                                                    style={{
+                                                        color: '#00b452',
+                                                        fontSize: '1rem',
+                                                        marginTop: 2,
+                                                    }}
+                                                />
+                                            ) : (
+                                                <HeartOutlined
+                                                    style={{
+                                                        color: '#00b452',
+                                                        fontSize: '1rem',
+                                                        marginTop: 2,
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                        type="default"
+                                        onClick={() => toggleSave(Number(jobDetail.jobId))}
+                                    />
+                                </div>
                                 <Divider />
                                 <div className={styles['skills']}>
                                     {jobDetail?.skills?.map((item, index) => {

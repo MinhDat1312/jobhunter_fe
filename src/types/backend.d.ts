@@ -36,6 +36,7 @@ export interface IAccount {
                 module: string;
             }[];
         };
+        savedJobs: IJob[];
     };
 }
 
@@ -55,6 +56,11 @@ export interface IUser {
     role?: {
         roleId: string;
         name: string;
+    };
+
+    savedJob?: {
+        jobId: string;
+        title: string;
     };
 
     createdAt?: string;

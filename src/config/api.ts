@@ -83,6 +83,13 @@ export const callUpdatePassword = (currentPassword: string, newPassword: string,
     });
 };
 
+export const callSaveJobs = (userId: number, savedJobs: { jobId: number }[]) => {
+    return axios.put<IBackendRes<IUser>>('/api/v1/users/saved-jobs', {
+        userId,
+        savedJobs,
+    });
+};
+
 /***
 Module Recruiter
 ***/
@@ -425,9 +432,7 @@ export const callStatisticsApplication = (query: string) => {
 };
 
 export const callStatisticsApplicationByYear = (year: number, query: string) => {
-    return axios.get<IBackendRes<Record<number, number>>>(
-        `/api/v1/dashboard/applications-year?year=${year}&${query}`,
-    );
+    return axios.get<IBackendRes<Record<number, number>>>(`/api/v1/dashboard/applications-year?year=${year}&${query}`);
 };
 
 /***
