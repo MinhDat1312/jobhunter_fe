@@ -337,6 +337,11 @@ $font-size-mobile: 1.25rem;
         box-shadow: 0 4px 8px -2px rgba(0, 180, 82, 0.3), 0 8px 16px 0 rgba(0, 180, 82, 0.25),
             0 12px 24px 6px rgba(0, 180, 82, 0.2) !important;
 
+        .job-title {
+            color: $color-main;
+            cursor: pointer;
+        }
+
         .card-job-content {
             .card-job-right {
                 .job-title {

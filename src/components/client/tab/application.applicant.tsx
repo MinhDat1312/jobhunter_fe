@@ -121,7 +121,6 @@ const ApplicationApplicant = () => {
                     style={{
                         height: 300,
                         overflowY: 'auto',
-                        scrollbarWidth: 'none',
                         msOverflowStyle: 'none',
                     }}
                 />
