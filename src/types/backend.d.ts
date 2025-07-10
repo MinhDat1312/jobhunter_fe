@@ -37,6 +37,7 @@ export interface IAccount {
             }[];
         };
         savedJobs: IJob[];
+        followedRecruiters: IRecruiter[];
     };
 }
 
@@ -61,6 +62,11 @@ export interface IUser {
     savedJob?: {
         jobId: string;
         title: string;
+    };
+
+    followedRecruiter?: {
+        userId: string;
+        fullName: string;
     };
 
     createdAt?: string;

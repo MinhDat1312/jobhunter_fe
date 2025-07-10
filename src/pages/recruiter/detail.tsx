@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react';
 import styles from '../../styles/client.module.scss';
-import { Col, Divider, Row, Skeleton } from 'antd';
+import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import type { IRecruiter } from '../../types/backend';
 import { useLocation } from 'react-router-dom';
 import { callFetchRecruiterById } from '../../config/api';
 import parse from 'html-react-parser';
+import { useTranslation } from 'react-i18next';
+import useFollowRecruiter from '../../hooks/useFollowRecruiter';
+
+const { Text } = Typography;
 
 const ClientRecruiterDetailPage = () => {
+    const { t } = useTranslation();
     const [recruiterDetail, setRecruiterDetail] = useState<IRecruiter | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { followRecruiter, toggleFollow } = useFollowRecruiter();
 
     let location = useLocation();
     let params = new URLSearchParams(location.search);
@@ -39,21 +45,47 @@ const ClientRecruiterDetailPage = () => {
                 recruiterDetail.userId && (
                     <>
                         <Row gutter={[20, 20]}>
-                            <Col span={12}>
-                                <div className={styles['header']}>{recruiterDetail.fullName}</div>
-                                <div className={styles['location']}>
-                                    <EnvironmentOutlined style={{ color: '#00b452' }} />
-                                    &nbsp;
-                                    {recruiterDetail.address ? recruiterDetail.address : ''}
-                                </div>
+                            <Col>
+                                <Avatar
+                                    shape="square"
+                                    size={200}
+                                    src={recruiterDetail?.avatar}
+                                    alt="Recruiter Avatar"
+                                    style={{ borderRadius: 12, border: '2px solid #c7f7dd', padding: 12 }}
+                                />
                             </Col>
-                            <Col span={12}>
-                                    <div className={styles['recruiter']}>
-                                        <div>
-                                            <img width={200} alt="example" src={`${recruiterDetail?.avatar}`} />
-                                        </div>
+                            <Col>
+                                <Space direction="vertical" size={50} style={{ width: '100%' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Text style={{ fontWeight: 'bold', fontSize: '2.25rem' }}>
+                                            {recruiterDetail.fullName}
+                                        </Text>
+                                        <Text style={{ color: '#37434f', fontSize: '1rem', fontWeight: '600' }}>
+                                            <EnvironmentOutlined style={{ color: '#00b452' }} />
+                                            &nbsp;
+                                            {recruiterDetail.address ? recruiterDetail.address : ''}
+                                        </Text>
                                     </div>
-                                </Col>
+                                    <Button
+                                        onClick={() => {
+                                            toggleFollow(Number(recruiterDetail.userId));
+                                        }}
+                                        className="btn-follow"
+                                        style={{
+                                            backgroundColor: followRecruiter[Number(recruiterDetail.userId)]
+                                                ? '#00b452'
+                                                : '#ffffff',
+                                            color: followRecruiter[Number(recruiterDetail.userId)]
+                                                ? '#ffffff'
+                                                : '#00b452',
+                                        }}
+                                    >
+                                        {followRecruiter[Number(recruiterDetail.userId)]
+                                            ? t('button.unfollow')
+                                            : t('button.follow')}
+                                    </Button>
+                                </Space>
+                            </Col>
                         </Row>
                         <Divider />
                         <Row gutter={[20, 20]}>

@@ -354,6 +354,14 @@ $font-size-mobile: 1.25rem;
 }
 
 :global {
+    .ant-btn.btn-follow {
+        width: 200px;
+        height: 50px;
+        color: $color-main;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
     .ant-btn {
         display: flex;
         justify-content: center;

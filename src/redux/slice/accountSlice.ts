@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { callFetchAccount } from '../../config/api';
-import type { IJob } from '../../types/backend';
+import type { IJob, IRecruiter } from '../../types/backend';
 
 interface IState {
     isAuthenticated: boolean;
@@ -15,6 +15,7 @@ interface IState {
         avatar: string;
         type: string;
         savedJobs?: { jobId: number }[];
+        followedRecruiters?: { userId: number }[];
         role: {
             roleId?: string;
             name?: string;
@@ -44,6 +45,7 @@ const initialState: IState = {
         avatar: '',
         type: '',
         savedJobs: [],
+        followedRecruiters: [],
         role: {
             roleId: '',
             name: '',
@@ -75,6 +77,9 @@ export const accountSlice = createSlice({
             state.user.savedJobs = action?.payload?.savedJobs.map((job: IJob) => {
                 return { jobId: job.jobId };
             });
+            state.user.followedRecruiters = action?.payload?.followedRecruiters.map((recruiter: IRecruiter) => {
+                return { userId: recruiter.userId };
+            });
 
             if (!action?.payload?.user?.role) state.user.role = {};
             state.user.role.permissions = action?.payload?.role?.permissions ?? [];
@@ -93,6 +98,7 @@ export const accountSlice = createSlice({
                 avatar: '',
                 type: '',
                 savedJobs: [],
+                followedRecruiters: [],
                 role: {
                     roleId: '',
                     name: '',
@@ -109,6 +115,10 @@ export const accountSlice = createSlice({
 
         setSavedJobs: (state, action) => {
             state.user.savedJobs = action?.payload ?? [];
+        },
+
+        setFollowedRecruiters: (state, action) => {
+            state.user.followedRecruiters = action?.payload ?? [];
         },
     },
     extraReducers: (builder) => {
@@ -133,6 +143,9 @@ export const accountSlice = createSlice({
                 state.user.savedJobs = action?.payload?.user?.savedJobs.map((job) => {
                     return { jobId: +(job.jobId ?? 0) };
                 });
+                state.user.followedRecruiters = action?.payload?.user?.followedRecruiters.map((recruiter) => {
+                    return { userId: +(recruiter.userId ?? 0) };
+                });
 
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
@@ -155,7 +168,13 @@ export const fetchAccount = createAsyncThunk('account/fetchAccount', async () =>
     return response.data;
 });
 
-export const { setActiveMenu, setUserLoginInfo, setLogoutAction, setRefreshTokenAction, setSavedJobs } =
-    accountSlice.actions;
+export const {
+    setActiveMenu,
+    setUserLoginInfo,
+    setLogoutAction,
+    setRefreshTokenAction,
+    setSavedJobs,
+    setFollowedRecruiters,
+} = accountSlice.actions;
 
 export default accountSlice.reducer;

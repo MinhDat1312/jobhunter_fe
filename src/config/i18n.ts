@@ -112,7 +112,11 @@ const resources = {
                 not_account: "Don't have an account?",
                 have_account: "You have an account, don't you?",
                 saved_job: 'Saved job successfully!',
+                unsaved_job: 'Unsaved job successfully!',
+                followed_recruiter: 'Followed recruiter successfully!',
+                unfollowed_recruiter: 'Unfollowed recruiter successfully!',
                 signin_saved_job: 'You are not logged in. Please log in to save for the job!',
+                signin_followed_recruiter: 'You are not logged in. Please log in to follow for the recruiter!',
             },
             page_error: {
                 result: {
@@ -135,6 +139,8 @@ const resources = {
                 inactive_tag: 'Inactive',
                 close: 'Close',
                 confirm: 'Confirm',
+                follow: 'Follow',
+                unfollow: 'Unfollow',
             },
             table: {
                 no_1: 'No.',
@@ -318,7 +324,11 @@ const resources = {
                 not_account: 'Chưa có tài khoản?',
                 have_account: 'Đã có tài khoản?',
                 saved_job: 'Lưu việc làm thành công!',
+                unsaved_job: 'Bỏ lưu thành công!',
+                followed_recruiter: 'Theo dõi thành công!',
+                unfollowed_recruiter: 'Hủy theo dõi thành công!',
                 signin_saved_job: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể lưu nhé!',
+                signin_followed_recruiter: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể theo dõi nhé!',
             },
             page_error: {
                 result: {
@@ -341,6 +351,8 @@ const resources = {
                 inactive_tag: 'Không hoạt động',
                 close: 'Đóng',
                 confirm: 'Xác nhận',
+                follow: 'Theo dõi',
+                unfollow: 'Hủy theo dõi',
             },
             table: {
                 no_1: 'STT',

@@ -11,6 +11,7 @@ const useSaveJob = () => {
     const user = useAppSelector((state) => state.account.user);
     const isAuthenticated = useAppSelector((state) => state.account.isAuthenticated);
     const [saveJob, setSaveJob] = useState<{ [key: number]: boolean }>({});
+    let notify = '';
 
     useEffect(() => {
         const savedJobsArray = user.savedJobs || [];
@@ -28,6 +29,9 @@ const useSaveJob = () => {
             message.error(t('notify.signin_saved_job'));
             return;
         }
+
+        if (saveJob[id]) notify = 'notify.unsaved_job';
+        else notify = 'notify.saved_job';
 
         const newSaveJob = {
             ...saveJob,
@@ -47,7 +51,7 @@ const useSaveJob = () => {
 
         const saveJobs = await callSaveJobs(+user.userId, savedJobIds);
         if (saveJobs?.data) {
-            message.success(t('notify.saved_job'));
+            message.success(t(notify));
             dispatch(setSavedJobs(savedJobIds));
         } else {
             notification.error({

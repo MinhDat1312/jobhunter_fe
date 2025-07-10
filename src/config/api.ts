@@ -90,6 +90,16 @@ export const callSaveJobs = (userId: number, savedJobs: { jobId: number }[]) => 
     });
 };
 
+export const callFollowRecruiters = (userId: number, followedRecruiters: { userId: number }[]) => {
+    const payload = followedRecruiters.map((fr) => {
+        return { userId: fr.userId, type: 'recruiter' };
+    });
+    return axios.put<IBackendRes<IUser>>('/api/v1/users/followed-recruiters', {
+        userId,
+        followedRecruiters: payload,
+    });
+};
+
 /***
 Module Recruiter
 ***/

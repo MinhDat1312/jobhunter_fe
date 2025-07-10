@@ -86,13 +86,12 @@ const RecruiterCard = (props: IProps) => {
                                 )}
                             </div>
                         </Col>
-
                         {displayRecruiter?.map((item) => {
                             return (
                                 <Col span={24} md={12} xs={24} lg={6} key={item.userId}>
                                     <Card
                                         onClick={() => handleViewDetailRecruiter(item)}
-                                        style={{ height: 350 }}
+                                        style={{ height: 350, cursor: 'pointer' }}
                                         hoverable
                                         cover={
                                             <div className={styles['card-customize']}>
