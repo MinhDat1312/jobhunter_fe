@@ -51,6 +51,12 @@ export const ALL_PERMISSIONS = {
         UPDATE: { method: 'PUT', apiPath: '/api/v1/applicants', module: 'APPLICANTS' },
         DELETE: { method: 'DELETE', apiPath: '/api/v1/applicants/{id}', module: 'APPLICANTS' },
     },
+    SUBSCRIBERS: {
+        GET_PAGINATE: { method: 'GET', apiPath: '/api/v1/subscribers', module: 'SUBSCRIBERS' },
+        CREATE: { method: 'POST', apiPath: '/api/v1/subscribers', module: 'SUBSCRIBERS' },
+        UPDATE: { method: 'PUT', apiPath: '/api/v1/subscribers', module: 'SUBSCRIBERS' },
+        DELETE: { method: 'DELETE', apiPath: '/api/v1/subscribers/{id}', module: 'SUBSCRIBERS' },
+    },
 };
 
 export const ALL_MODULES = {
