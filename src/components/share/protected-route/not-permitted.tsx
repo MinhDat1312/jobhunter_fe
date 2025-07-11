@@ -17,17 +17,19 @@ const NotPermitted = (props: IProps) => {
             title={t('page_error.result.title')}
             subTitle={t('page_error.result.subTitle')}
             extra={
-                <Button
-                    type="primary"
-                    onClick={() => {
-                        if (onClose) {
-                            onClose(false);
-                        }
-                        navigate('/');
-                    }}
-                >
-                    {t('home')}
-                </Button>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            if (onClose) {
+                                onClose(false);
+                            }
+                            navigate('/');
+                        }}
+                    >
+                        {t('home')}
+                    </Button>
+                </div>
             }
         />
     );

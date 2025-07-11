@@ -52,6 +52,20 @@ $color-main: #00b452;
     }
 }
 
+:global {
+    .ant-popover-content {
+        .ant-popover-inner {
+            .ant-popover-inner-content {
+                .ant-popconfirm-buttons {
+                    display: flex !important;
+                    justify-content: flex-end;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
+
 @keyframes float {
     0%,
     100% {

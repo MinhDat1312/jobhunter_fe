@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from 'react';
 import type { MenuProps } from 'antd/lib';
 import { useAppSelector } from '../hooks/hook';
 import { Outlet, useLocation } from 'react-router-dom';
-import { ROLE_LIST } from '../config/utils';
 import { Link } from 'react-router-dom';
 import NotPermitted from './share/protected-route/not-permitted';
 import { Grid } from 'antd';
@@ -17,7 +16,7 @@ const { Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const LayoutProfile = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const screens = useBreakpoint();
     const isMobile = !screens.md;
@@ -70,7 +69,7 @@ const LayoutProfile = () => {
         ];
 
         setMenuItems(fullItems);
-    }, [user]);
+    }, [user, i18n.language]);
 
     return (
         <div>

@@ -23,8 +23,8 @@ import RoleTab from './pages/admin/role/role.tab';
 import LayoutProfile from './components/layout.profile';
 import UpdateInfo from './components/client/card/update.info';
 import UpdatePassword from './components/client/card/update.password';
-import SubscriptionEmail from './components/client/card/subscription.email';
 import MyJob from './components/client/card/my.job';
+import EmailSubscription from './components/client/email.subscription';
 
 const router = createBrowserRouter([
     {
@@ -131,7 +131,7 @@ const router = createBrowserRouter([
             { index: true, element: <UpdateInfo /> },
             { path: 'setting', element: <UpdatePassword /> },
             { path: 'my-jobs', element: <MyJob /> },
-            { path: 'subscription', element: <SubscriptionEmail /> },
+            { path: 'subscription', element: <EmailSubscription /> },
         ],
     },
     {

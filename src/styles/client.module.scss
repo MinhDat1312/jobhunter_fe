@@ -362,6 +362,12 @@ $font-size-mobile: 1.25rem;
         font-weight: bold;
     }
 
+    .ant-btn.btn-main {
+        background-color: $color-main;
+        color: #ffffff;
+        font-size: 1rem;
+    }
+
     .ant-btn {
         display: flex;
         justify-content: center;

@@ -43,6 +43,24 @@ const useFollowRecruiter = () => {
         await followedRecruiters(newFollowRecruiter);
     };
 
+    const toggleFollowList = async (ids: number[]) => {
+        if (!isAuthenticated) {
+            message.error(t('notify.signin_followed_recruiter'));
+            return;
+        }
+
+        const newFollowRecruiter: { [key: number]: boolean } = {};
+        ids.forEach((recruiterId) => {
+            newFollowRecruiter[recruiterId] = true;
+        });
+
+        if (ids.length === 0) notify = 'notify.unfollowed_recruiter';
+        else notify = 'notify.followed_recruiter';
+
+        setFollowRecruiter(newFollowRecruiter);
+        await followedRecruiters(newFollowRecruiter);
+    };
+
     const followedRecruiters = async (recruiters: { [userId: number]: boolean }) => {
         const followedRecruiterIds = Object.entries(recruiters)
             .filter(([_, isActive]) => isActive)
@@ -67,6 +85,7 @@ const useFollowRecruiter = () => {
         followRecruiter,
         setFollowRecruiter,
         toggleFollow,
+        toggleFollowList,
         followedRecruiters,
     };
 };

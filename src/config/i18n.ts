@@ -17,6 +17,7 @@ const resources = {
             title: 'Hard Work Made for Chất',
             search: 'Search',
             search_skill: 'Search for skills...',
+            search_recruiter: 'Search for recruiters...',
             search_location: 'Search for locations...',
             featured_employers: 'Featured Employers',
             latest_jobs: 'Latest Jobs',
@@ -56,6 +57,12 @@ const resources = {
             applied: 'Applied',
             saved: 'Saved',
             skill: 'Skill',
+            skill_subscribed: 'Skills you subscribed',
+            skill_subscribed_desc:
+                'By subscribing, Job Robot will suggest in-demand jobs that match your skill via email.',
+            recruiter_subscribed: 'Recruiter you followed',
+            recruiter_subscribed_desc:
+                'By following, Job Robot will update job openings from your favorite recruiter via email.',
             career: 'Career',
             dashboard: 'Dashboard',
             user: 'User',
@@ -117,6 +124,8 @@ const resources = {
                 unfollowed_recruiter: 'Unfollowed recruiter successfully!',
                 signin_saved_job: 'You are not logged in. Please log in to save for the job!',
                 signin_followed_recruiter: 'You are not logged in. Please log in to follow for the recruiter!',
+                max_skill: 'You can select up to 5 skills only!',
+                max_recruiter: 'You can select up to 5 recruiters only!',
             },
             page_error: {
                 result: {
@@ -141,6 +150,7 @@ const resources = {
                 confirm: 'Confirm',
                 follow: 'Follow',
                 unfollow: 'Unfollow',
+                subscribe: 'Subscribe',
             },
             table: {
                 no_1: 'No.',
@@ -230,6 +240,7 @@ const resources = {
             search: 'Tìm kiếm',
             title: 'Việc Làm Cho Vất Vả Chất',
             search_skill: 'Tìm kiếm theo kỹ năng...',
+            search_recruiter: 'Tìm kiếm nhà tuyển dụng',
             search_location: 'Tìm kiếm theo địa điểm...',
             featured_employers: 'Nhà Tuyển Dụng Nổi Bật',
             latest_jobs: 'Công Việc Mới Nhất',
@@ -268,6 +279,10 @@ const resources = {
             applied: 'Đã ứng tuyển',
             saved: 'Đã lưu',
             skill: 'Kỹ năng',
+            skill_subscribed: 'Kỹ năng đã đăng ký',
+            skill_subscribed_desc: 'Đăng ký Job Robot để không bỏ lỡ việc làm phù hợp với kỹ năng của bạn.',
+            recruiter_subscribed: 'Nhà tuyển dụng đã theo dõi',
+            recruiter_subscribed_desc: 'Nhận thêm thông báo khi nhà tuyển dụng bạn yêu thích có việc làm mới.',
             career: 'Ngành nghề',
             dashboard: 'Tổng quan',
             user: 'Người dùng',
@@ -314,7 +329,7 @@ const resources = {
                 success_update_recruiter: 'Cập nhật nhà tuyển dụng thành công!',
                 success_create_recruiter: 'Thêm mới nhà tuyển dụng thành công!',
                 required: 'Vui lòng không bỏ trống!',
-                empty: 'Không có dữ liệu',
+                empty: 'Không có dữ liệu!',
                 date_start: 'Ngày bắt đầu phải trước ngày kết thúc!',
                 date_end: 'Ngày kết thúc phải sau ngày bắt đầu!',
                 confirm_delete: 'Xác nhận xóa',
@@ -329,6 +344,8 @@ const resources = {
                 unfollowed_recruiter: 'Hủy theo dõi thành công!',
                 signin_saved_job: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể lưu nhé!',
                 signin_followed_recruiter: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể theo dõi nhé!',
+                max_skill: 'Chỉ được chọn tối đa 5 kỹ năng!',
+                max_recruiter: 'Chỉ được chọn tối đa 5 nhà tuyển dụng!',
             },
             page_error: {
                 result: {
@@ -353,6 +370,7 @@ const resources = {
                 confirm: 'Xác nhận',
                 follow: 'Theo dõi',
                 unfollow: 'Hủy theo dõi',
+                subscribe: 'Đăng ký',
             },
             table: {
                 no_1: 'STT',
