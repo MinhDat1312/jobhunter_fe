@@ -3,9 +3,10 @@ import styles from '../../../styles/client.module.scss';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { IRecruiter } from '../../../types/backend';
-import { callFetchRecruiter } from '../../../config/api';
+import { callCountJobByRecruiter, callFetchRecruiter } from '../../../config/api';
 import { convertSlug } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -14,7 +15,7 @@ interface IProps {
 }
 
 const RecruiterCard = (props: IProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const screens = useBreakpoint();
     const isMobile = !screens.md;
@@ -30,6 +31,18 @@ const RecruiterCard = (props: IProps) => {
     const [total, setTotal] = useState(0);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
+    const [totalJob, setTotalJob] = useState<{ [key: number]: number }>({});
+
+    useEffect(() => {
+        const init = async () => {
+            const res = await callCountJobByRecruiter();
+            if (res?.data) {
+                setTotalJob(res.data);
+            }
+        };
+
+        init();
+    }, []);
 
     useEffect(() => {
         const fetchRecruiter = async () => {
@@ -91,7 +104,7 @@ const RecruiterCard = (props: IProps) => {
                                 <Col span={24} md={12} xs={24} lg={6} key={item.userId}>
                                     <Card
                                         onClick={() => handleViewDetailRecruiter(item)}
-                                        style={{ height: 350, cursor: 'pointer' }}
+                                        style={{ height: 350, cursor: 'pointer', position: 'relative' }}
                                         hoverable
                                         cover={
                                             <div className={styles['card-customize']}>
@@ -100,11 +113,43 @@ const RecruiterCard = (props: IProps) => {
                                                     alt="example"
                                                     src={`${item?.avatar}`}
                                                 />
+                                                <motion.div
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: 8,
+                                                        right: 8,
+                                                        zIndex: 1,
+                                                        borderRadius: '8px',
+                                                        backgroundColor: '#ffffff',
+                                                        color: '#00b452',
+                                                        padding: '0 8px',
+                                                        fontSize: '1rem',
+                                                    }}
+                                                    animate={{
+                                                        boxShadow: [
+                                                            '0 0 5px #c7f7dd',
+                                                            '0 0 20px #c7f7dd, 0 0 30px #c7f7dd',
+                                                            '0 0 5px #c7f7dd',
+                                                        ],
+                                                    }}
+                                                    transition={{
+                                                        duration: 1,
+                                                        repeat: Infinity,
+                                                        repeatType: 'loop',
+                                                    }}
+                                                >
+                                                    {totalJob[Number(item.userId)]} {t('job')}
+                                                    {totalJob[Number(item.userId)] === 1
+                                                        ? ''
+                                                        : i18n.language === 'en'
+                                                        ? 's'
+                                                        : ''}
+                                                </motion.div>
                                             </div>
                                         }
                                     >
                                         <Divider />
-                                        <h3 style={{ textAlign: 'center' }}>{item.fullName}</h3>
+                                        <h2 style={{ textAlign: 'center' }}>{item.fullName}</h2>
                                     </Card>
                                 </Col>
                             );

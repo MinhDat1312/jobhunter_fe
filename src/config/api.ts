@@ -311,6 +311,10 @@ export const callFetchJobById = (jobId: string) => {
     return axios.get<IBackendRes<IJob>>(`/api/v1/jobs/${jobId}`);
 };
 
+export const callCountJobByRecruiter = () => {
+    return axios.get<IBackendRes<any>>('/api/v1/jobs/recruiters');
+};
+
 /***
 Module Application
 ***/

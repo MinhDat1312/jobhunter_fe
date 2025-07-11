@@ -226,6 +226,10 @@ $font-size-mobile: 1.25rem;
             width: 200px;
             margin: 20px auto;
         }
+
+        :global(.ant-card-body) {
+            padding: 0 !important;
+        }
     }
 }
 
