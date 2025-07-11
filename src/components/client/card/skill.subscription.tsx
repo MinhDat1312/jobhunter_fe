@@ -150,6 +150,7 @@ const SkillSubscription = () => {
                         >
                             <Select
                                 mode="multiple"
+                                showSearch
                                 allowClear
                                 suffixIcon={null}
                                 style={{ width: '100%' }}
@@ -166,6 +167,9 @@ const SkillSubscription = () => {
                                     ...skill,
                                     disabled: selectedSkills.length >= 5 && !selectedSkills.includes(skill.value),
                                 }))}
+                                filterOption={(input, option) =>
+                                    (option?.label as string).toLowerCase().includes(input.toLowerCase())
+                                }
                             />
                         </Form.Item>
                     </Col>

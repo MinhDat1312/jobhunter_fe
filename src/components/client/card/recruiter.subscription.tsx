@@ -2,8 +2,6 @@ import { MonitorOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, Grid, Row, Select, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import Access from '../../share/access';
-import { ALL_PERMISSIONS } from '../../../config/permissions';
 import useFollowRecruiter from '../../../hooks/useFollowRecruiter';
 import { callFetchRecruiter } from '../../../config/api';
 
@@ -115,6 +113,9 @@ const RecruiterSubscription = () => {
                                 maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
                                 optionLabelProp="label"
                                 options={optionsRecruiters}
+                                filterOption={(input, option) =>
+                                    (option?.label as string).toLowerCase().includes(input.toLowerCase())
+                                }
                             />
                         </Form.Item>
                     </Col>
