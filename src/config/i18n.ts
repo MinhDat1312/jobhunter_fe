@@ -240,7 +240,7 @@ const resources = {
             search: 'Tìm kiếm',
             title: 'Việc Làm Cho Vất Vả Chất',
             search_skill: 'Tìm kiếm theo kỹ năng...',
-            search_recruiter: 'Tìm kiếm nhà tuyển dụng',
+            search_recruiter: 'Tìm kiếm nhà tuyển dụng...',
             search_location: 'Tìm kiếm theo địa điểm...',
             featured_employers: 'Nhà Tuyển Dụng Nổi Bật',
             latest_jobs: 'Công Việc Mới Nhất',

@@ -8,14 +8,16 @@ import { callFetchRecruiterById } from '../../config/api';
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import useFollowRecruiter from '../../hooks/useFollowRecruiter';
+import useTotalJobRecruiter from '../../hooks/useTotalJobRecruiter';
 
 const { Text } = Typography;
 
 const ClientRecruiterDetailPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [recruiterDetail, setRecruiterDetail] = useState<IRecruiter | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { followRecruiter, toggleFollow } = useFollowRecruiter();
+    const { totalJob } = useTotalJobRecruiter();
 
     let location = useLocation();
     let params = new URLSearchParams(location.search);
@@ -55,8 +57,8 @@ const ClientRecruiterDetailPage = () => {
                                 />
                             </Col>
                             <Col>
-                                <Space direction="vertical" size={50} style={{ width: '100%' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <Space direction="vertical" size={26} style={{ width: '100%' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         <Text style={{ fontWeight: 'bold', fontSize: '2.25rem' }}>
                                             {recruiterDetail.fullName}
                                         </Text>
@@ -64,6 +66,22 @@ const ClientRecruiterDetailPage = () => {
                                             <EnvironmentOutlined style={{ color: '#00b452' }} />
                                             &nbsp;
                                             {recruiterDetail.address ? recruiterDetail.address : ''}
+                                        </Text>
+                                        <Text
+                                            style={{
+                                                color: '#00b452',
+                                                fontSize: '1rem',
+                                                fontWeight: '600',
+                                                textDecoration: 'underline',
+                                                cursor: 'pointer',
+                                            }}
+                                        >
+                                            {totalJob[Number(recruiterDetail.userId)]} {t('job')}
+                                            {totalJob[Number(recruiterDetail.userId)] === 1
+                                                ? ''
+                                                : i18n.language === 'en'
+                                                ? 's'
+                                                : ''}
                                         </Text>
                                     </div>
                                     <Button

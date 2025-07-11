@@ -1,24 +1,27 @@
 import { EnvironmentOutlined, MonitorOutlined } from '@ant-design/icons';
 import { ProForm } from '@ant-design/pro-components';
-import { Button, Col, Form, notification, Row, Select } from 'antd';
+import { Button, Col, Form, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { callFetchAllSkill } from '../../config/api';
+import { callFetchAllSkill, callFetchRecruiter } from '../../config/api';
 import { LOCATION_LIST } from '../../config/utils';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const SearchClient = () => {
     const { t } = useTranslation();
-
     const navigate = useNavigate();
     const [searchParams, _setSearchParams] = useSearchParams();
     const queryLocation = searchParams.get('location');
     const querySkills = searchParams.get('skills');
-
-    const optionsLocations = LOCATION_LIST;
     const [form] = Form.useForm();
-
+    const optionsLocations = LOCATION_LIST;
     const [optionsSkills, setOptionsSkills] = useState<
+        {
+            label: string;
+            value: string;
+        }[]
+    >([]);
+    const [optionsRecruiters, setOptionsRecruiters] = useState<
         {
             label: string;
             value: string;
@@ -35,24 +38,41 @@ const SearchClient = () => {
     }, [queryLocation, querySkills]);
 
     useEffect(() => {
-        const fetchSkill = async () => {
-            let query = `page=1&size=500&sort=createdAt,desc`;
-
-            const res = await callFetchAllSkill(query);
-            if (res && res.data) {
-                const arr =
-                    res?.data?.result?.map((item) => {
-                        return {
-                            label: item.name as string,
-                            value: item.name ? item.name.toUpperCase() : ('' as string),
-                        };
-                    }) ?? [];
-                setOptionsSkills(arr);
-            }
-        };
-
-        fetchSkill();
+        fetchSkills();
+        fetchRecruiters();
     }, []);
+
+    const fetchSkills = async () => {
+        let query = `page=1&size=500&sort=createdAt,desc`;
+
+        const res = await callFetchAllSkill(query);
+        if (res && res.data) {
+            const arr =
+                res?.data?.result?.map((item) => {
+                    return {
+                        label: item.name as string,
+                        value: item.name ? item.name.toUpperCase() : ('' as string),
+                    };
+                }) ?? [];
+            setOptionsSkills(arr);
+        }
+    };
+
+    const fetchRecruiters = async () => {
+        let query = `page=1&size=500&sort=createdAt,desc`;
+
+        const res = await callFetchRecruiter(query);
+        if (res && res.data) {
+            const arr =
+                res?.data?.result?.map((item) => {
+                    return {
+                        label: item.fullName as string,
+                        value: item.fullName ? item.fullName.toUpperCase() : ('' as string),
+                    };
+                }) ?? [];
+            setOptionsRecruiters(arr);
+        }
+    };
 
     const onFinish = async (values: any) => {
         let query = '';
@@ -66,13 +86,6 @@ const SearchClient = () => {
                 : `skills=${values?.skills?.join(',')}`;
         }
 
-        if (!query) {
-            notification.error({
-                message: t('notify.error'),
-                description: t('notify.empty'),
-            });
-            return;
-        }
         navigate(`/job?${query}`);
     };
 
@@ -84,11 +97,11 @@ const SearchClient = () => {
                 render: () => <></>,
             }}
         >
-            <Row gutter={[20, 20]}>
-                <Col span={24}>
+            <Row gutter={[20, 0]}>
+                <Col span={24} style={{ marginBottom: '12px' }}>
                     <h2> {t('title')}</h2>
                 </Col>
-                <Col span={24} xs={24} md={13}>
+                <Col lg={10} xs={24} md={24}>
                     <ProForm.Item name="skills">
                         <Select
                             mode="multiple"
@@ -100,14 +113,14 @@ const SearchClient = () => {
                                     <MonitorOutlined /> {t('search_skill')}
                                 </>
                             }
-                            maxTagCount={7}
+                            maxTagCount={3}
                             maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
                             optionLabelProp="label"
                             options={optionsSkills}
                         />
                     </ProForm.Item>
                 </Col>
-                <Col span={12} xs={12} md={7}>
+                <Col lg={5} xs={24} md={8}>
                     <ProForm.Item name="location">
                         <Select
                             mode="multiple"
@@ -126,7 +139,26 @@ const SearchClient = () => {
                         />
                     </ProForm.Item>
                 </Col>
-                <Col span={12} xs={12} md={4} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Col lg={5} xs={24} md={8}>
+                    <ProForm.Item name="recruiters">
+                        <Select
+                            mode="multiple"
+                            allowClear
+                            suffixIcon={null}
+                            style={{ width: '100%' }}
+                            placeholder={
+                                <>
+                                    <EnvironmentOutlined /> {t('search_recruiter')}
+                                </>
+                            }
+                            maxTagCount={2}
+                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
+                            optionLabelProp="label"
+                            options={optionsRecruiters}
+                        />
+                    </ProForm.Item>
+                </Col>
+                <Col lg={4} xs={24} md={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type="primary" onClick={() => form.submit()}>
                         {t('search')}
                     </Button>

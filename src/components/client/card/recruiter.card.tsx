@@ -7,6 +7,7 @@ import { callCountJobByRecruiter, callFetchRecruiter } from '../../../config/api
 import { convertSlug } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import useTotalJobRecruiter from '../../../hooks/useTotalJobRecruiter';
 
 const { useBreakpoint } = Grid;
 
@@ -31,18 +32,7 @@ const RecruiterCard = (props: IProps) => {
     const [total, setTotal] = useState(0);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
-    const [totalJob, setTotalJob] = useState<{ [key: number]: number }>({});
-
-    useEffect(() => {
-        const init = async () => {
-            const res = await callCountJobByRecruiter();
-            if (res?.data) {
-                setTotalJob(res.data);
-            }
-        };
-
-        init();
-    }, []);
+    const { totalJob } = useTotalJobRecruiter();
 
     useEffect(() => {
         const fetchRecruiter = async () => {
