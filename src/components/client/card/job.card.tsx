@@ -55,16 +55,20 @@ const JobCard = (props: IProps) => {
 
             const queryLocation = searchParams.get('location');
             const querySkills = searchParams.get('skills');
-            if (queryLocation || querySkills) {
+            const queryRecruiters = searchParams.get('recruiters');
+            if (queryLocation || querySkills || queryRecruiters) {
                 let q = '';
                 if (queryLocation) {
                     const locationNames = queryLocation.split(',').map((item) => getLocationName(item));
                     q = sfIn('location', locationNames).toString();
                 }
                 if (querySkills) {
-                    q = queryLocation
-                        ? q + ' and ' + `${sfIn('skills.name', querySkills.split(','))}`
-                        : `${sfIn('skills.name', querySkills.split(','))}`;
+                    const skillNames = sfIn('skills.name', querySkills.split(',')).toString();
+                    q = q.length !== 0 ? q + ' and ' + `${skillNames}` : `${skillNames}`;
+                }
+                if (queryRecruiters) {
+                    const recruiterNames = sfIn('recruiter.fullName', queryRecruiters.split(',')).toString();
+                    q = q.length !== 0 ? q + ' and ' + `${recruiterNames}` : `${recruiterNames}`;
                 }
                 query += `&filter=${encodeURIComponent(q)}`;
             }

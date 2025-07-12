@@ -13,6 +13,7 @@ const SearchClient = () => {
     const [searchParams, _setSearchParams] = useSearchParams();
     const queryLocation = searchParams.get('location');
     const querySkills = searchParams.get('skills');
+    const queryRecruiters = searchParams.get('recruiters');
     const [form] = Form.useForm();
     const optionsLocations = LOCATION_LIST;
     const [optionsSkills, setOptionsSkills] = useState<
@@ -35,7 +36,10 @@ const SearchClient = () => {
         if (querySkills) {
             form.setFieldValue('skills', querySkills.split(','));
         }
-    }, [queryLocation, querySkills]);
+        if (queryRecruiters) {
+            form.setFieldValue('recruiters', queryRecruiters.split(','));
+        }
+    }, [queryLocation, querySkills, queryRecruiters]);
 
     useEffect(() => {
         fetchSkills();
@@ -51,7 +55,7 @@ const SearchClient = () => {
                 res?.data?.result?.map((item) => {
                     return {
                         label: item.name as string,
-                        value: item.name ? item.name.toUpperCase() : ('' as string),
+                        value: item.name ? item.name : ('' as string),
                     };
                 }) ?? [];
             setOptionsSkills(arr);
@@ -67,7 +71,7 @@ const SearchClient = () => {
                 res?.data?.result?.map((item) => {
                     return {
                         label: item.fullName as string,
-                        value: item.fullName ? item.fullName.toUpperCase() : ('' as string),
+                        value: item.fullName ? item.fullName : ('' as string),
                     };
                 }) ?? [];
             setOptionsRecruiters(arr);
@@ -81,9 +85,16 @@ const SearchClient = () => {
             query = `location=${values?.location?.join(',')}`;
         }
         if (values?.skills?.length) {
-            query = values.location?.length
-                ? query + `&skills=${values?.skills?.join(',')}`
-                : `skills=${values?.skills?.join(',')}`;
+            query =
+                query.length === 0
+                    ? `skills=${values?.skills?.join(',')}`
+                    : query + `&skills=${values?.skills?.join(',')}`;
+        }
+        if (values?.recruiters?.length) {
+            query =
+                query.length === 0
+                    ? `recruiters=${values?.recruiters?.join(',')}`
+                    : query + `&recruiters=${values?.recruiters?.join(',')}`;
         }
 
         navigate(`/job?${query}`);

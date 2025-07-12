@@ -3,7 +3,7 @@ import styles from '../../styles/client.module.scss';
 import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import type { IRecruiter } from '../../types/backend';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { callFetchRecruiterById } from '../../config/api';
 import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,7 @@ const ClientRecruiterDetailPage = () => {
     const { followRecruiter, toggleFollow } = useFollowRecruiter();
     const { totalJob } = useTotalJobRecruiter();
 
+    const navigate = useNavigate();
     let location = useLocation();
     let params = new URLSearchParams(location.search);
     const id = params?.get('id');
@@ -37,6 +38,11 @@ const ClientRecruiterDetailPage = () => {
 
         fetchRecruiter();
     }, [id]);
+
+    const fetchJobsByRecruiter = (recruiterName: string) => {
+        let query = `recruiters=${recruiterName}`;
+        navigate(`/job?${query}`);
+    };
 
     return (
         <div className={`${styles['container']} ${styles['detail-job-section']}`}>
@@ -75,6 +81,7 @@ const ClientRecruiterDetailPage = () => {
                                                 textDecoration: 'underline',
                                                 cursor: 'pointer',
                                             }}
+                                            onClick={() => fetchJobsByRecruiter(recruiterDetail.fullName)}
                                         >
                                             {totalJob[Number(recruiterDetail.userId)]} {t('job')}
                                             {totalJob[Number(recruiterDetail.userId)] === 1
