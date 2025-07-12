@@ -13,9 +13,11 @@ import dayjs from 'dayjs';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import ApplyModal from '../modal/apply.modal';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 const { Text } = Typography;
+const MotionCol = motion(Col);
 
 const SaveJob = () => {
     const { t, i18n } = useTranslation();
@@ -78,7 +80,13 @@ const SaveJob = () => {
                         {displayJob?.map((item) => {
                             return (
                                 item.active && (
-                                    <Col span={24} key={item.jobId}>
+                                    <MotionCol
+                                        span={24}
+                                        key={item.jobId}
+                                        initial={{ opacity: 0, y: 50 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8 }}
+                                    >
                                         <Card size="small" title={null} hoverable>
                                             <Row gutter={16} align="middle">
                                                 <Col xs={8} md={4} lg={3}>
@@ -194,7 +202,7 @@ const SaveJob = () => {
                                                 </Col>
                                             </Row>
                                         </Card>
-                                    </Col>
+                                    </MotionCol>
                                 )
                             );
                         })}

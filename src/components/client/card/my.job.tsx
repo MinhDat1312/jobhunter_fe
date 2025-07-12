@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../../hooks/hook';
 import { ROLE_LIST } from '../../../config/utils';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -38,7 +39,7 @@ const MyJob = () => {
     ];
 
     return (
-        <>
+        <motion.div initial={{ x: 100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
             <Card
                 style={{
                     marginBlock: '32px',
@@ -53,7 +54,7 @@ const MyJob = () => {
                 />
             </Card>
             {items.find((item) => item.key === activeKey)?.children}
-        </>
+        </motion.div>
     );
 };
 

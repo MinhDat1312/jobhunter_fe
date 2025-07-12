@@ -15,6 +15,7 @@ import { fetchApplicant } from '../../../redux/slice/applicantSlice';
 import ModalApplicant from '../../../components/admin/applicant/modal.applicant';
 import { getRoleName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const ApplicantPage = () => {
     const { t } = useTranslation();
@@ -192,7 +193,7 @@ const ApplicantPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.APPLICANTS.GET_PAGINATE}>
                 <DataTable<IApplicant>
                     columns={columns}
@@ -241,7 +242,7 @@ const ApplicantPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
             />
-        </div>
+        </motion.div>
     );
 };
 

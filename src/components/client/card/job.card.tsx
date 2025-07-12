@@ -13,9 +13,11 @@ import { EnvironmentOutlined, HeartFilled, HeartOutlined, ThunderboltOutlined } 
 import { convertSlug, getLocationName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
 import useSaveJob from '../../../hooks/useSaveJob';
+import { motion } from 'motion/react';
 
-const { useBreakpoint } = Grid;
 dayjs.extend(relativeTime);
+const { useBreakpoint } = Grid;
+const MotionCol = motion(Col);
 
 interface IProps {
     showPagination?: boolean;
@@ -104,21 +106,34 @@ const JobCard = (props: IProps) => {
             <div className={`${styles['job-content']}`}>
                 <Spin spinning={isLoading} tip="Loading...">
                     <Row gutter={[20, 20]}>
-                        <Col span={24}>
-                            <div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
-                                <span className={styles['title']}> {t('latest_jobs')}</span>
-                                {!showPagination && (
-                                    <Link to="job" style={{ color: '#00b452' }}>
-                                        {t('view_all')}
-                                    </Link>
-                                )}
-                            </div>
-                        </Col>
-
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ width: '100%' }}
+                        >
+                            <Col span={24}>
+                                <motion.div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
+                                    <span className={styles['title']}> {t('latest_jobs')}</span>
+                                    {!showPagination && (
+                                        <Link to="job" style={{ color: '#00b452', fontSize: '1rem' }}>
+                                            {t('view_all')}
+                                        </Link>
+                                    )}
+                                </motion.div>
+                            </Col>
+                        </motion.div>
                         {displayJob?.map((item) => {
                             return (
                                 item.active && (
-                                    <Col span={24} md={12} key={item.jobId}>
+                                    <MotionCol
+                                        span={24}
+                                        md={12}
+                                        key={item.jobId}
+                                        initial={{ opacity: 0, y: 50 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.8 }}
+                                    >
                                         <Card size="small" title={null} hoverable>
                                             <div className={styles['card-job-content']}>
                                                 <div className={styles['card-job-left']}>
@@ -181,11 +196,10 @@ const JobCard = (props: IProps) => {
                                                 </div>
                                             </div>
                                         </Card>
-                                    </Col>
+                                    </MotionCol>
                                 )
                             );
                         })}
-
                         {(!displayJob || (displayJob && displayJob.length === 0)) && !isLoading && (
                             <div className={styles['empty']}>
                                 <Empty description={t('notify.empty')} />
@@ -193,7 +207,12 @@ const JobCard = (props: IProps) => {
                         )}
                     </Row>
                     {showPagination && (
-                        <>
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ width: '100%' }}
+                        >
                             <div style={{ marginTop: 30 }}></div>
                             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                                 <Pagination
@@ -204,7 +223,7 @@ const JobCard = (props: IProps) => {
                                     onChange={(p: number, s: number) => handleOnchangePage({ current: p, pageSize: s })}
                                 />
                             </Row>
-                        </>
+                        </motion.div>
                     )}
                 </Spin>
             </div>

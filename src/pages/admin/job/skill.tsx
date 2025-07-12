@@ -14,6 +14,7 @@ import { sfLike } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import ModalSkill from '../../../components/admin/skill/modal.skill';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const SkillPage = () => {
     const { t } = useTranslation();
@@ -170,7 +171,7 @@ const SkillPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.SKILLS.GET_PAGINATE}>
                 <DataTable<ISkill>
                     actionRef={tableRef}
@@ -218,7 +219,7 @@ const SkillPage = () => {
                     setDataInit={setDataInit}
                 />
             </Access>
-        </div>
+        </motion.div>
     );
 };
 

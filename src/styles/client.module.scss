@@ -233,6 +233,15 @@ $font-size-mobile: 1.25rem;
     }
 }
 
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    color: $color-main;
+    line-height: 35px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .home-section {
     .empty {
         display: flex;
@@ -251,14 +260,6 @@ $font-size-mobile: 1.25rem;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-    }
-
-    .title {
-        font-size: 27px;
-        color: #353535;
-        line-height: 35px;
-        margin-top: 20px;
-        margin-bottom: 20px;
     }
 }
 

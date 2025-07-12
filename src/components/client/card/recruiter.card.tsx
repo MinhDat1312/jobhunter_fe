@@ -3,13 +3,14 @@ import styles from '../../../styles/client.module.scss';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { IRecruiter } from '../../../types/backend';
-import { callCountJobByRecruiter, callFetchRecruiter } from '../../../config/api';
+import { callFetchRecruiter } from '../../../config/api';
 import { convertSlug } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import useTotalJobRecruiter from '../../../hooks/useTotalJobRecruiter';
 
 const { useBreakpoint } = Grid;
+const MotionCol = motion(Col);
 
 interface IProps {
     showPagination?: boolean;
@@ -79,19 +80,35 @@ const RecruiterCard = (props: IProps) => {
             <div className={styles['recruiter-content']}>
                 <Spin spinning={isLoading} tip="Loading...">
                     <Row gutter={[20, 20]}>
-                        <Col span={24}>
-                            <div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
-                                <span className={styles['title']}> {t('featured_employers')}</span>
-                                {!showPagination && (
-                                    <Link to="recruiter" style={{ color: '#00b452' }}>
-                                        {t('view_all')}
-                                    </Link>
-                                )}
-                            </div>
-                        </Col>
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ width: '100%' }}
+                        >
+                            <Col span={24}>
+                                <div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
+                                    <span className={styles['title']}> {t('featured_employers')}</span>
+                                    {!showPagination && (
+                                        <Link to="recruiter" style={{ color: '#00b452', fontSize: '1rem' }}>
+                                            {t('view_all')}
+                                        </Link>
+                                    )}
+                                </div>
+                            </Col>
+                        </motion.div>
                         {displayRecruiter?.map((item) => {
                             return (
-                                <Col span={24} md={12} xs={24} lg={6} key={item.userId}>
+                                <MotionCol
+                                    span={24}
+                                    md={12}
+                                    xs={24}
+                                    lg={6}
+                                    key={item.userId}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8 }}
+                                >
                                     <Card
                                         onClick={() => handleViewDetailRecruiter(item)}
                                         style={{ height: 350, cursor: 'pointer', position: 'relative' }}
@@ -141,10 +158,9 @@ const RecruiterCard = (props: IProps) => {
                                         <Divider />
                                         <h2 style={{ textAlign: 'center' }}>{item.fullName}</h2>
                                     </Card>
-                                </Col>
+                                </MotionCol>
                             );
                         })}
-
                         {(!displayRecruiter || (displayRecruiter && displayRecruiter.length === 0)) && !isLoading && (
                             <div className={styles['empty']}>
                                 <Empty description={t('notify.empty')} />
@@ -152,7 +168,12 @@ const RecruiterCard = (props: IProps) => {
                         )}
                     </Row>
                     {showPagination && (
-                        <>
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ width: '100%' }}
+                        >
                             <div style={{ marginTop: 30 }}></div>
                             <Row style={{ display: 'flex', justifyContent: 'center' }}>
                                 <Pagination
@@ -164,7 +185,7 @@ const RecruiterCard = (props: IProps) => {
                                     onChange={(p: number, s: number) => handleOnchangePage({ current: p, pageSize: s })}
                                 />
                             </Row>
-                        </>
+                        </motion.div>
                     )}
                 </Spin>
             </div>

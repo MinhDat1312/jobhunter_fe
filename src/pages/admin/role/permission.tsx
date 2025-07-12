@@ -12,6 +12,7 @@ import { fetchPermission } from '../../../redux/slice/permissionSlice';
 import ViewDetailPermission from '../../../components/admin/permission/view.permission';
 import { Grid } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -151,7 +152,7 @@ const PermissionPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.PERMISSIONS.GET_PAGINATE}>
                 <DataTable<IPermission>
                     actionRef={tableRef}
@@ -196,7 +197,7 @@ const PermissionPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
             />
-        </div>
+        </motion.div>
     );
 };
 

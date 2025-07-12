@@ -9,8 +9,10 @@ import parse from 'html-react-parser';
 import { useTranslation } from 'react-i18next';
 import useFollowRecruiter from '../../hooks/useFollowRecruiter';
 import useTotalJobRecruiter from '../../hooks/useTotalJobRecruiter';
+import { motion } from 'motion/react';
 
 const { Text } = Typography;
+const MotionCol = motion(Col);
 
 const ClientRecruiterDetailPage = () => {
     const { t, i18n } = useTranslation();
@@ -53,7 +55,11 @@ const ClientRecruiterDetailPage = () => {
                 recruiterDetail.userId && (
                     <>
                         <Row gutter={[20, 20]}>
-                            <Col>
+                            <MotionCol
+                                initial={{ x: -100, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 0.6 }}
+                            >
                                 <Avatar
                                     shape="square"
                                     size={200}
@@ -61,8 +67,12 @@ const ClientRecruiterDetailPage = () => {
                                     alt="Recruiter Avatar"
                                     style={{ borderRadius: 12, border: '2px solid #c7f7dd', padding: 12 }}
                                 />
-                            </Col>
-                            <Col>
+                            </MotionCol>
+                            <MotionCol
+                                initial={{ x: 100, opacity: 0 }}
+                                whileInView={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 0.6 }}
+                            >
                                 <Space direction="vertical" size={26} style={{ width: '100%' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                         <Text style={{ fontWeight: 'bold', fontSize: '2.25rem' }}>
@@ -110,11 +120,20 @@ const ClientRecruiterDetailPage = () => {
                                             : t('button.follow')}
                                     </Button>
                                 </Space>
-                            </Col>
+                            </MotionCol>
                         </Row>
                         <Divider />
                         <Row gutter={[20, 20]}>
-                            <Col span={24}>{parse(recruiterDetail?.description ?? '')}</Col>
+                            <MotionCol
+                                span={24}
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    duration: 0.8,
+                                }}
+                            >
+                                {parse(recruiterDetail?.description ?? '')}
+                            </MotionCol>
                         </Row>
                     </>
                 )

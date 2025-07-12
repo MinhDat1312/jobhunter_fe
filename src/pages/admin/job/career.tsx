@@ -14,6 +14,7 @@ import DataTable from '../../../components/data.table';
 import { fetchCareer } from '../../../redux/slice/careerSlice';
 import ModalCareer from '../../../components/admin/career/modal.career';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const CareerPage = () => {
     const { t } = useTranslation();
@@ -170,7 +171,7 @@ const CareerPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.CAREERS.GET_PAGINATE}>
                 <DataTable<ICareer>
                     actionRef={tableRef}
@@ -219,7 +220,7 @@ const CareerPage = () => {
                     setDataInit={setDataInit}
                 />
             </Access>
-        </div>
+        </motion.div>
     );
 };
 

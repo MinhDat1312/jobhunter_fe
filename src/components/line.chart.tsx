@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 interface IProps {
     title: string;
@@ -63,12 +64,18 @@ const LineChartStatistics = (props: IProps) => {
     }, [i18n.language, dataSeries, categories]);
 
     return (
-        <div
+        <motion.div
             style={{
                 boxShadow: '0 4px 12px rgba(0, 180, 82, 0.3)',
                 borderRadius: '8px',
                 padding: '16px 0 0 0',
                 backgroundColor: '#ffffff',
+            }}
+            initial={{ scale: 0.5 }}
+            whileInView={{ scale: 1 }}
+            transition={{
+                duration: 0.5,
+                ease: 'easeOut',
             }}
         >
             <div style={{ marginBottom: 16, marginRight: 10, textAlign: 'right' }}>
@@ -88,7 +95,7 @@ const LineChartStatistics = (props: IProps) => {
                 />
             </div>
             <Chart options={dashboard.options} series={dashboard.series} type="line" width="100%" height={300} />
-        </div>
+        </motion.div>
     );
 };
 

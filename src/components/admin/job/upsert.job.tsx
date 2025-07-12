@@ -30,6 +30,7 @@ import ReactQuill from 'react-quill';
 import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const ViewUpsertJob = () => {
     const { t } = useTranslation();
@@ -259,245 +260,255 @@ const ViewUpsertJob = () => {
     }
 
     return (
-        <Access permission={ALL_PERMISSIONS.JOBS.CREATE}>
-            <div className={styles['upsert-job-container']}>
-                <div className={styles['title']}>
-                    <Breadcrumb
-                        separator=">"
-                        items={[
-                            {
-                                title: <Link to="/admin/job">{t('job')}</Link>,
-                            },
-                            {
-                                title: (
-                                    <span style={{ color: '#00b452' }}>
-                                        {dataUpdate?.jobId ? t('button.update') : t('button.create')}
-                                    </span>
-                                ),
-                            },
-                        ]}
-                    />
-                </div>
-                <div>
-                    <ConfigProvider locale={viVN}>
-                        <ProForm
-                            form={form}
-                            onFinish={onFinish}
-                            submitter={{
-                                searchConfig: {
-                                    resetText: t('button.cancel'),
-                                    submitText: <>{dataUpdate?.jobId ? t('button.update') : t('button.create')}</>,
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <Access permission={ALL_PERMISSIONS.JOBS.CREATE}>
+                <div className={styles['upsert-job-container']}>
+                    <div className={styles['title']}>
+                        <Breadcrumb
+                            separator=">"
+                            items={[
+                                {
+                                    title: <Link to="/admin/job">{t('job')}</Link>,
                                 },
-                                onReset: () => navigate('/admin/job'),
-                                render: (_: any, dom: any) => (
-                                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
-                                ),
-                                submitButtonProps: {
-                                    icon: <CheckSquareOutlined />,
+                                {
+                                    title: (
+                                        <span style={{ color: '#00b452' }}>
+                                            {dataUpdate?.jobId ? t('button.update') : t('button.create')}
+                                        </span>
+                                    ),
                                 },
-                            }}
-                        >
-                            <Row gutter={[20, 20]}>
-                                <Col span={24} md={6}>
-                                    <ProFormSwitch
-                                        label={t('status')}
-                                        name="active"
-                                        checkedChildren={t('button.active').toUpperCase()}
-                                        unCheckedChildren={t('button.inactive').toUpperCase()}
-                                        initialValue={dataUpdate?.active}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row gutter={[20, 20]}>
-                                <Col span={24} md={12}>
-                                    <ProFormText
-                                        label={t('table.job_table.title')}
-                                        name="title"
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                        placeholder={t('placeholder')}
-                                    />
-                                </Col>
-                                {(dataUpdate?.jobId || !jobId) && (
+                            ]}
+                        />
+                    </div>
+                    <div>
+                        <ConfigProvider locale={viVN}>
+                            <ProForm
+                                form={form}
+                                onFinish={onFinish}
+                                submitter={{
+                                    searchConfig: {
+                                        resetText: t('button.cancel'),
+                                        submitText: <>{dataUpdate?.jobId ? t('button.update') : t('button.create')}</>,
+                                    },
+                                    onReset: () => navigate('/admin/job'),
+                                    render: (_: any, dom: any) => (
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
+                                    ),
+                                    submitButtonProps: {
+                                        icon: <CheckSquareOutlined />,
+                                    },
+                                }}
+                            >
+                                <Row gutter={[20, 20]}>
                                     <Col span={24} md={6}>
+                                        <ProFormSwitch
+                                            label={t('status')}
+                                            name="active"
+                                            checkedChildren={t('button.active').toUpperCase()}
+                                            unCheckedChildren={t('button.inactive').toUpperCase()}
+                                            initialValue={dataUpdate?.active}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row gutter={[20, 20]}>
+                                    <Col span={24} md={12}>
+                                        <ProFormText
+                                            label={t('table.job_table.title')}
+                                            name="title"
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                            placeholder={t('placeholder')}
+                                        />
+                                    </Col>
+                                    {(dataUpdate?.jobId || !jobId) && (
+                                        <Col span={24} md={6}>
+                                            <ProForm.Item
+                                                name="recruiter"
+                                                label={t('recruiter')}
+                                                rules={[{ required: true, message: t('notify.required') }]}
+                                            >
+                                                <DebounceSelect
+                                                    allowClear
+                                                    showSearch
+                                                    value={recruiters}
+                                                    placeholder={t('choose')}
+                                                    fetchOptions={fetchRecruiterList}
+                                                    onChange={(newValue: any) => {
+                                                        setRecruiters(newValue as ISelect[]);
+                                                    }}
+                                                    style={{ width: '100%' }}
+                                                />
+                                            </ProForm.Item>
+                                        </Col>
+                                    )}
+                                    <Col span={24} md={6}>
+                                        <ProFormSelect
+                                            showSearch
+                                            name="location"
+                                            label={t('address')}
+                                            options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
+                                            placeholder={t('choose')}
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row gutter={[20, 20]}>
+                                    <Col span={24} md={6}>
+                                        <ProFormDigit
+                                            label={t('table.job_table.salary')}
+                                            name="salary"
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                            placeholder={t('placeholder')}
+                                            fieldProps={{
+                                                addonAfter: ' đ',
+                                                formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                                parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
+                                            }}
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormDigit
+                                            label={t('table.job_table.quantity')}
+                                            name="quantity"
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                            placeholder={t('placeholder')}
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormSelect
+                                            showSearch
+                                            name="career"
+                                            label={t('career')}
+                                            options={careers}
+                                            placeholder={t('choose')}
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                            allowClear
+                                            fieldProps={{
+                                                suffixIcon: null,
+                                            }}
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormSelect
+                                            name="skills"
+                                            label={t('skill')}
+                                            options={skills}
+                                            placeholder={t('choose')}
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                            allowClear
+                                            mode="multiple"
+                                            fieldProps={{
+                                                suffixIcon: null,
+                                                maxTagCount: 1,
+                                                maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
+                                            }}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row gutter={[20, 20]}>
+                                    <Col span={24} md={6}>
+                                        <ProFormDatePicker
+                                            label={t('table.job_table.dateStart')}
+                                            name="startDate"
+                                            normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
+                                            fieldProps={{
+                                                format: 'DD/MM/YYYY',
+                                                style: { width: '100%' },
+                                            }}
+                                            rules={[
+                                                { required: true, message: t('notify.required') },
+                                                {
+                                                    validator: async (_: any, value: any, _callback: any) => {
+                                                        const endDate = form.getFieldValue('endDate');
+                                                        if (
+                                                            endDate &&
+                                                            value &&
+                                                            !dayjs(value).isBefore(dayjs(endDate))
+                                                        ) {
+                                                            return Promise.reject(new Error(t('notify.date_start')));
+                                                        }
+                                                        return Promise.resolve();
+                                                    },
+                                                },
+                                            ]}
+                                            placeholder="dd/mm/yyyy"
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormDatePicker
+                                            label={t('table.job_table.dateEnd')}
+                                            name="endDate"
+                                            normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
+                                            fieldProps={{
+                                                format: 'DD/MM/YYYY',
+                                                style: { width: '100%' },
+                                            }}
+                                            rules={[
+                                                { required: true, message: t('notify.required') },
+                                                {
+                                                    validator: async (_: any, value: any, _callback: any) => {
+                                                        const startDate = form.getFieldValue('startDate');
+                                                        if (
+                                                            startDate &&
+                                                            value &&
+                                                            !dayjs(value).isAfter(dayjs(startDate))
+                                                        ) {
+                                                            return Promise.reject(new Error(t('notify.date_end')));
+                                                        }
+                                                        return Promise.resolve();
+                                                    },
+                                                },
+                                            ]}
+                                            placeholder="dd/mm/yyyy"
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormSelect
+                                            name="level"
+                                            label={t('level')}
+                                            valueEnum={{
+                                                FRESHER: 'Fresher',
+                                                JUNIOR: 'Junior',
+                                                SENIOR: 'Senior',
+                                                INTERN: 'Intern',
+                                                MIDDLE: 'Middle',
+                                            }}
+                                            placeholder={t('choose')}
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                        />
+                                    </Col>
+                                    <Col span={24} md={6}>
+                                        <ProFormSelect
+                                            name="workingType"
+                                            label={t('table.job_table.type')}
+                                            valueEnum={{
+                                                FULLTIME: 'Full time',
+                                                PARTTIME: 'Part time',
+                                                ONLINE: 'Online',
+                                                OFFLINE: 'Offline',
+                                            }}
+                                            placeholder={t('choose')}
+                                            rules={[{ required: true, message: t('notify.required') }]}
+                                        />
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col span={24}>
                                         <ProForm.Item
-                                            name="recruiter"
-                                            label={t('recruiter')}
+                                            name="description"
+                                            label={t('description')}
                                             rules={[{ required: true, message: t('notify.required') }]}
                                         >
-                                            <DebounceSelect
-                                                allowClear
-                                                showSearch
-                                                value={recruiters}
-                                                placeholder={t('choose')}
-                                                fetchOptions={fetchRecruiterList}
-                                                onChange={(newValue: any) => {
-                                                    setRecruiters(newValue as ISelect[]);
-                                                }}
-                                                style={{ width: '100%' }}
-                                            />
+                                            <ReactQuill theme="snow" value={description} onChange={setDescription} />
                                         </ProForm.Item>
                                     </Col>
-                                )}
-                                <Col span={24} md={6}>
-                                    <ProFormSelect
-                                        showSearch
-                                        name="location"
-                                        label={t('address')}
-                                        options={LOCATION_LIST.filter((item) => item.value !== 'ALL')}
-                                        placeholder={t('choose')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row gutter={[20, 20]}>
-                                <Col span={24} md={6}>
-                                    <ProFormDigit
-                                        label={t('table.job_table.salary')}
-                                        name="salary"
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                        placeholder={t('placeholder')}
-                                        fieldProps={{
-                                            addonAfter: ' đ',
-                                            formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-                                            parser: (value) => +(value || '').replace(/\$\s?|(,*)/g, ''),
-                                        }}
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormDigit
-                                        label={t('table.job_table.quantity')}
-                                        name="quantity"
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                        placeholder={t('placeholder')}
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormSelect
-                                        showSearch
-                                        name="career"
-                                        label={t('career')}
-                                        options={careers}
-                                        placeholder={t('choose')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                        allowClear
-                                        fieldProps={{
-                                            suffixIcon: null,
-                                        }}
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormSelect
-                                        name="skills"
-                                        label={t('skill')}
-                                        options={skills}
-                                        placeholder={t('choose')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                        allowClear
-                                        mode="multiple"
-                                        fieldProps={{
-                                            suffixIcon: null,
-                                            maxTagCount: 1,
-                                            maxTagPlaceholder: (omittedValues) => `+${omittedValues.length}`,
-                                        }}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row gutter={[20, 20]}>
-                                <Col span={24} md={6}>
-                                    <ProFormDatePicker
-                                        label={t('table.job_table.dateStart')}
-                                        name="startDate"
-                                        normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
-                                        fieldProps={{
-                                            format: 'DD/MM/YYYY',
-                                            style: { width: '100%' },
-                                        }}
-                                        rules={[
-                                            { required: true, message: t('notify.required') },
-                                            {
-                                                validator: async (_: any, value: any, _callback: any) => {
-                                                    const endDate = form.getFieldValue('endDate');
-                                                    if (endDate && value && !dayjs(value).isBefore(dayjs(endDate))) {
-                                                        return Promise.reject(new Error(t('notify.date_start')));
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            },
-                                        ]}
-                                        placeholder="dd/mm/yyyy"
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormDatePicker
-                                        label={t('table.job_table.dateEnd')}
-                                        name="endDate"
-                                        normalize={(value: any) => value && dayjs(value, 'DD/MM/YYYY')}
-                                        fieldProps={{
-                                            format: 'DD/MM/YYYY',
-                                            style: { width: '100%' },
-                                        }}
-                                        rules={[
-                                            { required: true, message: t('notify.required') },
-                                            {
-                                                validator: async (_: any, value: any, _callback: any) => {
-                                                    const startDate = form.getFieldValue('startDate');
-                                                    if (startDate && value && !dayjs(value).isAfter(dayjs(startDate))) {
-                                                        return Promise.reject(new Error(t('notify.date_end')));
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            },
-                                        ]}
-                                        placeholder="dd/mm/yyyy"
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormSelect
-                                        name="level"
-                                        label={t('level')}
-                                        valueEnum={{
-                                            FRESHER: 'Fresher',
-                                            JUNIOR: 'Junior',
-                                            SENIOR: 'Senior',
-                                            INTERN: 'Intern',
-                                            MIDDLE: 'Middle',
-                                        }}
-                                        placeholder={t('choose')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                    />
-                                </Col>
-                                <Col span={24} md={6}>
-                                    <ProFormSelect
-                                        name="workingType"
-                                        label={t('table.job_table.type')}
-                                        valueEnum={{
-                                            FULLTIME: 'Full time',
-                                            PARTTIME: 'Part time',
-                                            ONLINE: 'Online',
-                                            OFFLINE: 'Offline',
-                                        }}
-                                        placeholder={t('choose')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col span={24}>
-                                    <ProForm.Item
-                                        name="description"
-                                        label={t('description')}
-                                        rules={[{ required: true, message: t('notify.required') }]}
-                                    >
-                                        <ReactQuill theme="snow" value={description} onChange={setDescription} />
-                                    </ProForm.Item>
-                                </Col>
-                            </Row>
-                            <Divider />
-                        </ProForm>
-                    </ConfigProvider>
+                                </Row>
+                                <Divider />
+                            </ProForm>
+                        </ConfigProvider>
+                    </div>
                 </div>
-            </div>
-        </Access>
+            </Access>
+        </motion.div>
     );
 };
 

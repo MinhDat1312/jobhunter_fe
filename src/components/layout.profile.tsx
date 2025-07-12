@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import NotPermitted from './share/protected-route/not-permitted';
 import { Grid } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -84,17 +85,22 @@ const LayoutProfile = () => {
             >
                 {!isMobile && !isTablet && <div style={{ width: '100px' }}></div>}
                 {isMobile || isTablet ? null : (
-                    <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
-                        <Menu
-                            mode="inline"
-                            className={styles['menu-app']}
-                            selectedKeys={[activeMenu]}
-                            items={menuItems}
-                            onClick={(e) => setActiveMenu(e.key)}
-                        />
-                    </Sider>
+                    <motion.div
+                        initial={{ x: -100, opacity: 0 }}
+                        whileInView={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <Sider breakpoint="lg" width={280} className={`${styles['sider-app']}`}>
+                            <Menu
+                                mode="inline"
+                                className={styles['menu-app']}
+                                selectedKeys={[activeMenu]}
+                                items={menuItems}
+                                onClick={(e) => setActiveMenu(e.key)}
+                            />
+                        </Sider>
+                    </motion.div>
                 )}
-
                 <Content>{activeRole ? <Outlet /> : <NotPermitted />}</Content>
             </Layout>
             <Footer />

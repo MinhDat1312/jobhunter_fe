@@ -10,10 +10,9 @@ const HomePage = () => {
             <div className="search-content" style={{ marginTop: 20 }}>
                 <SearchClient />
             </div>
-            <Divider />
+            <Divider style={{ margin: '24px 0 0' }} />
             <RecruiterCard />
-            <div style={{ margin: 50 }}></div>
-            <Divider />
+            <Divider style={{ margin: '50px 0 0' }} />
             <JobCard />
         </div>
     );

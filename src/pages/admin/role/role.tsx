@@ -15,6 +15,7 @@ import { fetchRole } from '../../../redux/slice/roleSlice';
 import { getRoleName, groupByPermission } from '../../../config/utils';
 import ModalRole from '../../../components/admin/role/modal.role';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const RolePage = () => {
     const { t } = useTranslation();
@@ -194,7 +195,7 @@ const RolePage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.ROLES.GET_PAGINATE}>
                 <DataTable<IRole>
                     actionRef={tableRef}
@@ -241,7 +242,7 @@ const RolePage = () => {
                 singleRole={singleRole}
                 setSingleRole={setSingleRole}
             />
-        </div>
+        </motion.div>
     );
 };
 

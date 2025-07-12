@@ -9,6 +9,7 @@ import { useAppDispatch } from '../../../hooks/hook';
 import { setUserLoginInfo } from '../../../redux/slice/accountSlice';
 import { Grid } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -49,84 +50,90 @@ const UpdatePassword = () => {
 
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
-            <Card
-                style={{
-                    marginBlock: '32px',
-                    marginRight: isMobile || isTablet ? '0px' : '100px',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                }}
+            <motion.div
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
             >
-                <ProForm
-                    form={form}
-                    onFinish={onFinish}
-                    onReset={onReset}
-                    submitter={{
-                        searchConfig: {
-                            resetText: t('button.cancel'),
-                            submitText: t('button.update'),
-                        },
-                        render: (_: any, dom: any) => (
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
-                        ),
-                        submitButtonProps: {
-                            icon: isSubmit ? <LoadingOutlined /> : <CheckSquareOutlined />,
-                        },
+                <Card
+                    style={{
+                        marginBlock: '32px',
+                        marginRight: isMobile || isTablet ? '0px' : '100px',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
                     }}
                 >
-                    <Row gutter={16}>
-                        <Col span={24}>
-                            <ProFormText.Password
-                                label={t('current_password')}
-                                name="currentPassword"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: t('notify.required'),
-                                    },
-                                    { min: 6, message: t('notify.least_6') },
-                                ]}
-                                placeholder={t('placeholder')}
-                            />
-                        </Col>
-                        <Col span={24}>
-                            <ProFormText.Password
-                                label={t('new_password')}
-                                name="newPassword"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: t('notify.required'),
-                                    },
-                                    { min: 6, message: t('notify.least_6') },
-                                ]}
-                                placeholder={t('placeholder')}
-                            />
-                        </Col>
-                        <Col span={24}>
-                            <ProFormText.Password
-                                label={t('re_password')}
-                                name="rePassword"
-                                dependencies={['newPassword']}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: t('notify.required'),
-                                    },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (!value || getFieldValue('newPassword') === value) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error(t('notify.re_password')));
+                    <ProForm
+                        form={form}
+                        onFinish={onFinish}
+                        onReset={onReset}
+                        submitter={{
+                            searchConfig: {
+                                resetText: t('button.cancel'),
+                                submitText: t('button.update'),
+                            },
+                            render: (_: any, dom: any) => (
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
+                            ),
+                            submitButtonProps: {
+                                icon: isSubmit ? <LoadingOutlined /> : <CheckSquareOutlined />,
+                            },
+                        }}
+                    >
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <ProFormText.Password
+                                    label={t('current_password')}
+                                    name="currentPassword"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t('notify.required'),
                                         },
-                                    }),
-                                ]}
-                                placeholder={t('placeholder')}
-                            />
-                        </Col>
-                    </Row>
-                </ProForm>
-            </Card>
+                                        { min: 6, message: t('notify.least_6') },
+                                    ]}
+                                    placeholder={t('placeholder')}
+                                />
+                            </Col>
+                            <Col span={24}>
+                                <ProFormText.Password
+                                    label={t('new_password')}
+                                    name="newPassword"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t('notify.required'),
+                                        },
+                                        { min: 6, message: t('notify.least_6') },
+                                    ]}
+                                    placeholder={t('placeholder')}
+                                />
+                            </Col>
+                            <Col span={24}>
+                                <ProFormText.Password
+                                    label={t('re_password')}
+                                    name="rePassword"
+                                    dependencies={['newPassword']}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t('notify.required'),
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('newPassword') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error(t('notify.re_password')));
+                                            },
+                                        }),
+                                    ]}
+                                    placeholder={t('placeholder')}
+                                />
+                            </Col>
+                        </Row>
+                    </ProForm>
+                </Card>
+            </motion.div>
         </Access>
     );
 };

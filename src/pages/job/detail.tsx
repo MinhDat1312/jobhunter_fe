@@ -15,8 +15,10 @@ import Access from '../../components/share/access';
 import { ALL_PERMISSIONS } from '../../config/permissions';
 import { useTranslation } from 'react-i18next';
 import useSaveJob from '../../hooks/useSaveJob';
+import { motion } from 'motion/react';
 
 dayjs.extend(relativeTime);
+const MotionCol = motion(Col);
 
 const ClientJobDetailPage = () => {
     const { t, i18n } = useTranslation();
@@ -54,77 +56,103 @@ const ClientJobDetailPage = () => {
                     {jobDetail && jobDetail.jobId && (
                         <>
                             <Col span={24} md={16}>
-                                <div className={styles['header']}>{jobDetail.title}</div>
-                                <div
-                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8 }}
+                                <motion.div
+                                    initial={{ x: -100, opacity: 0 }}
+                                    whileInView={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.6 }}
                                 >
-                                    <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
-                                        <button onClick={() => setIsModalOpen(true)} className={styles['btn-apply']}>
-                                            {t('button.apply')}
-                                        </button>
-                                    </Access>
-                                    <Button
-                                        shape="circle"
-                                        icon={
-                                            jobDetail.jobId !== undefined && saveJob[Number(jobDetail.jobId)] ? (
-                                                <HeartFilled
-                                                    style={{
-                                                        color: '#00b452',
-                                                        fontSize: '1rem',
-                                                        marginTop: 2,
-                                                    }}
-                                                />
-                                            ) : (
-                                                <HeartOutlined
-                                                    style={{
-                                                        color: '#00b452',
-                                                        fontSize: '1rem',
-                                                        marginTop: 2,
-                                                    }}
-                                                />
-                                            )
-                                        }
-                                        type="default"
-                                        onClick={() => toggleSave(Number(jobDetail.jobId))}
-                                    />
-                                </div>
+                                    <div className={styles['header']}>{jobDetail.title}</div>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            gap: 8,
+                                        }}
+                                    >
+                                        <Access permission={ALL_PERMISSIONS.APPLICATIONS.CREATE} hideChildren>
+                                            <button
+                                                onClick={() => setIsModalOpen(true)}
+                                                className={styles['btn-apply']}
+                                            >
+                                                {t('button.apply')}
+                                            </button>
+                                        </Access>
+                                        <Button
+                                            shape="circle"
+                                            icon={
+                                                jobDetail.jobId !== undefined && saveJob[Number(jobDetail.jobId)] ? (
+                                                    <HeartFilled
+                                                        style={{
+                                                            color: '#00b452',
+                                                            fontSize: '1rem',
+                                                            marginTop: 2,
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <HeartOutlined
+                                                        style={{
+                                                            color: '#00b452',
+                                                            fontSize: '1rem',
+                                                            marginTop: 2,
+                                                        }}
+                                                    />
+                                                )
+                                            }
+                                            type="default"
+                                            onClick={() => toggleSave(Number(jobDetail.jobId))}
+                                        />
+                                    </div>
+                                </motion.div>
                                 <Divider />
-                                <div className={styles['skills']}>
-                                    {jobDetail?.skills?.map((item, index) => {
-                                        return (
-                                            <Tag key={`${index}-key`} color="gold">
-                                                {item.name}
-                                            </Tag>
-                                        );
-                                    })}
-                                </div>
-                                <div className={styles['salary']}>
-                                    <DollarOutlined />
-                                    <span>
-                                        &nbsp;{(jobDetail.salary + '')?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} đ
-                                    </span>
-                                </div>
-                                <div className={styles['location']}>
-                                    <EnvironmentOutlined style={{ color: '#00b452' }} />
-                                    &nbsp;{jobDetail.location}
-                                </div>
-                                <div>
-                                    <HistoryOutlined />{' '}
-                                    {jobDetail.updatedAt
-                                        ? dayjs(jobDetail.updatedAt).locale(i18n.language).fromNow()
-                                        : dayjs(jobDetail.createdAt).locale(i18n.language).fromNow()}
-                                </div>
-                                <Divider />
-                                {parse(jobDetail.description)}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.8,
+                                    }}
+                                >
+                                    <div className={styles['skills']}>
+                                        {jobDetail?.skills?.map((item, index) => {
+                                            return (
+                                                <Tag key={`${index}-key`} color="gold">
+                                                    {item.name}
+                                                </Tag>
+                                            );
+                                        })}
+                                    </div>
+                                    <div className={styles['salary']}>
+                                        <DollarOutlined />
+                                        <span>
+                                            &nbsp;{(jobDetail.salary + '')?.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} đ
+                                        </span>
+                                    </div>
+                                    <div className={styles['location']}>
+                                        <EnvironmentOutlined style={{ color: '#00b452' }} />
+                                        &nbsp;{jobDetail.location}
+                                    </div>
+                                    <div>
+                                        <HistoryOutlined />{' '}
+                                        {jobDetail.updatedAt
+                                            ? dayjs(jobDetail.updatedAt).locale(i18n.language).fromNow()
+                                            : dayjs(jobDetail.createdAt).locale(i18n.language).fromNow()}
+                                    </div>
+                                    <Divider />
+                                    {parse(jobDetail.description)}
+                                </motion.div>
                             </Col>
-
                             <Col span={24} md={8}>
-                                <div className={styles['recruiter']}>
+                                <motion.div
+                                    className={styles['recruiter']}
+                                    initial={{ x: 100, opacity: 0 }}
+                                    whileInView={{ x: 0, opacity: 1 }}
+                                    transition={{ duration: 0.6 }}
+                                >
                                     <div>
                                         <img width={'200px'} alt="example" src={`${jobDetail.recruiter?.avatar}`} />
                                     </div>
                                     <div>{jobDetail.recruiter?.fullName}</div>
-                                </div>
+                                </motion.div>
                             </Col>
                         </>
                     )}

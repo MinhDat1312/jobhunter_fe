@@ -10,6 +10,7 @@ import ApplicantForm from '../form/applicant.form';
 import RecruiterForm from '../form/recruiter.form';
 import useUploadFile from '../../../hooks/useUploadFile';
 import { Grid } from 'antd';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -67,43 +68,49 @@ const UpdateInfo = () => {
 
     return (
         <Access permission={[ALL_PERMISSIONS.APPLICANTS.UPDATE, ALL_PERMISSIONS.RECRUITERS.UPDATE]}>
-            <Card
-                style={{
-                    marginBlock: '32px',
-                    marginRight: isMobile || isTablet ? '0px' : '100px',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                }}
+            <motion.div
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8 }}
             >
-                {typeUser === ROLE_LIST[2].value ? (
-                    <ApplicantForm
-                        form={form}
-                        dataInit={user ?? null}
-                        uploadFileLogo={handleUploadFile}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                        removeFile={handleRemoveFile}
-                        onPreview={handlePreview}
-                        visibleUpload={visibleUpload}
-                        loadingUpload={loadingUpload}
-                        fileList={fileList}
-                        onRole={false}
-                    />
-                ) : (
-                    <RecruiterForm
-                        form={form}
-                        dataInit={user ?? null}
-                        uploadFileLogo={handleUploadFile}
-                        beforeUpload={beforeUpload}
-                        onChange={handleChange}
-                        removeFile={handleRemoveFile}
-                        onPreview={handlePreview}
-                        visibleUpload={visibleUpload}
-                        loadingUpload={loadingUpload}
-                        fileList={fileList}
-                        onRole={false}
-                    />
-                )}
-            </Card>
+                <Card
+                    style={{
+                        marginBlock: '32px',
+                        marginRight: isMobile || isTablet ? '0px' : '100px',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
+                    {typeUser === ROLE_LIST[2].value ? (
+                        <ApplicantForm
+                            form={form}
+                            dataInit={user ?? null}
+                            uploadFileLogo={handleUploadFile}
+                            beforeUpload={beforeUpload}
+                            onChange={handleChange}
+                            removeFile={handleRemoveFile}
+                            onPreview={handlePreview}
+                            visibleUpload={visibleUpload}
+                            loadingUpload={loadingUpload}
+                            fileList={fileList}
+                            onRole={false}
+                        />
+                    ) : (
+                        <RecruiterForm
+                            form={form}
+                            dataInit={user ?? null}
+                            uploadFileLogo={handleUploadFile}
+                            beforeUpload={beforeUpload}
+                            onChange={handleChange}
+                            removeFile={handleRemoveFile}
+                            onPreview={handlePreview}
+                            visibleUpload={visibleUpload}
+                            loadingUpload={loadingUpload}
+                            fileList={fileList}
+                            onRole={false}
+                        />
+                    )}
+                </Card>
+            </motion.div>
             <Modal
                 open={previewOpen}
                 title={previewTitle}

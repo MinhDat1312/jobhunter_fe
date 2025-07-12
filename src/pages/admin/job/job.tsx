@@ -15,6 +15,7 @@ import { sfIn } from 'spring-filter-query-builder';
 import queryString from 'query-string';
 import { ROLE_LIST } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -229,7 +230,7 @@ const JobPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.JOBS.GET_PAGINATE}>
                 <DataTable<IJob>
                     actionRef={tableRef}
@@ -273,7 +274,7 @@ const JobPage = () => {
                     }}
                 />
             </Access>
-        </div>
+        </motion.div>
     );
 };
 

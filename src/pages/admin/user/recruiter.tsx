@@ -15,6 +15,7 @@ import { fetchRecruiter } from '../../../redux/slice/recruiterSlice';
 import ModalRecruiter from '../../../components/admin/recruiter/modal.recruiter';
 import { getRoleName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const RecruiterPage = () => {
     const { t } = useTranslation();
@@ -185,7 +186,7 @@ const RecruiterPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.RECRUITERS.GET_PAGINATE}>
                 <DataTable<IRecruiter>
                     columns={columns}
@@ -234,7 +235,7 @@ const RecruiterPage = () => {
                 dataInit={dataInit}
                 setDataInit={setDataInit}
             />
-        </div>
+        </motion.div>
     );
 };
 

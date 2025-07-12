@@ -14,6 +14,7 @@ import { fetchApplication, fetchApplicationByRecruiter } from '../../redux/slice
 import ViewDetailApplication from '../../components/admin/application/view.application';
 import { colorStatus, ROLE_LIST } from '../../config/utils';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const { useBreakpoint } = Grid;
 
@@ -189,7 +190,7 @@ const ApplicationPage = () => {
     };
 
     return (
-        <div>
+        <motion.div initial={{ opacity: 0, y: 500 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <Access permission={ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE}>
                 <DataTable<IApplication>
                     actionRef={tableRef}
@@ -236,7 +237,7 @@ const ApplicationPage = () => {
                 isAdmin={user.role.name === ROLE_LIST[0].value ? true : false}
                 isMobile={isMobile}
             />
-        </div>
+        </motion.div>
     );
 };
 

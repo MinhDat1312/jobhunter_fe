@@ -6,6 +6,7 @@ import { callFetchAllSkill, callFetchRecruiter } from '../../config/api';
 import { LOCATION_LIST } from '../../config/utils';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'motion/react';
 
 const SearchClient = () => {
     const { t } = useTranslation();
@@ -110,69 +111,115 @@ const SearchClient = () => {
         >
             <Row gutter={[20, 0]}>
                 <Col span={24} style={{ marginBottom: '12px' }}>
-                    <h2> {t('title')}</h2>
+                    <motion.h2
+                        initial={{ y: -100, opacity: 0 }}
+                        whileInView={{ y: 0, opacity: 1, color: '#00b452' }}
+                        transition={{
+                            duration: 0.5,
+                            ease: 'easeOut',
+                        }}
+                        style={{ fontSize: '1.5rem' }}
+                    >
+                        {t('title')}
+                    </motion.h2>
                 </Col>
                 <Col lg={10} xs={24} md={24}>
-                    <ProForm.Item name="skills">
-                        <Select
-                            mode="multiple"
-                            allowClear
-                            suffixIcon={null}
-                            style={{ width: '100%' }}
-                            placeholder={
-                                <>
-                                    <MonitorOutlined /> {t('search_skill')}
-                                </>
-                            }
-                            maxTagCount={3}
-                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
-                            optionLabelProp="label"
-                            options={optionsSkills}
-                        />
-                    </ProForm.Item>
+                    <motion.div
+                        initial={{ scale: 0.5 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{
+                            duration: 0.5,
+                            ease: 'easeOut',
+                        }}
+                    >
+                        <ProForm.Item name="skills">
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                suffixIcon={null}
+                                style={{ width: '100%' }}
+                                placeholder={
+                                    <>
+                                        <MonitorOutlined /> {t('search_skill')}
+                                    </>
+                                }
+                                maxTagCount={3}
+                                maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
+                                optionLabelProp="label"
+                                options={optionsSkills}
+                            />
+                        </ProForm.Item>
+                    </motion.div>
                 </Col>
                 <Col lg={5} xs={24} md={8}>
-                    <ProForm.Item name="location">
-                        <Select
-                            mode="multiple"
-                            allowClear
-                            suffixIcon={null}
-                            style={{ width: '100%' }}
-                            placeholder={
-                                <>
-                                    <EnvironmentOutlined /> {t('search_location')}
-                                </>
-                            }
-                            maxTagCount={2}
-                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
-                            optionLabelProp="label"
-                            options={optionsLocations}
-                        />
-                    </ProForm.Item>
+                    <motion.div
+                        initial={{ scale: 0.5 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{
+                            duration: 0.5,
+                            ease: 'easeOut',
+                        }}
+                    >
+                        <ProForm.Item name="location">
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                suffixIcon={null}
+                                style={{ width: '100%' }}
+                                placeholder={
+                                    <>
+                                        <EnvironmentOutlined /> {t('search_location')}
+                                    </>
+                                }
+                                maxTagCount={2}
+                                maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
+                                optionLabelProp="label"
+                                options={optionsLocations}
+                            />
+                        </ProForm.Item>
+                    </motion.div>
                 </Col>
                 <Col lg={5} xs={24} md={8}>
-                    <ProForm.Item name="recruiters">
-                        <Select
-                            mode="multiple"
-                            allowClear
-                            suffixIcon={null}
-                            style={{ width: '100%' }}
-                            placeholder={
-                                <>
-                                    <EnvironmentOutlined /> {t('search_recruiter')}
-                                </>
-                            }
-                            maxTagCount={2}
-                            maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
-                            optionLabelProp="label"
-                            options={optionsRecruiters}
-                        />
-                    </ProForm.Item>
+                    <motion.div
+                        initial={{ scale: 0.5 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{
+                            duration: 0.5,
+                            ease: 'easeOut',
+                        }}
+                    >
+                        <ProForm.Item name="recruiters">
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                suffixIcon={null}
+                                style={{ width: '100%' }}
+                                placeholder={
+                                    <>
+                                        <EnvironmentOutlined /> {t('search_recruiter')}
+                                    </>
+                                }
+                                maxTagCount={2}
+                                maxTagPlaceholder={(omittedValues) => `+${omittedValues.length}`}
+                                optionLabelProp="label"
+                                options={optionsRecruiters}
+                            />
+                        </ProForm.Item>
+                    </motion.div>
                 </Col>
                 <Col lg={4} xs={24} md={8} style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button type="primary" onClick={() => form.submit()}>
-                        {t('search')}
-                    </Button>
+                    <motion.div
+                        initial={{ scale: 0.5 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{
+                            duration: 0.5,
+                            ease: 'easeOut',
+                        }}
+                    >
+                        <Button type="primary" onClick={() => form.submit()}>
+                            {t('search')}
+                        </Button>
+                    </motion.div>
                 </Col>
             </Row>
         </ProForm>
