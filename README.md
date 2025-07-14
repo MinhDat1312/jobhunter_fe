@@ -344,5 +344,5 @@ npm run build
 
 ## 📞 Liên hệ
 
--   **Developer**: MinhDat1312
--   **Repository**: [https://github.com/MinhDat1312/jobhunter_fe](https://github.com/MinhDat1312/jobhunter_fe)
+- 📧 Email: [nguyenthangdat84@gmail.com](mailto:nguyenthangdat84@gmail.com)
+- 🐙 GitHub: [github.com/MinhDat1312](https://github.com/MinhDat1312)
