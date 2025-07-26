@@ -217,3 +217,67 @@ export interface ISubscriber {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export interface IBlog {
+    blogId?: string;
+    title: string;
+    banner: string;
+    description: string;
+    content: string[];
+    tags: string[];
+    draft: boolean;
+    activity: {
+        totalLikes: number;
+        totalComments: number;
+        totalReads: number;
+        totalParentComments: number;
+    };
+
+    createdBy?: string;
+    updatedBy?: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface IComment {
+    commentId?: string;
+    comment: string;
+    isReply: boolean;
+    blog: {
+        blogId: string;
+    };
+    parent: {
+        commentId: string;
+    };
+
+    createdBy?: string;
+    updatedBy?: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface INotification {
+    notificationId?: string;
+    type: string;
+    seen: boolean;
+    blog: {
+        blogId: string;
+    };
+    actor: {
+        userId: string;
+    };
+    recipient: {
+        userId: string;
+    };
+    comment?: {
+        commentId: string;
+    };
+    reply?: {
+        commentId: string;
+    };
+    repliedOnComment?: {
+        commentId: string;
+    };
+
+    createdAt?: string;
+}
