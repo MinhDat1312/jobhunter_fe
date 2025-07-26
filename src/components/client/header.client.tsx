@@ -4,6 +4,7 @@ import { Avatar, ConfigProvider, Dropdown, Image, Menu, message, Space, type Men
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+    BellOutlined,
     ContactsOutlined,
     FireOutlined,
     FundOutlined,
@@ -11,6 +12,7 @@ import {
     LogoutOutlined,
     MailOutlined,
     MenuUnfoldOutlined,
+    ReadOutlined,
     ScheduleOutlined,
     SettingOutlined,
     UserOutlined,
@@ -21,7 +23,6 @@ import { setLogoutAction } from '../../redux/slice/accountSlice';
 import logo from '../../assets/images/logo.png';
 import DrawerCustom from './drawer.client';
 import { Grid } from 'antd';
-import { ROLE_LIST } from '../../config/utils';
 import { useTranslation } from 'react-i18next';
 import LanguageButton from '../language.button';
 const { useBreakpoint } = Grid;
@@ -63,6 +64,11 @@ const Header = () => {
             label: <Link to={'/recruiter'}>{t('top_recruiter')}</Link>,
             key: '/recruiter',
             icon: <FundOutlined />,
+        },
+        {
+            label: <Link to={'/blog'}>{t('blog')}</Link>,
+            key: '/blog',
+            icon: <ReadOutlined />,
         },
     ];
 
@@ -162,9 +168,10 @@ const Header = () => {
                                 <Image width={100} src={logo} alt="Job Hunter" preview={false} />
                             </div>
                             <div
-                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px' }}
                             >
                                 <LanguageButton />
+                                <BellOutlined style={{ fontSize: '24px', color: '#00b452' }} />
                                 {isAuthenticated === false ? (
                                     <Link
                                         to={'/login'}
@@ -211,14 +218,12 @@ const Header = () => {
                                 </ConfigProvider>
                                 <div className={styles['extra']}>
                                     <LanguageButton />
+                                    <BellOutlined style={{ fontSize: '24px', color: '#00b452' }} />
                                     {isAuthenticated === false ? (
                                         <Link to={'/login'}>{t('sign_in')}</Link>
                                     ) : (
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['hover']}>
                                             <Space style={{ cursor: 'pointer' }}>
-                                                <span>
-                                                    {t('welcome')} {user?.username}
-                                                </span>
                                                 <Avatar src={`${user.avatar}`}>
                                                     {!user?.avatar && user?.username?.substring(0, 2)?.toUpperCase()}
                                                 </Avatar>

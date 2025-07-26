@@ -25,6 +25,7 @@ import UpdateInfo from './components/client/card/update.info';
 import UpdatePassword from './components/client/card/update.password';
 import MyJob from './components/client/card/my.job';
 import EmailSubscription from './components/client/email.subscription';
+import ClientBlogPage from './pages/blog/blog';
 
 const router = createBrowserRouter([
     {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
             {
                 path: 'recruiter/:id',
                 element: <ClientRecruiterDetailPage />,
+            },
+            {
+                path: 'blog',
+                element: <ClientBlogPage />,
             },
         ],
     },

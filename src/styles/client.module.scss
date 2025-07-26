@@ -48,7 +48,7 @@ $font-size-mobile: 1.25rem;
             display: flex;
             justify-content: end;
             align-items: center;
-            gap: 12px;
+            gap: 24px;
 
             a,
             span {
@@ -152,7 +152,8 @@ $font-size-mobile: 1.25rem;
     height: 55px;
 }
 
-.card-job-section {
+.card-job-section,
+.card-blog-section {
     .empty {
         display: flex;
         justify-content: center;
@@ -214,6 +215,91 @@ $font-size-mobile: 1.25rem;
                     display: block;
                     float: right;
                     color: #919191;
+                }
+            }
+        }
+    }
+
+    .blog-content {
+        .card-blog-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            .card-blog-top {
+                display: flex;
+
+                .card-blog-left {
+                    width: 70%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+
+                    .blog-username {
+                        &:hover {
+                            color: $color-main;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .blog-title {
+                        color: #353535;
+                        font-weight: 600;
+                        text-align: left;
+                        line-height: 1.3;
+                        transition: 0.2s all;
+                        font-size: 17px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+
+                        &:hover {
+                            color: $color-main;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .blog-description {
+                        color: #353535;
+                        text-align: left;
+                        transition: 0.2s all;
+                        font-size: 14px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                    }
+                }
+
+                .card-blog-right {
+                    width: 30%;
+                    display: flex;
+                    justify-content: end;
+                    align-items: center;
+
+                    img {
+                        width: 100px;
+                        height: 100px;
+                    }
+                }
+            }
+
+            .card-blog-down {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+
+                .blog-tags {
+                    display: flex;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    white-space: nowrap;
+                    scrollbar-width: thin;
+                    scroll-behavior: smooth;
                 }
             }
         }

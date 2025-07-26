@@ -232,6 +232,7 @@ export interface IBlog {
         totalReads: number;
         totalParentComments: number;
     };
+    author?: IUser;
 
     createdBy?: string;
     updatedBy?: string;
