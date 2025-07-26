@@ -5,6 +5,7 @@ import type {
     IApplicant,
     IApplication,
     IBackendRes,
+    IBlog,
     ICareer,
     IFullUser,
     IGetAccount,
@@ -447,6 +448,29 @@ export const callStatisticsApplication = (query: string) => {
 
 export const callStatisticsApplicationByYear = (year: number, query: string) => {
     return axios.get<IBackendRes<Record<number, number>>>(`/api/v1/dashboard/applications-year?year=${year}&${query}`);
+};
+
+/***
+Module Blog
+***/
+export const callCreateBlog = (blog: IBlog) => {
+    return axios.post<IBackendRes<IBlog>>('/api/v1/blogs', { ...blog });
+};
+
+export const callUpdateBlog = (blog: IBlog, blogId: string) => {
+    return axios.put<IBackendRes<IBlog>>(`/api/v1/blogs`, { blogId, ...blog });
+};
+
+export const callDeleteBlog = (blogId: string) => {
+    return axios.delete<IBackendRes<IBlog>>(`/api/v1/blogs/${blogId}`);
+};
+
+export const callFetchBlog = (query: string) => {
+    return axios.get<IBackendRes<IModelPaginate<IBlog>>>(`/api/v1/blogs?${query}`);
+};
+
+export const callFetchBlogById = (blogId: string) => {
+    return axios.get<IBackendRes<IBlog>>(`/api/v1/blogs/${blogId}`);
 };
 
 /***
