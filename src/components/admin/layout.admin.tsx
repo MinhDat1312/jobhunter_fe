@@ -45,8 +45,15 @@ const LayoutAdmin = () => {
     const user = useAppSelector((state) => state.account.user);
 
     useEffect(() => {
-        setActiveMenu(location.pathname);
-    }, [location.pathname]);
+        const active = menuItems
+            ?.filter((item) => location.pathname.startsWith(item?.key as string))
+            ?.sort(
+                (a, b) =>
+                    (typeof b?.key === 'string' ? b.key.length : 0) -
+                    (typeof a?.key === 'string' ? a.key.length : 0)
+            );
+        setActiveMenu(active?.[0]?.key as string);
+    }, [location.pathname, menuItems]);
 
     useEffect(() => {
         const ACL_ENABLE = import.meta.env.VITE_ACL_ENABLE;
@@ -118,7 +125,7 @@ const LayoutAdmin = () => {
                       ]
                     : []),
 
-                ...(viewBlog|| ACL_ENABLE === 'false'
+                ...(viewBlog || ACL_ENABLE === 'false'
                     ? [
                           {
                               label: <Link to="/admin/blog">{t('blog')}</Link>,

@@ -15,6 +15,7 @@ const useUploadFile = (uploadFile: (file: File) => Promise<any>) => {
     const handleRemoveFile = (_file: any) => {
         setFileList([]);
         setVisibleUpload(true);
+        setLoadingUpload(false);
     };
 
     const handlePreview = async (file: any) => {
@@ -51,12 +52,12 @@ const useUploadFile = (uploadFile: (file: File) => Promise<any>) => {
 
     const handleChange = (info: any) => {
         if (info.file.status === 'uploading') {
+            setVisibleUpload(true);
             setLoadingUpload(true);
-            setVisibleUpload(false);
         }
         if (info.file.status === 'done') {
-            setLoadingUpload(false);
             setVisibleUpload(false);
+            setLoadingUpload(false);
         }
         if (info.file.status === 'error') {
             setLoadingUpload(false);
