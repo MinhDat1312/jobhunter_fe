@@ -26,6 +26,8 @@ import UpdatePassword from './components/client/card/update.password';
 import MyJob from './components/client/card/my.job';
 import EmailSubscription from './components/client/email.subscription';
 import ClientBlogPage from './pages/blog/blog';
+import BlogPage from './pages/admin/blog';
+import ViewUpsertBlog from './components/admin/blog/upsert.blog';
 
 const router = createBrowserRouter([
     {
@@ -113,6 +115,27 @@ const router = createBrowserRouter([
                         <ApplicationPage />
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path: 'blog',
+                children: [
+                    {
+                        index: true,
+                        element: (
+                            <ProtectedRoute>
+                                <BlogPage />
+                            </ProtectedRoute>
+                        ),
+                    },
+                    {
+                        path: 'upsert',
+                        element: (
+                            <ProtectedRoute>
+                                <ViewUpsertBlog />
+                            </ProtectedRoute>
+                        ),
+                    },
+                ],
             },
             {
                 path: 'role',

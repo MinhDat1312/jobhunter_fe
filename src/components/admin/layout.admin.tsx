@@ -4,6 +4,7 @@ import {
     ExceptionOutlined,
     LoginOutlined,
     MenuUnfoldOutlined,
+    ReadOutlined,
     ScheduleOutlined,
     UserOutlined,
 } from '@ant-design/icons';
@@ -68,6 +69,12 @@ const LayoutAdmin = () => {
                     item.method === ALL_PERMISSIONS.APPLICATIONS.GET_PAGINATE.method,
             );
 
+            const viewBlog = permissions?.find(
+                (item) =>
+                    item.apiPath === ALL_PERMISSIONS.BLOGS.GET_PAGINATE.apiPath &&
+                    item.method === ALL_PERMISSIONS.BLOGS.GET_PAGINATE.method,
+            );
+
             const viewRole = permissions?.find(
                 (item) =>
                     item.apiPath === ALL_PERMISSIONS.ROLES.GET_PAGINATE.apiPath &&
@@ -80,6 +87,7 @@ const LayoutAdmin = () => {
                     key: '/admin',
                     icon: <AppstoreOutlined />,
                 },
+
                 ...(viewUser || ACL_ENABLE === 'false'
                     ? [
                           {
@@ -89,6 +97,7 @@ const LayoutAdmin = () => {
                           },
                       ]
                     : []),
+
                 ...(viewJob || ACL_ENABLE === 'false'
                     ? [
                           {
@@ -108,6 +117,17 @@ const LayoutAdmin = () => {
                           },
                       ]
                     : []),
+
+                ...(viewBlog|| ACL_ENABLE === 'false'
+                    ? [
+                          {
+                              label: <Link to="/admin/blog">{t('blog')}</Link>,
+                              key: '/admin/blog',
+                              icon: <ReadOutlined />,
+                          },
+                      ]
+                    : []),
+
                 ...(viewRole || ACL_ENABLE === 'false'
                     ? [
                           {

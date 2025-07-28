@@ -37,7 +37,6 @@ const BlogCard = (props: IProps) => {
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
     const [displayBlog, setDisplayBlog] = useState<IBlog[] | null>(null);
     const [total, setTotal] = useState(0);
-    const [like, setLike] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -61,8 +60,6 @@ const BlogCard = (props: IProps) => {
 
         fetchBlog();
     }, [current, pageSize, filter, sortQuery, location]);
-
-    console.log(displayBlog);
 
     return (
         <div className={`${styles['card-blog-section']}`}>
@@ -169,29 +166,11 @@ const BlogCard = (props: IProps) => {
                                                             gap: '4px',
                                                         }}
                                                     >
-                                                        <Button
-                                                            shape="circle"
-                                                            icon={
-                                                                like ? (
-                                                                    <HeartFilled
-                                                                        style={{
-                                                                            color: '#00b452',
-                                                                            fontSize: '1rem',
-                                                                            marginTop: 2,
-                                                                        }}
-                                                                    />
-                                                                ) : (
-                                                                    <HeartOutlined
-                                                                        style={{
-                                                                            color: '#00b452',
-                                                                            fontSize: '1rem',
-                                                                            marginTop: 2,
-                                                                        }}
-                                                                    />
-                                                                )
-                                                            }
-                                                            type="default"
-                                                            onClick={() => setLike(!like)}
+                                                        <HeartFilled
+                                                            style={{
+                                                                color: '#00b452',
+                                                                fontSize: '1rem',
+                                                            }}
                                                         />
                                                         <span style={{ color: '#00b452', fontSize: '1rem' }}>
                                                             {blog?.activity?.totalLikes}

@@ -8,6 +8,7 @@ import careerReducer from './slice/careerSlice';
 import applicationReducer from './slice/applicationSlice';
 import permissionReducer from './slice/permissionSlice';
 import roleReducer from './slice/roleSlice';
+import blogReducer from './slice/blogSlice';
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         application: applicationReducer,
         permission: permissionReducer,
         role: roleReducer,
+        blog: blogReducer,
     },
 });
 

@@ -168,6 +168,7 @@ const resources = {
                     skill: 'Skill list',
                     career: 'Career list',
                     application: 'Application list',
+                    blog: 'Blog list',
                     role: 'Role list',
                     permission: 'Permission list',
                 },
@@ -186,6 +187,11 @@ const resources = {
                     dateStart: 'Start date',
                     dateEnd: 'Start end',
                     type: 'Working type',
+                },
+                blog_table: {
+                    author: 'Author',
+                    title: 'Title',
+                    draft: 'Draft',
                 },
             },
             status_application: {
@@ -390,6 +396,7 @@ const resources = {
                     skill: 'Danh sách kỹ năng',
                     career: 'Danh sách ngành nghề',
                     application: 'Danh sách hồ sơ ứng tuyển',
+                    blog: 'Danh sách blog',
                     role: 'Danh sách vai trò',
                     permission: 'Danh sách quyền hạn',
                 },
@@ -408,6 +415,11 @@ const resources = {
                     dateStart: 'Ngày bắt đầu',
                     dateEnd: 'Ngày kết thúc',
                     type: 'Hình thức',
+                },
+                blog_table: {
+                    author: 'Tác giả',
+                    title: 'Tiêu đề',
+                    draft: 'Nháp',
                 },
             },
             status_application: {
