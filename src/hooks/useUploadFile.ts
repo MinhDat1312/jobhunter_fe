@@ -60,6 +60,7 @@ const useUploadFile = (uploadFile: (file: File) => Promise<any>) => {
             setLoadingUpload(false);
         }
         if (info.file.status === 'error') {
+            setVisibleUpload(true);
             setLoadingUpload(false);
             message.error(info?.file?.error?.event?.message ?? t('notify.error'));
         }

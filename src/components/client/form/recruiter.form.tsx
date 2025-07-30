@@ -9,6 +9,7 @@ import { callCreateRecruiter, callUpdateRecruiter } from '../../../config/api';
 import { fetchRoleList, getRoleName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import QuillCustom from '../../quill.custom';
 
 interface IProps {
     form: FormInstance<any>;
@@ -270,7 +271,6 @@ const RecruiterForm = (props: IProps) => {
                         <Upload
                             name="avatar"
                             listType="picture-card"
-                            className="avatar-uploader"
                             maxCount={1}
                             multiple={false}
                             customRequest={uploadFileLogo}
@@ -317,7 +317,7 @@ const RecruiterForm = (props: IProps) => {
                 bordered
             >
                 <Col span={24}>
-                    <ReactQuill theme="snow" value={description} onChange={setDescription} />
+                    <QuillCustom value={description} onChange={setDescription} />
                 </Col>
             </ProCard>
         </ProForm>

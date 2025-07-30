@@ -277,7 +277,6 @@ const ApplicantForm = (props: IProps) => {
                         <Upload
                             name="avatar"
                             listType="picture-card"
-                            className="avatar-uploader"
                             maxCount={1}
                             multiple={false}
                             customRequest={uploadFileLogo}

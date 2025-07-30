@@ -31,6 +31,7 @@ import Access from '../../share/access';
 import { ALL_PERMISSIONS } from '../../../config/permissions';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
+import QuillCustom from '../../quill.custom';
 
 const ViewUpsertJob = () => {
     const { t } = useTranslation();
@@ -498,7 +499,7 @@ const ViewUpsertJob = () => {
                                             label={t('description')}
                                             rules={[{ required: true, message: t('notify.required') }]}
                                         >
-                                            <ReactQuill theme="snow" value={description} onChange={setDescription} />
+                                            <QuillCustom value={description} onChange={setDescription} />
                                         </ProForm.Item>
                                     </Col>
                                 </Row>
