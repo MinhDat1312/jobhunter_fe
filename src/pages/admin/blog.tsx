@@ -46,21 +46,24 @@ const BlogPage = () => {
         {
             title: t('table.blog_table.author'),
             dataIndex: ['author', 'fullName'],
+            width: 200,
             sorter: true,
         },
         {
             title: t('table.blog_table.title'),
             dataIndex: 'title',
+            width: 200,
             sorter: true,
         },
         {
-            title: t('table.blog_table.draft'),
+            title: t('status'),
             dataIndex: 'draft',
+            width: 100,
             render(_dom, entity, _index, _action, _schema) {
                 return (
                     <>
                         <Tag color={entity.draft ? 'red' : 'lime'} style={{ fontSize: '14px' }}>
-                            {entity.draft ? t('button.active_tag') : t('button.inactive_tag')}
+                            {entity.draft ? t('table.blog_table.draft') : t('table.blog_table.publish')}
                         </Tag>
                     </>
                 );

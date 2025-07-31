@@ -47,6 +47,7 @@ const resources = {
             tel: 'Tel',
             address: 'Address',
             description: 'Description',
+            content: 'Content',
             status: 'Status',
             education: 'Education',
             level: 'Level',
@@ -59,6 +60,7 @@ const resources = {
             applied: 'Applied',
             saved: 'Saved',
             skill: 'Skill',
+            banner: 'Banner',
             skill_subscribed: 'Skills you subscribed',
             skill_subscribed_desc:
                 'By subscribing, Job Robot will suggest in-demand jobs that match your skill via email.',
@@ -83,6 +85,7 @@ const resources = {
             information: 'Information about',
             title_application: 'Information about application',
             title_permission: 'The permissions granted to this role',
+            topic: 'Topic',
             notify: {
                 logout: 'Logout successfully!',
                 signin: 'Signin successfully!',
@@ -92,6 +95,7 @@ const resources = {
                 re_password: 'The confirmed password does not match!',
                 email_match: 'The confirmed email does not match!',
                 upload_cv: 'Please upload a CV!',
+                upload_image: 'Please upload a image!',
                 applied: 'Applied successfully!',
                 applied_fail: 'Applied failed!',
                 success_upload: 'Upload successfully!',
@@ -110,6 +114,8 @@ const resources = {
                 success_create_applicant: 'Applicant created successfully!',
                 success_update_recruiter: 'Recruiter updated successfully!',
                 success_create_recruiter: 'Recruiter created successfully!',
+                success_update_blog: 'Blog updated successfully!',
+                success_create_blog: 'Blog created successfully!',
                 required: 'Please do not leave this field empty!',
                 empty: 'No data!',
                 date_start: 'The start date must be before the end date!',
@@ -153,6 +159,7 @@ const resources = {
                 follow: 'Follow',
                 unfollow: 'Unfollow',
                 subscribe: 'Subscribe',
+                add: 'Add',
             },
             table: {
                 no_1: 'No.',
@@ -192,6 +199,7 @@ const resources = {
                     author: 'Author',
                     title: 'Title',
                     draft: 'Draft',
+                    publish: 'Publish'
                 },
             },
             status_application: {
@@ -277,6 +285,7 @@ const resources = {
             tel: 'Số điện thoại',
             address: 'Địa chỉ',
             description: 'Mô tả',
+            content: 'Nội dung',
             status: 'Trạng thái',
             education: 'Học vấn',
             level: 'Trình độ',
@@ -289,6 +298,7 @@ const resources = {
             applied: 'Đã ứng tuyển',
             saved: 'Đã lưu',
             skill: 'Kỹ năng',
+            banner: 'Banner',
             skill_subscribed: 'Kỹ năng đã đăng ký',
             skill_subscribed_desc: 'Đăng ký Job Robot để không bỏ lỡ việc làm phù hợp với kỹ năng của bạn.',
             recruiter_subscribed: 'Nhà tuyển dụng đã theo dõi',
@@ -311,6 +321,7 @@ const resources = {
             title_application: 'Thông tin hồ sơ ứng tuyển',
             information: 'Thông tin',
             title_permission: 'Các quyền hạn được phép cho vai trò này',
+            topic: 'Chủ đề',
             notify: {
                 logout: 'Đăng xuất thành công!',
                 signin: 'Đăng nhập thành công!',
@@ -320,6 +331,7 @@ const resources = {
                 re_password: 'Mật khẩu nhập lại không khớp!',
                 email_match: 'Email không hợp lệ!',
                 upload_cv: 'Vui lòng upload CV!',
+                upload_image: 'Vui lòng upload ảnh!',
                 applied: 'Ứng tuyển thành công!',
                 applied_fail: 'Ứng tuyển thất bại!',
                 success_upload: 'Upload thành công!',
@@ -338,6 +350,8 @@ const resources = {
                 success_create_applicant: 'Thêm mới ứng viên thành công!',
                 success_update_recruiter: 'Cập nhật nhà tuyển dụng thành công!',
                 success_create_recruiter: 'Thêm mới nhà tuyển dụng thành công!',
+                success_update_blog: 'Cập nhật blog thành công!',
+                success_create_blog: 'Thêm mới blog thành công!',
                 required: 'Vui lòng không bỏ trống!',
                 empty: 'Không có dữ liệu!',
                 date_start: 'Ngày bắt đầu phải trước ngày kết thúc!',
@@ -381,6 +395,7 @@ const resources = {
                 follow: 'Theo dõi',
                 unfollow: 'Hủy theo dõi',
                 subscribe: 'Đăng ký',
+                add: 'Thêm',
             },
             table: {
                 no_1: 'STT',
@@ -419,7 +434,8 @@ const resources = {
                 blog_table: {
                     author: 'Tác giả',
                     title: 'Tiêu đề',
-                    draft: 'Nháp',
+                    draft: 'Bản nháp',
+                    publish: 'Đăng bài'
                 },
             },
             status_application: {

@@ -477,6 +477,10 @@ export const callLikeBlogs = (blog: IBlog, liked: boolean) => {
     return axios.put<IBackendRes<IBlog>>(`/api/v1/blogs/liked-blogs`, { ...blog, liked });
 };
 
+export const callFetchTag = (keyword: string) => {
+    return axios.get<IBackendRes<string[]>>(`/api/v1/blogs/tags?keyword=${keyword}`);
+};
+
 /***
 Upload single file
 ***/

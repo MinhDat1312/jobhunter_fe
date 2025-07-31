@@ -4,7 +4,6 @@ import { ProCard, ProForm, ProFormText } from '@ant-design/pro-components';
 import { CheckSquareOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { DebounceSelect } from '../../admin/debounce.select';
 import { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
 import { callCreateRecruiter, callUpdateRecruiter } from '../../../config/api';
 import { fetchRoleList, getRoleName } from '../../../config/utils';
 import { useTranslation } from 'react-i18next';

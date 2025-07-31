@@ -1,6 +1,7 @@
 $color-main: #00b452;
 
-.upsert-job-container {
+.upsert-job-container,
+.upsert-blog-container {
     background-color: white;
     padding: 10px 30px;
     border-radius: 5px;
@@ -63,6 +64,24 @@ $color-main: #00b452;
                 }
             }
         }
+    }
+
+    .ant-upload-list-item-actions {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .avatar-uploader .ant-upload-list-item-container {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .avatar-uploader .ant-upload-list-item-thumbnail img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
     }
 }
 

@@ -226,7 +226,7 @@ export interface IBlog {
     content: string[];
     tags: string[];
     draft: boolean;
-    activity: {
+    activity?: {
         totalLikes: number;
         totalComments: number;
         totalReads: number;
