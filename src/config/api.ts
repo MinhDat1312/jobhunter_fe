@@ -474,7 +474,7 @@ export const callFetchBlogById = (blogId: string) => {
 };
 
 export const callLikeBlogs = (blog: IBlog, liked: boolean) => {
-    return axios.put<IBackendRes<IBlog>>(`/api/v1/blogs/liked-blogs`, { ...blog, liked });
+    return axios.put<IBackendRes<IBlog>>(`/api/v1/blogs/liked-blogs`, { blog, liked });
 };
 
 export const callFetchTag = (keyword: string) => {

@@ -184,6 +184,7 @@ export const {
     setRefreshTokenAction,
     setSavedJobs,
     setFollowedRecruiters,
+    setActorNotifications,
 } = accountSlice.actions;
 
 export default accountSlice.reducer;

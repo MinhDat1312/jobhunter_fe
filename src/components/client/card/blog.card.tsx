@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { callFetchBlog } from '../../../config/api';
-import type { IBlog } from '../../../types/backend';
+import type { IBlog, INotification } from '../../../types/backend';
 import { useLocation } from 'react-router-dom';
 import styles from '../../../styles/client.module.scss';
 import { Avatar, Card, Col, Empty, Grid, Pagination, Row, Spin, Tag } from 'antd';
@@ -11,9 +11,10 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { HeartFilled } from '@ant-design/icons';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { sfEqual } from 'spring-filter-query-builder';
 import { useAppSelector } from '../../../hooks/hook';
+import useLikeBlog from '../../../hooks/useLikeBlog';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -33,6 +34,7 @@ const BlogCard = (props: IProps) => {
     const location = useLocation();
 
     const user = useAppSelector((state) => state.account.user);
+    const [actorLikeNotifications, setActorLikeNotifications] = useState<INotification[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [current, setCurrent] = useState(1);
     const [pageSize, setPageSize] = useState(3);
@@ -40,6 +42,12 @@ const BlogCard = (props: IProps) => {
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
     const [displayBlog, setDisplayBlog] = useState<IBlog[] | null>(null);
     const [total, setTotal] = useState(0);
+    const { handleOnLike } = useLikeBlog({ setDisplayBlog });
+
+    useEffect(() => {
+        const likeNotifications = user?.actorNotifications?.filter((not) => not.type === 'LIKE');
+        setActorLikeNotifications(likeNotifications ?? []);
+    }, [user.actorNotifications]);
 
     useEffect(() => {
         const fetchBlog = async () => {
@@ -62,7 +70,6 @@ const BlogCard = (props: IProps) => {
             }
             setIsLoading(false);
         };
-
         fetchBlog();
     }, [current, pageSize, filter, sortQuery, location]);
 
@@ -179,14 +186,35 @@ const BlogCard = (props: IProps) => {
                                                             justifyContent: 'center',
                                                             alignItems: 'center',
                                                             gap: '4px',
+                                                            cursor: 'pointer',
                                                         }}
+                                                        onClick={() =>
+                                                            handleOnLike(
+                                                                blog,
+                                                                actorLikeNotifications.some(
+                                                                    (not) => not.blog.blogId === blog.blogId,
+                                                                ),
+                                                            )
+                                                        }
                                                     >
-                                                        <HeartFilled
-                                                            style={{
-                                                                color: '#00b452',
-                                                                fontSize: '1rem',
-                                                            }}
-                                                        />
+                                                        {actorLikeNotifications.some(
+                                                            (not) => not.blog.blogId === blog.blogId,
+                                                        ) ? (
+                                                            <HeartFilled
+                                                                style={{
+                                                                    color: '#00b452',
+                                                                    fontSize: '1rem',
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <HeartOutlined
+                                                                style={{
+                                                                    color: '#00b452',
+                                                                    fontSize: '1rem',
+                                                                }}
+                                                            />
+                                                        )}
+
                                                         <span style={{ color: '#00b452', fontSize: '1rem' }}>
                                                             {blog?.activity?.totalLikes}
                                                         </span>
