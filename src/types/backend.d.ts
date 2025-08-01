@@ -38,6 +38,7 @@ export interface IAccount {
         };
         savedJobs: IJob[];
         followedRecruiters: IRecruiter[];
+        actorNotifications: INotification[];
     };
 }
 

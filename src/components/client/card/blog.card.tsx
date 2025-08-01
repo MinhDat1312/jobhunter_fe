@@ -3,7 +3,7 @@ import { callFetchBlog } from '../../../config/api';
 import type { IBlog } from '../../../types/backend';
 import { useLocation } from 'react-router-dom';
 import styles from '../../../styles/client.module.scss';
-import { Avatar, Button, Card, Col, Grid, Row, Spin, Tag } from 'antd';
+import { Avatar, Card, Col, Empty, Grid, Pagination, Row, Spin, Tag } from 'antd';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -11,7 +11,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { HeartFilled } from '@ant-design/icons';
+import { sfEqual } from 'spring-filter-query-builder';
+import { useAppSelector } from '../../../hooks/hook';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -30,9 +32,10 @@ const BlogCard = (props: IProps) => {
 
     const location = useLocation();
 
+    const user = useAppSelector((state) => state.account.user);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(6);
+    const [pageSize, setPageSize] = useState(3);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
     const [displayBlog, setDisplayBlog] = useState<IBlog[] | null>(null);
@@ -42,6 +45,7 @@ const BlogCard = (props: IProps) => {
         const fetchBlog = async () => {
             setIsLoading(true);
             let query = `page=${current}&size=${pageSize}`;
+            let q = sfEqual('draft', 'false').toString();
 
             if (filter) {
                 query += `&${filter}`;
@@ -49,6 +53,7 @@ const BlogCard = (props: IProps) => {
             if (sortQuery) {
                 query += `&${sortQuery}`;
             }
+            query += `&filter=${encodeURIComponent(q)}`;
 
             const res = await callFetchBlog(query);
             if (res && res.data) {
@@ -60,6 +65,16 @@ const BlogCard = (props: IProps) => {
 
         fetchBlog();
     }, [current, pageSize, filter, sortQuery, location]);
+
+    const handleOnchangePage = (pagination: { current: number; pageSize: number }) => {
+        if (pagination && pagination.current !== current) {
+            setCurrent(pagination.current);
+        }
+        if (pagination && pagination.pageSize !== pageSize) {
+            setPageSize(pagination.pageSize);
+            setCurrent(1);
+        }
+    };
 
     return (
         <div className={`${styles['card-blog-section']}`}>
@@ -183,7 +198,31 @@ const BlogCard = (props: IProps) => {
                                 )
                             );
                         })}
+                        {(!displayBlog || (displayBlog && displayBlog.length === 0)) && !isLoading && (
+                            <div className={styles['empty']}>
+                                <Empty description={t('notify.empty')} />
+                            </div>
+                        )}
                     </Row>
+                    {showPagination && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            style={{ width: '100%' }}
+                        >
+                            <div style={{ marginTop: 30 }}></div>
+                            <Row style={{ display: 'flex', justifyContent: 'center' }}>
+                                <Pagination
+                                    current={current}
+                                    total={total}
+                                    pageSize={pageSize}
+                                    responsive
+                                    onChange={(p: number, s: number) => handleOnchangePage({ current: p, pageSize: s })}
+                                />
+                            </Row>
+                        </motion.div>
+                    )}
                 </Spin>
             </div>
         </div>

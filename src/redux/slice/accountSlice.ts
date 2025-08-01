@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { callFetchAccount } from '../../config/api';
-import type { IJob, IRecruiter } from '../../types/backend';
+import type { IJob, INotification, IRecruiter } from '../../types/backend';
 
 interface IState {
     isAuthenticated: boolean;
@@ -16,6 +16,7 @@ interface IState {
         type: string;
         savedJobs?: { jobId: number }[];
         followedRecruiters?: { userId: number }[];
+        actorNotifications?: INotification[];
         role: {
             roleId?: string;
             name?: string;
@@ -46,6 +47,7 @@ const initialState: IState = {
         type: '',
         savedJobs: [],
         followedRecruiters: [],
+        actorNotifications: [],
         role: {
             roleId: '',
             name: '',
@@ -80,6 +82,7 @@ export const accountSlice = createSlice({
             state.user.followedRecruiters = action?.payload?.followedRecruiters.map((recruiter: IRecruiter) => {
                 return { userId: recruiter.userId };
             });
+            state.user.actorNotifications = action?.payload?.actorNotifications;
 
             if (!action?.payload?.user?.role) state.user.role = {};
             state.user.role.permissions = action?.payload?.role?.permissions ?? [];
@@ -99,6 +102,7 @@ export const accountSlice = createSlice({
                 type: '',
                 savedJobs: [],
                 followedRecruiters: [],
+                actorNotifications: [],
                 role: {
                     roleId: '',
                     name: '',
@@ -119,6 +123,10 @@ export const accountSlice = createSlice({
 
         setFollowedRecruiters: (state, action) => {
             state.user.followedRecruiters = action?.payload ?? [];
+        },
+
+        setActorNotifications: (state, action) => {
+            state.user.actorNotifications = action?.payload ?? [];
         },
     },
     extraReducers: (builder) => {
@@ -146,6 +154,7 @@ export const accountSlice = createSlice({
                 state.user.followedRecruiters = action?.payload?.user?.followedRecruiters.map((recruiter) => {
                     return { userId: +(recruiter.userId ?? 0) };
                 });
+                state.user.actorNotifications = action?.payload?.user?.actorNotifications;
 
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
