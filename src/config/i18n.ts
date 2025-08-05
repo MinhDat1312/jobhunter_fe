@@ -23,6 +23,8 @@ const resources = {
             featured_employers: 'Featured Employers',
             latest_jobs: 'Latest Jobs',
             latest_blogs: 'Latest Blogs',
+            tags_trending: 'Topics From All Interests',
+            trending_blogs: 'Trending',
             view_all: 'View all',
             apply: 'Apply',
             title_apply: 'Apply for job',
@@ -199,7 +201,7 @@ const resources = {
                     author: 'Author',
                     title: 'Title',
                     draft: 'Draft',
-                    publish: 'Publish'
+                    publish: 'Publish',
                 },
             },
             status_application: {
@@ -262,6 +264,8 @@ const resources = {
             featured_employers: 'Nhà Tuyển Dụng Nổi Bật',
             latest_jobs: 'Công Việc Mới Nhất',
             latest_blogs: 'Blog Mới Nhất',
+            tags_trending: 'Chủ Đề Nổi Bật',
+            trending_blogs: 'Xu Hướng',
             view_all: 'Xem tất cả',
             title_apply: 'Ứng tuyển công việc',
             at: 'tại',
@@ -435,7 +439,7 @@ const resources = {
                     author: 'Tác giả',
                     title: 'Tiêu đề',
                     draft: 'Bản nháp',
-                    publish: 'Đăng bài'
+                    publish: 'Đăng bài',
                 },
             },
             status_application: {

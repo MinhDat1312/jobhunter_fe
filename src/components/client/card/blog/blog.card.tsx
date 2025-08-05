@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { callFetchBlog } from '../../../config/api';
-import type { IBlog, INotification } from '../../../types/backend';
+import { callFetchBlog } from '../../../../config/api';
+import type { IBlog, INotification } from '../../../../types/backend';
 import { useLocation } from 'react-router-dom';
-import styles from '../../../styles/client.module.scss';
+import styles from '../../../../styles/client.module.scss';
 import { Avatar, Card, Col, Empty, Grid, Pagination, Row, Spin, Tag } from 'antd';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +13,8 @@ import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { sfEqual } from 'spring-filter-query-builder';
-import { useAppSelector } from '../../../hooks/hook';
-import useLikeBlog from '../../../hooks/useLikeBlog';
+import { useAppSelector } from '../../../../hooks/hook';
+import useLikeBlog from '../../../../hooks/useLikeBlog';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;

@@ -66,8 +66,8 @@ const ViewUpsertBlog = () => {
             const res = await callFetchTag('');
             if (res && res.data) {
                 const tagOptions = res.data.map((tag) => ({
-                    label: tag,
-                    value: tag,
+                    label: tag[0] as string,
+                    value: tag[0] as string,
                 }));
                 setTags(tagOptions);
             }

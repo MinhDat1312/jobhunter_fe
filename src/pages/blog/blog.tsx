@@ -1,6 +1,7 @@
 import { Col, Divider, Grid, Row } from 'antd';
 import styles from '../../styles/client.module.scss';
-import BlogCard from '../../components/client/card/blog.card';
+import BlogCard from '../../components/client/card/blog/blog.card';
+import TrendingCard from '../../components/client/card/blog/trending.card';
 
 const { useBreakpoint } = Grid;
 
@@ -12,16 +13,18 @@ const ClientBlogPage = () => {
         <div className={styles['container']} style={{ marginTop: 20 }}>
             <Row gutter={[10, 10]}>
                 <Col
-                    lg={10}
-                    md={10}
+                    lg={8}
+                    md={8}
                     sm={24}
                     style={{
                         borderRight: isMobile ? '' : '1px solid #f0f0f0',
                         paddingRight: isMobile ? '' : 10,
                     }}
-                ></Col>
+                >
+                    <TrendingCard />
+                </Col>
                 {isMobile && <Divider style={{ margin: 0 }} />}
-                <Col lg={14} md={14} sm={24}>
+                <Col lg={16} md={16} sm={24}>
                     <BlogCard showPagination={true} />
                 </Col>
             </Row>
