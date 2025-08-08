@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { callFetchBlog } from '../../../../config/api';
 import type { IBlog, INotification } from '../../../../types/backend';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styles from '../../../../styles/client.module.scss';
 import { Avatar, Card, Col, Empty, Grid, Pagination, Row, Spin, Tag } from 'antd';
 import { motion } from 'motion/react';
@@ -12,7 +12,7 @@ import 'dayjs/locale/vi';
 import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { sfEqual } from 'spring-filter-query-builder';
+import { sfEqual, sfIn } from 'spring-filter-query-builder';
 import { useAppSelector } from '../../../../hooks/hook';
 import useLikeBlog from '../../../../hooks/useLikeBlog';
 
@@ -31,7 +31,9 @@ const BlogCard = (props: IProps) => {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
 
+    const navigate = useNavigate();
     const location = useLocation();
+    const [searchParams, _setSearchParams] = useSearchParams();
 
     const user = useAppSelector((state) => state.account.user);
     const [actorLikeNotifications, setActorLikeNotifications] = useState<INotification[]>([]);
@@ -61,7 +63,13 @@ const BlogCard = (props: IProps) => {
             if (sortQuery) {
                 query += `&${sortQuery}`;
             }
-            query += `&filter=${encodeURIComponent(q)}`;
+
+            const queryTags = searchParams.get('tags');
+            if (queryTags) {
+                const tagNames = sfIn('tags', queryTags.split(',')).toString();
+                q = q.length !== 0 ? q + ' and ' + `${tagNames}` : `${tagNames}`;
+                query += `&filter=${encodeURIComponent(q)}`;
+            }
 
             const res = await callFetchBlog(query);
             if (res && res.data) {
@@ -96,7 +104,10 @@ const BlogCard = (props: IProps) => {
                         >
                             <Col span={24}>
                                 <motion.div className={isMobile ? styles['dflex-mobile'] : styles['dflex-pc']}>
-                                    <span className={styles['title']}> {t('latest_blogs')}</span>
+                                    <span className={styles['title']}>
+                                        {t('latest_blogs')}{' '}
+                                        {searchParams.get('tags') && '(' + searchParams.get('tags')?.split(',') + ')'}
+                                    </span>
                                     {!showPagination && (
                                         <Link to="blog" style={{ color: '#00b452', fontSize: '1rem' }}>
                                             {t('view_all')}
@@ -173,6 +184,9 @@ const BlogCard = (props: IProps) => {
                                                                     style={{
                                                                         cursor: 'pointer',
                                                                         padding: '2px 10px',
+                                                                    }}
+                                                                    onClick={() => {
+                                                                        navigate(`/blog?tags=${tag}`);
                                                                     }}
                                                                 >
                                                                     {tag.toUpperCase()}

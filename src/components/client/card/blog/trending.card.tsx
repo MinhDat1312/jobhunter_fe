@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MinimalCard from './minimal.card';
+import { useNavigate } from 'react-router-dom';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -16,6 +17,7 @@ const TrendingCard = () => {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
 
+    const navigate = useNavigate();
     const [tags, setTags] = useState<{ label: string; value: number }[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -35,6 +37,11 @@ const TrendingCard = () => {
 
         fetchTag();
     }, []);
+
+    const fetchBlogByTag = async (tag: string) => {
+        let query = `tags=${tag}`;
+        navigate(`/blog?${query}`);
+    };
 
     return (
         <div className={`${styles['card-blog-section']}`}>
@@ -62,6 +69,7 @@ const TrendingCard = () => {
                                                 cursor: 'pointer',
                                                 padding: '2px 10px',
                                             }}
+                                            onClick={() => fetchBlogByTag(tag.label)}
                                         >
                                             {tag.label.toUpperCase()}
                                         </Tag>
