@@ -18,7 +18,6 @@ import useSaveJob from '../../hooks/useSaveJob';
 import { motion } from 'motion/react';
 
 dayjs.extend(relativeTime);
-const MotionCol = motion(Col);
 
 const ClientJobDetailPage = () => {
     const { t, i18n } = useTranslation();

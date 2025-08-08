@@ -68,8 +68,8 @@ const BlogCard = (props: IProps) => {
             if (queryTags) {
                 const tagNames = sfIn('tags', queryTags.split(',')).toString();
                 q = q.length !== 0 ? q + ' and ' + `${tagNames}` : `${tagNames}`;
-                query += `&filter=${encodeURIComponent(q)}`;
             }
+            query += `&filter=${encodeURIComponent(q)}`;
 
             const res = await callFetchBlog(query);
             if (res && res.data) {

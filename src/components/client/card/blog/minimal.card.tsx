@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { IBlog } from '../../../../types/backend';
 import { sfEqual } from 'spring-filter-query-builder';
 import { callFetchBlog } from '../../../../config/api';
-import { Avatar, Card, Col, Flex, Grid, Row, Spin } from 'antd';
+import { Avatar, Card, Col, Grid, Row, Spin } from 'antd';
 import { motion } from 'motion/react';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
