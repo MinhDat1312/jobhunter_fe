@@ -120,38 +120,40 @@ const RecruiterCard = (props: IProps) => {
                                                     alt="example"
                                                     src={`${item?.avatar}`}
                                                 />
-                                                <motion.div
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: 8,
-                                                        right: 8,
-                                                        zIndex: 1,
-                                                        borderRadius: '8px',
-                                                        backgroundColor: '#ffffff',
-                                                        color: '#00b452',
-                                                        padding: '0 8px',
-                                                        fontSize: '1rem',
-                                                    }}
-                                                    animate={{
-                                                        boxShadow: [
-                                                            '0 0 5px #c7f7dd',
-                                                            '0 0 20px #c7f7dd, 0 0 30px #c7f7dd',
-                                                            '0 0 5px #c7f7dd',
-                                                        ],
-                                                    }}
-                                                    transition={{
-                                                        duration: 1,
-                                                        repeat: Infinity,
-                                                        repeatType: 'loop',
-                                                    }}
-                                                >
-                                                    {totalJob[Number(item.userId)]} {t('job')}
-                                                    {totalJob[Number(item.userId)] === 1
-                                                        ? ''
-                                                        : i18n.language === 'en'
-                                                        ? 's'
-                                                        : ''}
-                                                </motion.div>
+                                                {totalJob[Number(item.userId)] && (
+                                                    <motion.div
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: 8,
+                                                            right: 8,
+                                                            zIndex: 1,
+                                                            borderRadius: '8px',
+                                                            backgroundColor: '#ffffff',
+                                                            color: '#00b452',
+                                                            padding: '0 8px',
+                                                            fontSize: '1rem',
+                                                        }}
+                                                        animate={{
+                                                            boxShadow: [
+                                                                '0 0 5px #c7f7dd',
+                                                                '0 0 20px #c7f7dd, 0 0 30px #c7f7dd',
+                                                                '0 0 5px #c7f7dd',
+                                                            ],
+                                                        }}
+                                                        transition={{
+                                                            duration: 1,
+                                                            repeat: Infinity,
+                                                            repeatType: 'loop',
+                                                        }}
+                                                    >
+                                                        {totalJob[Number(item.userId)]} {t('job')}
+                                                        {totalJob[Number(item.userId)] === 1
+                                                            ? ''
+                                                            : i18n.language === 'en'
+                                                            ? 's'
+                                                            : ''}
+                                                    </motion.div>
+                                                )}
                                             </div>
                                         }
                                     >
