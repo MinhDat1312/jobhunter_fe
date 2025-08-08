@@ -12,7 +12,7 @@ import 'dayjs/locale/vi';
 import 'dayjs/locale/en';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { HeartFilled, HeartOutlined } from '@ant-design/icons';
-import { sfEqual, sfIn } from 'spring-filter-query-builder';
+import { sfEqual, sfIn, sfLike } from 'spring-filter-query-builder';
 import { useAppSelector } from '../../../../hooks/hook';
 import useLikeBlog from '../../../../hooks/useLikeBlog';
 
@@ -65,9 +65,21 @@ const BlogCard = (props: IProps) => {
             }
 
             const queryTags = searchParams.get('tags');
-            if (queryTags) {
-                const tagNames = sfIn('tags', queryTags.split(',')).toString();
-                q = q.length !== 0 ? q + ' and ' + `${tagNames}` : `${tagNames}`;
+            const queryTitle = searchParams.get('title');
+            const queryAuthors = searchParams.get('authors');
+            if (queryTags || queryTitle || queryAuthors) {
+                if (queryTags) {
+                    const tagNames = sfIn('tags', queryTags.split(',')).toString();
+                    q = q.length !== 0 ? q + ' and ' + `${tagNames}` : `${tagNames}`;
+                }
+                if (queryTitle) {
+                    const title = sfLike('title', queryTitle).toString();
+                    q = q.length !== 0 ? q + ' and ' + `${title}` : `${title}`;
+                }
+                if (queryAuthors) {
+                    const authorNames = sfIn('author.fullName', queryAuthors.split(',')).toString();
+                    q = q.length !== 0 ? q + ' and ' + `${authorNames}` : `${authorNames}`;
+                }
             }
             query += `&filter=${encodeURIComponent(q)}`;
 

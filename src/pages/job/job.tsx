@@ -1,6 +1,6 @@
 import { Col, Divider, Row } from 'antd';
 import styles from '../../styles/client.module.scss';
-import SearchClient from '../../components/client/search.client';
+import SearchClient from '../../components/client/search/search.client';
 import JobCard from '../../components/client/card/job.card';
 
 const ClientJobPage = () => {

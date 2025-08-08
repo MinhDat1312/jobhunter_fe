@@ -19,6 +19,8 @@ const TrendingCard = () => {
 
     const navigate = useNavigate();
     const [searchParams, _setSearchParams] = useSearchParams();
+    const queryTitle = searchParams.get('title');
+    const queryAuthors = searchParams.get('authors');
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [tags, setTags] = useState<{ label: string; value: number }[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -47,6 +49,12 @@ const TrendingCard = () => {
 
     const fetchBlogByTag = async (tags: string[]) => {
         let query = tags.length !== 0 ? `tags=${tags?.join(',')}` : '';
+        if (queryTitle) {
+            query = query.length === 0 ? `title=${queryTitle}` : query + `&title=${queryTitle}`;
+        }
+        if (queryAuthors) {
+            query = query.length === 0 ? `authors=${queryAuthors}` : query + `&authors=${queryAuthors}`;
+        }
         navigate(`/blog?${query}`);
     };
 

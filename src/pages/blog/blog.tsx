@@ -2,6 +2,7 @@ import { Col, Divider, Grid, Row } from 'antd';
 import styles from '../../styles/client.module.scss';
 import BlogCard from '../../components/client/card/blog/blog.card';
 import TrendingCard from '../../components/client/card/blog/trending.card';
+import SearchBlog from '../../components/client/search/search.blog';
 
 const { useBreakpoint } = Grid;
 
@@ -12,6 +13,9 @@ const ClientBlogPage = () => {
     return (
         <div className={styles['container']} style={{ marginTop: 20 }}>
             <Row gutter={[10, 10]}>
+                <Col span={24}>
+                    <SearchBlog />
+                </Col>
                 <Col
                     lg={8}
                     md={8}
