@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MinimalCard from './minimal.card';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -18,8 +18,15 @@ const TrendingCard = () => {
     const isMobile = !screens.md;
 
     const navigate = useNavigate();
+    const [searchParams, _setSearchParams] = useSearchParams();
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [tags, setTags] = useState<{ label: string; value: number }[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        const tags = searchParams.get('tags')?.split(',') || [];
+        setSelectedTags(tags);
+    }, [searchParams]);
 
     useEffect(() => {
         const fetchTag = async () => {
@@ -38,8 +45,8 @@ const TrendingCard = () => {
         fetchTag();
     }, []);
 
-    const fetchBlogByTag = async (tag: string) => {
-        let query = `tags=${tag}`;
+    const fetchBlogByTag = async (tags: string[]) => {
+        let query = tags.length !== 0 ? `tags=${tags?.join(',')}` : '';
         navigate(`/blog?${query}`);
     };
 
@@ -64,12 +71,24 @@ const TrendingCard = () => {
                                     return (
                                         <Tag
                                             key={index}
-                                            color="green"
+                                            color={
+                                                selectedTags.some((item) => item === tag.label) ? '#006400' : 'green'
+                                            }
                                             style={{
                                                 cursor: 'pointer',
                                                 padding: '2px 10px',
                                             }}
-                                            onClick={() => fetchBlogByTag(tag.label)}
+                                            onClick={() => {
+                                                setSelectedTags((prev) => {
+                                                    const isSelected = prev.includes(tag.label);
+                                                    const updated = isSelected
+                                                        ? prev.filter((t) => t !== tag.label)
+                                                        : [...prev, tag.label];
+
+                                                    fetchBlogByTag(updated);
+                                                    return updated;
+                                                });
+                                            }}
                                         >
                                             {tag.label.toUpperCase()}
                                         </Tag>

@@ -20,8 +20,8 @@ const MinimalCard = () => {
 
     const [trendingBlog, setTrendingBlog] = useState<IBlog[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [limit, setLimit] = useState(5);
-    const [sortQuery, setSortQuery] = useState(
+    const [limit, _setLimit] = useState(5);
+    const [sortQuery, _setSortQuery] = useState(
         'sort=activity.totalReads,desc&sort=activity.totalLikes,desc&sort=createdAt,asc',
     );
 
