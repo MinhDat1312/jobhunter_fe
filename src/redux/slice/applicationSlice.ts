@@ -38,6 +38,8 @@ export const applicationSlice = createSlice({
                 state.isFetching = false;
                 state.meta = action.payload.data.meta;
                 state.result = action.payload.data.result;
+            } else {
+                state.isFetching = false;
             }
         });
 
