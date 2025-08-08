@@ -132,7 +132,16 @@ const ViewUpsertBlog = () => {
         };
 
         if (dataUpdate?.blogId) {
-            const res = await callUpdateBlog(blog, dataUpdate.blogId);
+            const blogUpdate = {
+                ...blog,
+                activity: {
+                    totalLikes: dataUpdate.activity?.totalLikes,
+                    totalComments: dataUpdate.activity?.totalComments,
+                    totalReads: dataUpdate.activity?.totalReads,
+                    totalParentComments: dataUpdate.activity?.totalParentComments,
+                },
+            };
+            const res = await callUpdateBlog(blogUpdate, dataUpdate.blogId);
             if (res.data) {
                 message.success(t('notify.success_update_blog'));
                 navigate('/admin/blog');

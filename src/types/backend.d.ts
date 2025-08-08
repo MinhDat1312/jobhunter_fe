@@ -228,10 +228,10 @@ export interface IBlog {
     tags: string[];
     draft: boolean;
     activity?: {
-        totalLikes: number;
-        totalComments: number;
-        totalReads: number;
-        totalParentComments: number;
+        totalLikes: number | undefined;
+        totalComments: number | undefined;
+        totalReads: number | undefined;
+        totalParentComments: number | undefined;
     };
     author?: IUser;
 
