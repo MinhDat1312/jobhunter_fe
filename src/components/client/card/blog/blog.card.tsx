@@ -40,7 +40,7 @@ const BlogCard = (props: IProps) => {
     const [actorLikeNotifications, setActorLikeNotifications] = useState<INotification[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(3);
+    const [pageSize, setPageSize] = useState(4);
     const [filter, _setFilter] = useState('');
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
     const [displayBlog, setDisplayBlog] = useState<IBlog[] | null>(null);
@@ -147,7 +147,7 @@ const BlogCard = (props: IProps) => {
                             return (
                                 blog && (
                                     <MotionCol
-                                        span={24}
+                                        span={showPagination ? 24 : 12}
                                         key={blog.blogId}
                                         initial={{ opacity: 0, y: 50 }}
                                         whileInView={{ opacity: 1, y: 0 }}
