@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { callFetchBlog } from '../../../../config/api';
-import type { IBlog, INotification } from '../../../../types/backend';
+import { callFetchBlog, callFetchRecruiterById } from '../../../../config/api';
+import type { IBlog, INotification, IRecruiter } from '../../../../types/backend';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styles from '../../../../styles/client.module.scss';
-import { Avatar, Card, Col, Empty, Grid, Pagination, Row, Spin, Tag } from 'antd';
+import { Avatar, Card, Col, Divider, Empty, Grid, message, Modal, Pagination, Row, Spin, Tag } from 'antd';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,7 @@ import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { sfEqual, sfIn, sfLike } from 'spring-filter-query-builder';
 import { useAppSelector } from '../../../../hooks/hook';
 import useLikeBlog from '../../../../hooks/useLikeBlog';
+import AuthorForm from '../../form/author.form';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -44,6 +45,8 @@ const BlogCard = (props: IProps) => {
     const [sortQuery, _setSortQuery] = useState('sort=updatedAt,desc');
     const [displayBlog, setDisplayBlog] = useState<IBlog[] | null>(null);
     const [total, setTotal] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [authorDetail, setAuthorDetail] = useState<IRecruiter | null>(null);
     const { handleOnLike } = useLikeBlog({ setDisplayBlog });
 
     useEffect(() => {
@@ -103,6 +106,18 @@ const BlogCard = (props: IProps) => {
         }
     };
 
+    const handleViewAuthor = async (author: IRecruiter) => {
+        const res = await callFetchRecruiterById(author?.userId as string);
+        if (res && res.data) {
+            setAuthorDetail(res.data);
+            setIsModalOpen(true);
+        } else {
+            setAuthorDetail(null);
+            setIsModalOpen(false);
+            message.error(t('notify.empty'));
+        }
+    };
+
     return (
         <div className={`${styles['card-blog-section']}`}>
             <div className={`${styles['blog-content']}`}>
@@ -149,6 +164,9 @@ const BlogCard = (props: IProps) => {
                                                                     gap: '8px',
                                                                     cursor: 'pointer',
                                                                 }}
+                                                                onClick={() =>
+                                                                    blog?.author && handleViewAuthor(blog.author)
+                                                                }
                                                             >
                                                                 <Avatar
                                                                     src={blog?.author?.avatar}
@@ -279,6 +297,18 @@ const BlogCard = (props: IProps) => {
                     )}
                 </Spin>
             </div>
+            <Modal
+                title={t('recruiter')}
+                open={isModalOpen}
+                onCancel={() => setIsModalOpen(false)}
+                cancelText={t('button.cancel')}
+                cancelButtonProps={{ style: { display: 'inline-block' } }}
+                okButtonProps={{ style: { display: 'none' } }}
+                width={isMobile ? '100%' : 900}
+            >
+                <Divider />
+                <AuthorForm author={authorDetail} />
+            </Modal>
         </div>
     );
 };

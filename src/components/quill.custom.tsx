@@ -6,10 +6,11 @@ interface IProps {
     index?: number;
     onChange: ((index: number, value: string) => void) | ((value: string) => void);
     onRemove?: (index: number) => void;
+    readonly?: boolean;
 }
 
 const QuillCustom = (props: IProps) => {
-    const { value, index = -1, onChange, onRemove = null } = props;
+    const { value, index = -1, onChange, onRemove = null, readonly = false } = props;
     const modules = {
         toolbar: {
             container: [
@@ -49,6 +50,7 @@ const QuillCustom = (props: IProps) => {
                 }}
                 modules={modules}
                 theme="snow"
+                readOnly={readonly}
             />
         </div>
     );
