@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
     en: {
         translation: {
+            verification: 'Verification Code',
             iam: 'I am',
             home: 'Home',
             job: 'Job',
@@ -138,6 +139,7 @@ const resources = {
                 signin_followed_recruiter: 'You are not logged in. Please log in to follow for the recruiter!',
                 max_skill: 'You can select up to 5 skills only!',
                 max_recruiter: 'You can select up to 5 recruiters only!',
+                verification_code_length: 'The verification code must be 6 characters!',
             },
             page_error: {
                 result: {
@@ -164,6 +166,7 @@ const resources = {
                 unfollow: 'Unfollow',
                 subscribe: 'Subscribe',
                 add: 'Add',
+                resend: 'Resend',
             },
             table: {
                 no_1: 'No.',
@@ -247,6 +250,7 @@ const resources = {
     },
     vi: {
         translation: {
+            verification: 'Mã xác thực',
             iam: 'Tôi là',
             home: 'Trang chủ',
             job: 'Việc làm',
@@ -378,6 +382,7 @@ const resources = {
                 signin_followed_recruiter: 'Bạn chưa đăng nhập. Vui lòng đăng nhập để có thể theo dõi nhé!',
                 max_skill: 'Chỉ được chọn tối đa 5 kỹ năng!',
                 max_recruiter: 'Chỉ được chọn tối đa 5 nhà tuyển dụng!',
+                verification_code_length: 'Mã xác thực phải gồm 6 ký tự!',
             },
             page_error: {
                 result: {
@@ -404,6 +409,7 @@ const resources = {
                 unfollow: 'Hủy theo dõi',
                 subscribe: 'Đăng ký',
                 add: 'Thêm',
+                resend: 'Gửi lại',
             },
             table: {
                 no_1: 'STT',

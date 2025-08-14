@@ -28,6 +28,7 @@ import EmailSubscription from './components/client/email.subscription';
 import ClientBlogPage from './pages/blog/blog';
 import BlogPage from './pages/admin/blog';
 import ViewUpsertBlog from './components/admin/blog/upsert.blog';
+import ClientBlogDetailPage from './pages/blog/detail';
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: 'blog',
                 element: <ClientBlogPage />,
+            },
+            {
+                path: 'blog/:id',
+                element: <ClientBlogDetailPage />,
             },
         ],
     },

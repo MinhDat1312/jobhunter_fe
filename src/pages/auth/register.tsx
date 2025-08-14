@@ -1,7 +1,7 @@
-import { Button, Col, Divider, Form, Input, Row, Select, message, notification } from 'antd';
+import { Button, Col, Divider, Form, Input, Modal, Row, Select, message, notification } from 'antd';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { callRegister } from '../../config/api';
+import { callRegister, callResendCode, callVerifyCode } from '../../config/api';
 import styles from '../../styles/auth.module.scss';
 import { useTranslation } from 'react-i18next';
 const { Option } = Select;
@@ -10,7 +10,11 @@ const RegisterPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [isSubmit, setIsSubmit] = useState(false);
+    const [loadingResend, setLoadingResend] = useState(false);
     const [typeRegister, setTypeRegister] = useState<string>('applicant');
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>('');
+    const [form] = Form.useForm();
 
     const handleChangeType = (value: string) => {
         setTypeRegister(value);
@@ -18,6 +22,7 @@ const RegisterPage = () => {
 
     const onFinish = async (values: any) => {
         const { fullName, username, password, address, contact, type } = values;
+        setEmail(contact.email);
         setIsSubmit(true);
 
         let res = null;
@@ -29,8 +34,41 @@ const RegisterPage = () => {
 
         setIsSubmit(false);
         if (res?.data?.userId) {
+            setOpenModal(true);
+        } else {
+            notification.error({
+                message: t('notify.error'),
+                description:
+                    res?.message && Array.isArray(res?.message) ? res?.message[0] : res?.message ?? t('notify.error'),
+                duration: 5,
+            });
+        }
+    };
+
+    const onVerify = async () => {
+        const { code } = form.getFieldsValue();
+        const res = await callVerifyCode(email, code);
+
+        if (res && res.data) {
             message.success(t('notify.signup'));
+            setOpenModal(false);
             navigate('/login');
+        } else {
+            notification.error({
+                message: t('notify.error'),
+                description: res?.message && Array.isArray(res?.message) ? res?.message[0] : res ?? t('notify.error'),
+                duration: 5,
+            });
+        }
+    };
+
+    const onResend = async () => {
+        setLoadingResend(true);
+        const res = await callResendCode(email);
+
+        if (res && res.data) {
+            message.success(res.data?.message);
+            setLoadingResend(false);
         } else {
             notification.error({
                 message: t('notify.error'),
@@ -188,6 +226,31 @@ const RegisterPage = () => {
                     </section>
                 </div>
             </main>
+            <Modal
+                title={t('verification')}
+                closable={false}
+                maskClosable={false}
+                open={openModal}
+                onCancel={onResend}
+                onOk={onVerify}
+                cancelText={t('button.resend')}
+                okText={t('button.confirm')}
+                cancelButtonProps={{ style: { display: 'inline-block' }, loading: loadingResend }}
+                okButtonProps={{ style: { display: 'inline-block' } }}
+            >
+                <Form form={form} layout="vertical" name="verificationForm">
+                    <Form.Item
+                        label={t('verification')}
+                        name="code"
+                        rules={[
+                            { required: true, message: t('notify.required') },
+                            { len: 6, message: t('notify.verification_code_length') },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 };

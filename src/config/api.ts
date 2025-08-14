@@ -41,7 +41,7 @@ export const callRegister = (
             fullName,
         });
     } else if (type === 'applicant') {
-        return axios.post<IBackendRes<IRecruiter>>('/api/v1/auth/register/applicant', {
+        return axios.post<IBackendRes<IApplicant>>('/api/v1/auth/register/applicant', {
             contact,
             password,
             type,
@@ -63,6 +63,14 @@ export const callRefreshToken = () => {
 
 export const callLogout = () => {
     return axios.post<IBackendRes<string>>('/api/v1/auth/logout');
+};
+
+export const callVerifyCode = (email: string, verificationCode: string) => {
+    return axios.post<IBackendRes<any>>('/api/v1/auth/verify', { email, verificationCode });
+};
+
+export const callResendCode = (email: string) => {
+    return axios.post<IBackendRes<any>>(`/api/v1/auth/resend?email=${email}`);
 };
 
 /***
