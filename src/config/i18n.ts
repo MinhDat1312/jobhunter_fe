@@ -67,6 +67,7 @@ const resources = {
             saved: 'Saved',
             skill: 'Skill',
             banner: 'Banner',
+            seeking: 'Seeking',
             skill_subscribed: 'Skills you subscribed',
             skill_subscribed_desc:
                 'By subscribing, Job Robot will suggest in-demand jobs that match your skill via email.',
@@ -315,6 +316,7 @@ const resources = {
             saved: 'Đã lưu',
             skill: 'Kỹ năng',
             banner: 'Banner',
+            seeking: 'Tìm việc',
             skill_subscribed: 'Kỹ năng đã đăng ký',
             skill_subscribed_desc: 'Đăng ký Job Robot để không bỏ lỡ việc làm phù hợp với kỹ năng của bạn.',
             recruiter_subscribed: 'Nhà tuyển dụng đã theo dõi',

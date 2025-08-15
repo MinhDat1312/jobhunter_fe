@@ -14,6 +14,7 @@ interface IState {
         username: string;
         avatar: string;
         type: string;
+        enabled: boolean;
         savedJobs?: { jobId: number }[];
         followedRecruiters?: { userId: number }[];
         actorNotifications?: INotification[];
@@ -45,6 +46,7 @@ const initialState: IState = {
         username: '',
         avatar: '',
         type: '',
+        enabled: false,
         savedJobs: [],
         followedRecruiters: [],
         actorNotifications: [],
@@ -75,6 +77,7 @@ export const accountSlice = createSlice({
             state.user.username = action.payload.username;
             state.user.avatar = action?.payload?.avatar;
             state.user.type = action?.payload?.type;
+            state.user.enabled = action?.payload?.enabled;
             state.user.role = action?.payload?.role;
             state.user.savedJobs = action?.payload?.savedJobs.map((job: IJob) => {
                 return { jobId: job.jobId };
@@ -100,6 +103,7 @@ export const accountSlice = createSlice({
                 username: '',
                 avatar: '',
                 type: '',
+                enabled: false,
                 savedJobs: [],
                 followedRecruiters: [],
                 actorNotifications: [],
@@ -147,6 +151,7 @@ export const accountSlice = createSlice({
                 state.user.username = action.payload?.user?.username;
                 state.user.avatar = action?.payload?.user?.avatar as string;
                 state.user.type = action?.payload?.user?.type as string;
+                state.user.enabled = action?.payload?.user?.enabled ?? false;
                 state.user.role = action?.payload?.user?.role;
                 state.user.savedJobs = action?.payload?.user?.savedJobs.map((job) => {
                     return { jobId: +(job.jobId ?? 0) };

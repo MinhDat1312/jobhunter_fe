@@ -71,6 +71,7 @@ const ApplicantForm = (props: IProps) => {
 
             form.setFieldsValue({
                 fullName: dataInit.fullName,
+                enabled: dataInit.enabled,
                 availableStatus: dataInit.availableStatus,
                 username: dataInit.username,
                 education: dataInit.education,
@@ -86,7 +87,8 @@ const ApplicantForm = (props: IProps) => {
     }, [dataInit]);
 
     const onFinish = async (values: any) => {
-        const { fullName, availableStatus, username, education, level, contact, address, gender, dob } = values;
+        const { fullName, enabled, availableStatus, username, education, level, contact, address, gender, dob } =
+            values;
         let { role } = values;
         let { password } = values;
 
@@ -110,6 +112,7 @@ const ApplicantForm = (props: IProps) => {
                 !onRole ? dataInit.password : '12345678',
                 username,
                 availableStatus,
+                enabled,
                 education,
                 level,
                 !onRole
@@ -139,6 +142,7 @@ const ApplicantForm = (props: IProps) => {
                 password,
                 username,
                 availableStatus,
+                enabled,
                 education,
                 level,
                 { roleId: role.roleId, name: role.name },
@@ -158,6 +162,7 @@ const ApplicantForm = (props: IProps) => {
         if (setVisibleUpload) setVisibleUpload(true);
         if (setFileList) setFileList([]);
         if (setLoadingUpload) setLoadingUpload(false);
+        if (setDataInit) setDataInit(null);
     };
 
     return (
@@ -189,6 +194,17 @@ const ApplicantForm = (props: IProps) => {
             }}
         >
             <Row gutter={16}>
+                <Col span={24}>
+                    <ProFormSwitch
+                        label={t('status')}
+                        name="enabled"
+                        checkedChildren={t('button.active').toUpperCase()}
+                        unCheckedChildren={t('button.inactive').toUpperCase()}
+                        initialValue={false}
+                    />
+                </Col>
+            </Row>
+            <Row gutter={16}>
                 <Col lg={20} md={20} sm={24} xs={24}>
                     <Row gutter={16}>
                         <Col lg={12} md={12} sm={24} xs={24}>
@@ -196,7 +212,7 @@ const ApplicantForm = (props: IProps) => {
                         </Col>
                         <Col lg={6} md={6} sm={24} xs={24}>
                             <ProFormSwitch
-                                label={t('status')}
+                                label={t('seeking')}
                                 name="availableStatus"
                                 checkedChildren={t('button.active').toUpperCase()}
                                 unCheckedChildren={t('button.inactive').toUpperCase()}
@@ -299,6 +315,7 @@ const ApplicantForm = (props: IProps) => {
             <Row gutter={16}>
                 <Col md={10} xs={24}>
                     <ProFormText
+                        disabled={dataInit ? true : false}
                         label={t('email')}
                         name={['contact', 'email']}
                         rules={[

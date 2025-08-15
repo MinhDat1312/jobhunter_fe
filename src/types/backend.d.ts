@@ -24,6 +24,7 @@ export interface IAccount {
         username: string;
         avatar?: string;
         type?: string;
+        enabled?: boolean;
         role: {
             roleId: string;
             name: string;
@@ -54,6 +55,7 @@ export interface IUser {
     password: string;
     username?: string;
     avatar?: string;
+    enabled?: boolean;
 
     role?: {
         roleId: string;
