@@ -61,7 +61,6 @@ const LoginPage = () => {
                             >
                                 <Input />
                             </Form.Item>
-
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 label={t('password')}
@@ -70,7 +69,14 @@ const LoginPage = () => {
                             >
                                 <Input.Password />
                             </Form.Item>
-
+                            <div style={{ marginBottom: 24 }}>
+                                <Link
+                                    to="/reset-password"
+                                    style={{ fontSize: 14, fontWeight: 'bolder', color: '#00b452' }}
+                                >
+                                    {t('button.forgot')} {t('password').toLowerCase()}?
+                                </Link>
+                            </div>
                             <Form.Item>
                                 <Button type="primary" htmlType="submit" loading={isSubmit}>
                                     {t('sign_in')}
