@@ -92,6 +92,13 @@ export const callUpdatePassword = (currentPassword: string, newPassword: string,
     });
 };
 
+export const callResetPassword = (email: string, newPassword: string) => {
+    return axios.put<IBackendRes<any>>('/api/v1/users/reset-password', {
+        email,
+        newPassword,
+    });
+};
+
 export const callSaveJobs = (userId: number, savedJobs: { jobId: number }[]) => {
     return axios.put<IBackendRes<IUser>>('/api/v1/users/saved-jobs', {
         userId,

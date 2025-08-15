@@ -29,6 +29,7 @@ import ClientBlogPage from './pages/blog/blog';
 import BlogPage from './pages/admin/blog';
 import ViewUpsertBlog from './components/admin/blog/upsert.blog';
 import ClientBlogDetailPage from './pages/blog/detail';
+import ResetPassword from './pages/auth/reset';
 
 const router = createBrowserRouter([
     {
@@ -174,6 +175,10 @@ const router = createBrowserRouter([
     {
         path: '/register',
         element: <RegisterPage />,
+    },
+    {
+        path: '/reset-password',
+        element: <ResetPassword />,
     },
 ]);
 

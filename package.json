@@ -18,6 +18,7 @@
         "@lexical/react": "^0.32.1",
         "@reduxjs/toolkit": "^2.8.2",
         "antd": "^5.26.4",
+        "antd-input-otp": "^2.1.0",
         "async-mutex": "^0.5.0",
         "axios": "^1.9.0",
         "dayjs": "^1.11.13",

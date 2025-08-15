@@ -59,6 +59,7 @@ const resources = {
             gender: 'Gender',
             dob: 'Date of birth',
             password: 'Password',
+            reset: 'Reset',
             current_password: 'Current password',
             new_password: 'New password',
             re_password: 'Confirm password',
@@ -140,6 +141,7 @@ const resources = {
                 max_skill: 'You can select up to 5 skills only!',
                 max_recruiter: 'You can select up to 5 recruiters only!',
                 verification_code_length: 'The verification code must be 6 characters!',
+                reset_email: 'Enter your registered email address',
             },
             page_error: {
                 result: {
@@ -167,6 +169,7 @@ const resources = {
                 subscribe: 'Subscribe',
                 add: 'Add',
                 resend: 'Resend',
+                forgot: 'Forgot',
             },
             table: {
                 no_1: 'No.',
@@ -304,6 +307,7 @@ const resources = {
             gender: 'Giới tính',
             dob: 'Ngày sinh',
             password: 'Mật khẩu',
+            reset: 'Đặt lại',
             current_password: 'Mật khẩu hiện tại',
             new_password: 'Mật khẩu mới',
             re_password: 'Xác nhận mật khẩu',
@@ -383,6 +387,7 @@ const resources = {
                 max_skill: 'Chỉ được chọn tối đa 5 kỹ năng!',
                 max_recruiter: 'Chỉ được chọn tối đa 5 nhà tuyển dụng!',
                 verification_code_length: 'Mã xác thực phải gồm 6 ký tự!',
+                reset_email: 'Nhập email bạn đã đăng ký',
             },
             page_error: {
                 result: {
@@ -410,6 +415,7 @@ const resources = {
                 subscribe: 'Đăng ký',
                 add: 'Thêm',
                 resend: 'Gửi lại',
+                forgot: 'Quên',
             },
             table: {
                 no_1: 'STT',
