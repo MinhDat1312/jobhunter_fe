@@ -8,12 +8,13 @@ import { useNavigate } from 'react-router-dom';
 interface IProps {
     email: string;
     openModal: boolean;
-    setOpenModal: (value: SetStateAction<boolean>) => void;
+    setOpenModal: ((value: SetStateAction<boolean>) => void) | ((v: boolean) => void);
     direct?: string;
+    reloadTable?: () => void;
 }
 
 const VerificationModal = (props: IProps) => {
-    const { email, openModal, setOpenModal, direct = '/login' } = props;
+    const { email, openModal, setOpenModal, direct = '/login', reloadTable } = props;
 
     const { t } = useTranslation();
     const [loadingResend, setLoadingResend] = useState(false);
@@ -31,7 +32,8 @@ const VerificationModal = (props: IProps) => {
         if (res && res.data) {
             message.success(t('notify.signup'));
             setOpenModal(false);
-            navigate(direct);
+            direct !== '' ? navigate(direct) : setOpenModal(false);
+            if (reloadTable) reloadTable();
         } else {
             notification.error({
                 message: t('notify.error'),

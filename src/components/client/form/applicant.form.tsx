@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { callCreateApplicant, callUpdateApplicant } from '../../../config/api';
 import { useTranslation } from 'react-i18next';
+import VerificationModal from '../../verification.modal';
 
 interface IProps {
     form: FormInstance<any>;
@@ -50,8 +51,9 @@ const ApplicantForm = (props: IProps) => {
         reloadTable,
     } = props;
     const [roles, setRoles] = useState<ISelect[]>([]);
-
     const { t, i18n } = useTranslation();
+    const [emailTmp, setEmailTmp] = useState<string>('');
+    const [verificationModal, setVerificationModal] = useState<boolean>(false);
 
     useEffect(() => {
         dayjs.locale(i18n.language);
@@ -60,13 +62,15 @@ const ApplicantForm = (props: IProps) => {
     useEffect(() => {
         if (dataInit?.userId) {
             if (dataInit.role) {
-                setRoles([
+                const roleValue = [
                     {
                         label: getRoleName(dataInit.role?.name),
                         value: dataInit.role?.roleId,
                         key: dataInit.role?.roleId,
                     },
-                ]);
+                ];
+                setRoles(roleValue);
+                form.setFieldsValue({ role: roleValue });
             }
 
             form.setFieldsValue({
@@ -91,6 +95,7 @@ const ApplicantForm = (props: IProps) => {
             values;
         let { role } = values;
         let { password } = values;
+        setEmailTmp(contact.email);
 
         if (typeof role === 'number') {
             role = {
@@ -149,9 +154,7 @@ const ApplicantForm = (props: IProps) => {
                 fileList.length > 0 ? fileList[0].url : '',
             );
             if (res.data) {
-                message.success(t('notify.success_create_applicant'));
-                if (onClose) onClose(false);
-                if (reloadTable) reloadTable();
+                setVerificationModal(true);
             } else {
                 notification.error({
                     message: t('notify.error'),
@@ -166,200 +169,231 @@ const ApplicantForm = (props: IProps) => {
     };
 
     return (
-        <ProForm
-            form={form}
-            onFinish={onFinish}
-            submitter={{
-                searchConfig: {
-                    resetText: t('button.cancel'),
-                    submitText: <>{dataInit?.userId ? t('button.update') : t('button.create')}</>,
-                },
-                resetButtonProps: {
-                    preventDefault: true,
-                    onClick: () => {
-                        if (onClose) {
-                            if (setDataInit) setDataInit(null);
-                            onClose(false);
-                            setRoles([]);
-                            if (setFileList) setFileList([]);
-                        }
+        <>
+            <ProForm
+                form={form}
+                onFinish={onFinish}
+                submitter={{
+                    searchConfig: {
+                        resetText: t('button.cancel'),
+                        submitText: <>{dataInit?.userId ? t('button.update') : t('button.create')}</>,
                     },
-                },
-                render: (_: any, dom: any) => (
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
-                ),
-                submitButtonProps: {
-                    icon: <CheckSquareOutlined />,
-                },
-            }}
-        >
-            {onRole && (
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <ProFormSwitch
-                            label={t('status')}
-                            name="enabled"
-                            checkedChildren={t('button.active').toUpperCase()}
-                            unCheckedChildren={t('button.inactive').toUpperCase()}
-                            initialValue={false}
-                        />
-                    </Col>
-                </Row>
-            )}
-            <Row gutter={16}>
-                <Col lg={20} md={20} sm={24} xs={24}>
+                    resetButtonProps: {
+                        preventDefault: true,
+                        onClick: () => {
+                            if (onClose) {
+                                if (setDataInit) setDataInit(null);
+                                onClose(false);
+                                setRoles([]);
+                                if (setFileList) setFileList([]);
+                            }
+                        },
+                    },
+                    render: (_: any, dom: any) => (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>{dom}</div>
+                    ),
+                    submitButtonProps: {
+                        icon: <CheckSquareOutlined />,
+                    },
+                }}
+            >
+                {onRole && (
                     <Row gutter={16}>
-                        <Col lg={12} md={12} sm={24} xs={24}>
-                            <ProFormText label={t('name_applicant')} name="fullName" placeholder={t('placeholder')} />
-                        </Col>
-                        <Col lg={6} md={6} sm={24} xs={24}>
+                        <Col span={24}>
                             <ProFormSwitch
-                                label={t('seeking')}
-                                name="availableStatus"
+                                label={t('status')}
+                                name="enabled"
                                 checkedChildren={t('button.active').toUpperCase()}
                                 unCheckedChildren={t('button.inactive').toUpperCase()}
                                 initialValue={false}
                             />
                         </Col>
-                        <Col lg={6} md={6} sm={24} xs={24}>
-                            <ProForm.Item name="role" label={t('role')}>
-                                <DebounceSelect
-                                    disabled={onRole ? false : true}
-                                    allowClear
-                                    showSearch
-                                    value={roles}
-                                    placeholder={t('choose')}
-                                    fetchOptions={fetchRoleList}
-                                    onChange={(newValue: any) => {
-                                        setRoles(newValue as ISelect[]);
-                                    }}
-                                    style={{ width: '100%' }}
-                                />
-                            </ProForm.Item>
-                        </Col>
                     </Row>
-                    <Row gutter={16}>
-                        {!onRole ? (
+                )}
+                <Row gutter={16}>
+                    <Col lg={20} md={20} sm={24} xs={24}>
+                        <Row gutter={16}>
                             <Col lg={12} md={12} sm={24} xs={24}>
-                                <ProFormText label={t('username')} name="username" placeholder={t('placeholder')} />
+                                <ProFormText
+                                    label={t('name_applicant')}
+                                    name="fullName"
+                                    placeholder={t('placeholder')}
+                                />
                             </Col>
-                        ) : (
-                            <>
-                                <Col lg={6} md={6} sm={24} xs={24}>
+                            <Col lg={6} md={6} sm={24} xs={24}>
+                                <ProFormSwitch
+                                    label={t('seeking')}
+                                    name="availableStatus"
+                                    checkedChildren={t('button.active').toUpperCase()}
+                                    unCheckedChildren={t('button.inactive').toUpperCase()}
+                                    initialValue={false}
+                                />
+                            </Col>
+                            <Col lg={6} md={6} sm={24} xs={24}>
+                                <ProForm.Item
+                                    name="role"
+                                    label={t('role')}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            validator: (_: any, value: any) => {
+                                                if (!value || value.length === 0) {
+                                                    return Promise.reject(new Error(t('notify.required')));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
+                                >
+                                    <DebounceSelect
+                                        disabled={onRole ? false : true}
+                                        allowClear
+                                        showSearch
+                                        value={roles}
+                                        placeholder={t('choose')}
+                                        fetchOptions={fetchRoleList}
+                                        onChange={(newValue: any) => {
+                                            setRoles(newValue as ISelect[]);
+                                        }}
+                                        style={{ width: '100%' }}
+                                    />
+                                </ProForm.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            {!onRole ? (
+                                <Col lg={12} md={12} sm={24} xs={24}>
                                     <ProFormText label={t('username')} name="username" placeholder={t('placeholder')} />
                                 </Col>
-                                <Col lg={6} md={6} sm={24} xs={24}>
-                                    <ProFormText
-                                        disabled={dataInit?.userId ? true : false}
-                                        label={t('password')}
-                                        name="password"
-                                        rules={[
-                                            () => ({
-                                                validator(_, value) {
-                                                    if (!dataInit?.userId && !value) {
-                                                        return Promise.reject(t('notify.required'));
-                                                    }
-                                                    return Promise.resolve();
-                                                },
-                                            }),
-                                        ]}
-                                        placeholder={t('placeholder')}
-                                    />
-                                </Col>
-                            </>
-                        )}
-                        <Col lg={6} md={6} sm={24} xs={24}>
-                            <ProFormSelect
-                                name="education"
-                                label={t('education')}
-                                options={EDUCATION_LIST}
-                                placeholder={t('choose')}
-                            />
-                        </Col>
-                        <Col lg={6} md={6} sm={24} xs={24}>
-                            <ProFormSelect
-                                name="level"
-                                label={t('level')}
-                                options={LEVEL_LIST}
-                                placeholder={t('placeholder')}
-                            />
-                        </Col>
-                    </Row>
-                </Col>
-                <Col lg={4} md={4} sm={24} xs={24}>
-                    <Form.Item
-                        labelCol={{ span: 24 }}
-                        label={<span style={{ textAlign: 'center' }}>{t('avatar')}</span>}
-                        name="avatar"
-                    >
-                        <Upload
-                            name="avatar"
-                            listType="picture-card"
-                            maxCount={1}
-                            multiple={false}
-                            customRequest={uploadFileLogo}
-                            beforeUpload={beforeUpload}
-                            onChange={onChange}
-                            onRemove={(file) => removeFile(file)}
-                            onPreview={onPreview}
-                            fileList={fileList}
-                        >
-                            {visibleUpload && fileList.length < 1 && (
-                                <div>
-                                    {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
-                                    <div style={{ marginTop: 8 }}>{t('upload')}</div>
-                                </div>
+                            ) : (
+                                <>
+                                    <Col lg={6} md={6} sm={24} xs={24}>
+                                        <ProFormText
+                                            label={t('username')}
+                                            name="username"
+                                            placeholder={t('placeholder')}
+                                        />
+                                    </Col>
+                                    <Col lg={6} md={6} sm={24} xs={24}>
+                                        <ProFormText
+                                            disabled={dataInit?.userId ? true : false}
+                                            label={t('password')}
+                                            name="password"
+                                            rules={[
+                                                () => ({
+                                                    validator(_, value) {
+                                                        if (!dataInit?.userId && !value) {
+                                                            return Promise.reject(t('notify.required'));
+                                                        }
+                                                        return Promise.resolve();
+                                                    },
+                                                }),
+                                            ]}
+                                            placeholder={t('placeholder')}
+                                        />
+                                    </Col>
+                                </>
                             )}
-                        </Upload>
-                    </Form.Item>
-                </Col>
-            </Row>
-            <Row gutter={16}>
-                <Col md={10} xs={24}>
-                    <ProFormText
-                        disabled={dataInit ? true : false}
-                        label={t('email')}
-                        name={['contact', 'email']}
-                        rules={[
-                            { required: true, message: t('notify.required') },
-                            { type: 'email', message: t('notify.email_match') },
-                        ]}
-                        placeholder={t('placeholder')}
-                    />
-                </Col>
-                <Col md={10} xs={24}>
-                    <ProFormText label={t('tel')} name={['contact', 'phone']} placeholder={t('placeholder')} />
-                </Col>
-            </Row>
-            <Row gutter={16}>
-                <Col md={10} xs={24}>
-                    <ProFormText label={t('address')} name="address" placeholder={t('placeholder')} />
-                </Col>
-                <Col lg={5} md={5} sm={24} xs={24}>
-                    <ProFormSelect
-                        name="gender"
-                        label={t('gender')}
-                        valueEnum={{
-                            MALE: 'Nam',
-                            FEMALE: 'Nữ',
-                            OTHER: 'Khác',
-                        }}
-                        placeholder={t('choose')}
-                        rules={[{ required: true, message: t('notify.required') }]}
-                    />
-                </Col>
-                <Col lg={5} md={5} sm={24} xs={24}>
-                    <Form.Item
-                        labelCol={{ span: 24 }}
-                        label={t('dob')}
-                        name="dob"
-                        rules={[{ required: true, message: t('notify.required') }]}
-                    >
-                        <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
-                    </Form.Item>
-                </Col>
-            </Row>
-        </ProForm>
+                            <Col lg={6} md={6} sm={24} xs={24}>
+                                <ProFormSelect
+                                    name="education"
+                                    label={t('education')}
+                                    options={EDUCATION_LIST}
+                                    placeholder={t('choose')}
+                                />
+                            </Col>
+                            <Col lg={6} md={6} sm={24} xs={24}>
+                                <ProFormSelect
+                                    name="level"
+                                    label={t('level')}
+                                    options={LEVEL_LIST}
+                                    placeholder={t('placeholder')}
+                                />
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col lg={4} md={4} sm={24} xs={24}>
+                        <Form.Item
+                            labelCol={{ span: 24 }}
+                            label={<span style={{ textAlign: 'center' }}>{t('avatar')}</span>}
+                            name="avatar"
+                        >
+                            <Upload
+                                name="avatar"
+                                listType="picture-card"
+                                maxCount={1}
+                                multiple={false}
+                                customRequest={uploadFileLogo}
+                                beforeUpload={beforeUpload}
+                                onChange={onChange}
+                                onRemove={(file) => removeFile(file)}
+                                onPreview={onPreview}
+                                fileList={fileList}
+                            >
+                                {visibleUpload && fileList.length < 1 && (
+                                    <div>
+                                        {loadingUpload ? <LoadingOutlined /> : <PlusOutlined />}
+                                        <div style={{ marginTop: 8 }}>{t('upload')}</div>
+                                    </div>
+                                )}
+                            </Upload>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col md={10} xs={24}>
+                        <ProFormText
+                            disabled={dataInit ? true : false}
+                            label={t('email')}
+                            name={['contact', 'email']}
+                            rules={[
+                                { required: true, message: t('notify.required') },
+                                { type: 'email', message: t('notify.email_match') },
+                            ]}
+                            placeholder={t('placeholder')}
+                        />
+                    </Col>
+                    <Col md={10} xs={24}>
+                        <ProFormText label={t('tel')} name={['contact', 'phone']} placeholder={t('placeholder')} />
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col md={10} xs={24}>
+                        <ProFormText label={t('address')} name="address" placeholder={t('placeholder')} />
+                    </Col>
+                    <Col lg={5} md={5} sm={24} xs={24}>
+                        <ProFormSelect
+                            name="gender"
+                            label={t('gender')}
+                            valueEnum={{
+                                MALE: 'Nam',
+                                FEMALE: 'Nữ',
+                                OTHER: 'Khác',
+                            }}
+                            placeholder={t('choose')}
+                            rules={[{ required: true, message: t('notify.required') }]}
+                        />
+                    </Col>
+                    <Col lg={5} md={5} sm={24} xs={24}>
+                        <Form.Item
+                            labelCol={{ span: 24 }}
+                            label={t('dob')}
+                            name="dob"
+                            rules={[{ required: true, message: t('notify.required') }]}
+                        >
+                            <DatePicker style={{ width: '100%' }} format="DD/MM/YYYY" />
+                        </Form.Item>
+                    </Col>
+                </Row>
+            </ProForm>
+            <VerificationModal
+                email={emailTmp}
+                openModal={verificationModal}
+                setOpenModal={onClose ?? setVerificationModal}
+                direct={''}
+                reloadTable={reloadTable}
+            />
+        </>
     );
 };
 
