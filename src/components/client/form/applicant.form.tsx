@@ -193,17 +193,19 @@ const ApplicantForm = (props: IProps) => {
                 },
             }}
         >
-            <Row gutter={16}>
-                <Col span={24}>
-                    <ProFormSwitch
-                        label={t('status')}
-                        name="enabled"
-                        checkedChildren={t('button.active').toUpperCase()}
-                        unCheckedChildren={t('button.inactive').toUpperCase()}
-                        initialValue={false}
-                    />
-                </Col>
-            </Row>
+            {onRole && (
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <ProFormSwitch
+                            label={t('status')}
+                            name="enabled"
+                            checkedChildren={t('button.active').toUpperCase()}
+                            unCheckedChildren={t('button.inactive').toUpperCase()}
+                            initialValue={false}
+                        />
+                    </Col>
+                </Row>
+            )}
             <Row gutter={16}>
                 <Col lg={20} md={20} sm={24} xs={24}>
                     <Row gutter={16}>
