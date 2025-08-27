@@ -16,6 +16,7 @@ import { sfEqual, sfIn, sfLike } from 'spring-filter-query-builder';
 import { useAppSelector } from '../../../../hooks/hook';
 import useLikeBlog from '../../../../hooks/useLikeBlog';
 import AuthorForm from '../../form/author.form';
+import { convertSlug } from '../../../../config/utils';
 
 dayjs.extend(relativeTime);
 const { useBreakpoint } = Grid;
@@ -118,6 +119,13 @@ const BlogCard = (props: IProps) => {
         }
     };
 
+    const handleViewDetailBlog = (item: IBlog) => {
+        if (item.title) {
+            const slug = convertSlug(item.title);
+            navigate(`/blog/${slug}?id=${item.blogId}`);
+        }
+    };
+
     return (
         <div className={`${styles['card-blog-section']}`}>
             <div className={`${styles['blog-content']}`}>
@@ -147,7 +155,7 @@ const BlogCard = (props: IProps) => {
                             return (
                                 blog && (
                                     <MotionCol
-                                        span={showPagination ? 24 : 12}
+                                        span={24}
                                         key={blog.blogId}
                                         initial={{ opacity: 0, y: 50 }}
                                         whileInView={{ opacity: 1, y: 0 }}
@@ -185,7 +193,7 @@ const BlogCard = (props: IProps) => {
                                                             </div>
                                                             <p>
                                                                 {blog.updatedAt
-                                                                    ? dayjs(blog.updatedAt)
+                                                                    ? dayjs(blog.createdAt)
                                                                           .locale(i18n.language)
                                                                           .fromNow()
                                                                     : dayjs(blog.createdAt)
@@ -193,7 +201,12 @@ const BlogCard = (props: IProps) => {
                                                                           .fromNow()}
                                                             </p>
                                                         </div>
-                                                        <div className={styles['blog-title']}>{blog.title}</div>
+                                                        <div
+                                                            className={styles['blog-title']}
+                                                            onClick={() => handleViewDetailBlog(blog)}
+                                                        >
+                                                            {blog.title}
+                                                        </div>
                                                         {!isMobile && (
                                                             <div className={styles['blog-description']}>
                                                                 {blog.description}

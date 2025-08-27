@@ -45,10 +45,6 @@ const Header = () => {
     const [openMobileMenuLeft, setOpenMobileMenuLeft] = useState<boolean>(false);
     const [openMobileMenuRight, setOpenMobileMenuRight] = useState<boolean>(false);
 
-    useEffect(() => {
-        setCurrent(location.pathname);
-    }, [location.pathname]);
-
     const itemsLeft: MenuProps['items'] = [
         {
             label: <Link to={'/'}>{t('home')}</Link>,
@@ -144,6 +140,16 @@ const Header = () => {
             icon: <LogoutOutlined />,
         },
     ];
+
+    useEffect(() => {
+        const active = itemsLeft
+            ?.filter((item) => location.pathname.startsWith(item?.key as string))
+            ?.sort(
+                (a, b) =>
+                    (typeof b?.key === 'string' ? b.key.length : 0) - (typeof a?.key === 'string' ? a.key.length : 0),
+            );
+        setCurrent(active?.[0]?.key as string);
+    }, [location.pathname, itemsLeft]);
 
     const handleLogout = async () => {
         const res = await callLogout();

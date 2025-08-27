@@ -8,6 +8,8 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useTranslation } from 'react-i18next';
 import styles from '../../../../styles/client.module.scss';
+import { convertSlug } from '../../../../config/utils';
+import { useNavigate } from 'react-router-dom';
 
 const MotionCol = motion(Col);
 dayjs.extend(relativeTime);
@@ -18,6 +20,7 @@ const MinimalCard = () => {
     const screens = useBreakpoint();
     const isMobile = !screens.md;
 
+    const navigate = useNavigate();
     const [trendingBlog, setTrendingBlog] = useState<IBlog[] | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [limit, _setLimit] = useState(5);
@@ -46,6 +49,13 @@ const MinimalCard = () => {
         fetchBlog();
     }, [limit, sortQuery]);
 
+    const handleViewDetailBlog = (item: IBlog) => {
+        if (item.title) {
+            const slug = convertSlug(item.title);
+            navigate(`/blog/${slug}?id=${item.blogId}`);
+        }
+    };
+
     return (
         <Spin spinning={isLoading} tip="Loading...">
             <Row gutter={[20, 20]}>
@@ -71,7 +81,13 @@ const MinimalCard = () => {
                                     transition={{ duration: 0.8 }}
                                     style={{ paddingLeft: 0, marginBottom: 16 }}
                                 >
-                                    <Card size="small" title={null} hoverable style={{ cursor: 'pointer' }}>
+                                    <Card
+                                        size="small"
+                                        title={null}
+                                        hoverable
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() => handleViewDetailBlog(blog)}
+                                    >
                                         <div style={{ display: 'flex', gap: 12 }}>
                                             <h1
                                                 style={{
@@ -109,11 +125,7 @@ const MinimalCard = () => {
                                                             @{blog.author?.username}
                                                         </p>
                                                     </div>
-                                                    <p>
-                                                        {blog.updatedAt
-                                                            ? dayjs(blog.updatedAt).locale(i18n.language).fromNow()
-                                                            : dayjs(blog.createdAt).locale(i18n.language).fromNow()}
-                                                    </p>
+                                                    <p>{dayjs(blog.createdAt).locale(i18n.language).fromNow()}</p>
                                                 </div>
                                                 <div style={{ color: '#353535', fontWeight: 'bold', fontSize: '1rem' }}>
                                                     {blog.title}
