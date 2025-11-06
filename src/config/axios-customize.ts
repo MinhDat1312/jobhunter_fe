@@ -3,7 +3,7 @@ import { Mutex } from 'async-mutex';
 import axiosClient from 'axios';
 import { store } from '../redux/store';
 import { setRefreshTokenAction } from '../redux/slice/accountSlice';
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 
 interface AccessTokenResponse {
     access_token: string;
@@ -14,15 +14,30 @@ const instance = axiosClient.create({
     withCredentials: true,
 });
 
+const refreshInstance = axiosClient.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL as string,
+    withCredentials: true,
+});
+
 const mutex = new Mutex();
 const NO_RETRY_HEADER = 'x-no-retry';
 
-const handleRefreshToken = async (): Promise<string | null> => {
+const handleRefreshToken = async (): Promise<string | any> => {
     return await mutex.runExclusive(async () => {
-        const res = await instance.get<IBackendRes<AccessTokenResponse>>('/api/v1/auth/refresh');
-        if (res && res.data) {
-            return res.data.access_token;
-        } else return null;
+        try {
+            const res = await refreshInstance.get<IBackendRes<AccessTokenResponse>>('/api/v1/auth/refresh');
+            const newAccessToken = res?.data?.access_token ?? null;
+
+            if (!newAccessToken) {
+                localStorage.removeItem('access_token');
+                return null;
+            }
+
+            return newAccessToken;
+        } catch (err) {
+            localStorage.removeItem('access_token');
+            return null;
+        }
     });
 };
 
