@@ -114,7 +114,7 @@ const RecruiterForm = (props: IProps) => {
                 username,
                 contact,
                 address,
-                enabled,
+                !onRole ? dataInit.enabled : enabled,
                 description,
                 fileList.length > 0 ? fileList[0].url : '',
                 !onRole

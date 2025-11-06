@@ -117,7 +117,7 @@ const ApplicantForm = (props: IProps) => {
                 !onRole ? dataInit.password : '12345678',
                 username,
                 availableStatus,
-                enabled,
+                !onRole ? dataInit.enabled : enabled,
                 education,
                 level,
                 !onRole
