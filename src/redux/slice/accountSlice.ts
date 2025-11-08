@@ -94,7 +94,6 @@ export const accountSlice = createSlice({
         },
 
         setLogoutAction: (state) => {
-            localStorage.removeItem('access_token');
             state.isAuthenticated = false;
             state.user = {
                 userId: '',
@@ -179,6 +178,7 @@ export const accountSlice = createSlice({
 
 export const fetchAccount = createAsyncThunk('account/fetchAccount', async () => {
     const response = await callFetchAccount();
+    console.log('fetchAccount response', response);
     return response.data;
 });
 

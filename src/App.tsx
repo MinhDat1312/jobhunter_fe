@@ -4,7 +4,7 @@ import LayoutApp from './components/share/layout.app';
 import LayoutClient from './components/client/layout.client';
 import NotFound from './components/share/not.found';
 import LoginPage from './pages/auth/login';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from './hooks/hook';
 import { fetchAccount } from './redux/slice/accountSlice';
 import HomePage from './pages/home/home';
@@ -30,6 +30,7 @@ import BlogPage from './pages/admin/blog';
 import ViewUpsertBlog from './components/admin/blog/upsert.blog';
 import ClientBlogDetailPage from './pages/blog/detail';
 import ResetPassword from './pages/auth/reset';
+import axios from "./config/axios-customize";
 
 const router = createBrowserRouter([
     {
@@ -184,11 +185,31 @@ const router = createBrowserRouter([
 
 function App() {
     const dispatch = useAppDispatch();
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        if (window.location.pathname === '/login' || window.location.pathname === '/register') return;
-        dispatch(fetchAccount());
+        if (window.location.pathname === '/login' || window.location.pathname === '/register') {
+            setIsReady(true);
+            return;
+        }
+
+        const init = async () => {
+            try {
+                await axios.get('/api/v1/auth/refresh');
+            } catch (err) {
+            } finally {
+                setIsReady(true);
+            }
+        };
+
+        init();
     }, []);
+
+    useEffect(() => {
+        if (isReady) {
+            dispatch(fetchAccount());
+        }
+    }, [isReady]);
 
     return <RouterProvider router={router} />;
 }

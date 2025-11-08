@@ -16,10 +16,9 @@ const LayoutApp = (props: IProps) => {
 
     useEffect(() => {
         if (isRefreshToken === true) {
-            localStorage.removeItem('access_token');
             message.error(errorRefreshToken);
             dispatch(setRefreshTokenAction({ status: false, message: '' }));
-            navigate('/login');
+            navigate('/');
         }
     }, [isRefreshToken]);
 

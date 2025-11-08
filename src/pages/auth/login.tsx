@@ -30,7 +30,6 @@ const LoginPage = () => {
         const res = await callLogin(email, password);
         setIsSubmit(false);
         if (res?.data) {
-            localStorage.setItem('access_token', res.data.access_token);
             message.success(t('notify.signin'));
             dispatch(setUserLoginInfo(res.data.user));
             navigate(`${callback ? callback : '/'}`);
